@@ -83,7 +83,7 @@ export default function ContactPage() {
 
           {/* secondary contact option */}
           <a
-            href="mailto:you@example.com"
+            href="mailto:sfshnky@gmail.com"
             className="text-sm underline underline-offset-4 hover:no-underline"
           >
             or email me directly
