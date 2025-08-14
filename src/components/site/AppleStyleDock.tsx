@@ -5,15 +5,16 @@ import {
   HomeIcon, Package, Component, Activity, ScrollText, Mail, SunMoon,
 } from "lucide-react";
 import { Dock, DockIcon, DockItem, DockLabel } from "@/components/ui/dock";
+//import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const items = [
   { title: "Home",       href: "/",          icon: <HomeIcon className="h-full w-full" /> },
-  { title: "Projects",   href: "/projects",  icon: <Package className="h-full w-full" /> },
-  { title: "Skills",     href: "/skills",    icon: <Component className="h-full w-full" /> },
   { title: "Experience", href: "/experience",icon: <Activity className="h-full w-full" /> },
+  { title: "Projects",   href: "/projects",  icon: <Package className="h-full w-full" /> },
   { title: "Education",  href: "/education", icon: <ScrollText className="h-full w-full" /> },
+  { title: "Skills",     href: "/skills",    icon: <Component className="h-full w-full" /> },
   { title: "Contact",    href: "/contact",   icon: <Mail className="h-full w-full" /> },
-  { title: "Theme",      href: "#",          icon: <SunMoon className="h-full w-full" /> }, // (we’ll wire a real toggle later)
+  //{ title: "Theme",      href: "#",          icon: <SunMoon className="h-full w-full" /> }, // (we’ll wire a real toggle later)
 ];
 
 export function AppleStyleDock() {

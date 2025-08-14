@@ -1,20 +1,26 @@
 import "@/app/globals.css";
 import type { Metadata } from "next";
 import { AppleStyleDock } from "@/components/site/AppleStyleDock";
+import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
-  title: "Your Name — Software Developer",
-  description: "Portfolio of Your Name",
+  title: "Shram Kadia",
+  description: "My Portfolio",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-dvh antialiased">
-        <div className="relative min-h-dvh">
-          {children}
+      <body className="relative min-h-dvh">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
           <AppleStyleDock />
-        </div>
       </body>
     </html>
   );
