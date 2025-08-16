@@ -27,3 +27,6 @@ body {
 
 html { scroll-behavior: smooth; }
 
+.image-render-pixel {
+  image-rendering: pixelated;
+}
