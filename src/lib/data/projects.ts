@@ -38,4 +38,28 @@ export const projects: Project[] = [
     repoUrl: "#",
     effect: { bgClass: "bg-emerald-900", animationSpeed: 5, colors: [[0,255,255]], dotSize: 2 },
   },
+  {
+    title: "Project D",
+    description: "Realtime dashboard for X.",
+    stack: ["Next.js", "WebSockets"],
+    demoUrl: "#",
+    repoUrl: "#",
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 3.5, colors: [[180,200,255]], dotSize: 2 },
+  },
+  {
+    title: "Project E",
+    description: "Pipeline that processes Y.",
+    stack: ["Python", "Airflow"],
+    demoUrl: "#",
+    repoUrl: "#",
+    effect: { bgClass: "bg-black", animationSpeed: 4, colors: [[236,72,153],[232,121,249]], dotSize: 2 },
+  },
+  {
+    title: "Project F",
+    description: "3D visualizer for Z.",
+    stack: ["React", "R3F"],
+    demoUrl: "#",
+    repoUrl: "#",
+    effect: { bgClass: "bg-emerald-900", animationSpeed: 5, colors: [[0,255,255]], dotSize: 2 },
+  },
 ];
