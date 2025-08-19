@@ -1,7 +1,8 @@
 "use client";
 
 import ProjectsSection from "@/components/sections/ProjectsSection";
-import ExperienceSection from "@/components/sections/ExperienceSection";
+import WorkExperience from "@/components/sections/WorkExperience";
+import { experiences } from "@/lib/data/experience";
 import EducationSection from "@/components/sections/EducationSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import ContactSection from "@/components/sections/ContactSection";
@@ -55,7 +56,7 @@ export default function Home() {
 
       {/* EXPERIENCE */}
       <section id="experience" className="snap-start min-h-dvh">
-        <ExperienceSection />
+        <WorkExperience experiences={experiences} />
       </section>
 
       {/* EDUCATION */}
