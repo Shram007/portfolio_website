@@ -27,112 +27,130 @@ interface WorkExperienceProps {
   compact?: boolean;
 }
 
-const fmt = (isoYYYYMM?: string) => {
-  if (!isoYYYYMM) return "";
-  const [y, m] = isoYYYYMM.split("-").map(Number);
-  return new Date(y, (m ?? 1) - 1, 1).toLocaleDateString("en-US", { year: "numeric", month: "short" });
-};
-
-const duration = (startDate: string, endDate: string | undefined, current: boolean) => {
-  const start = new Date(startDate + "-01");
-  const end = current ? new Date() : new Date((endDate ?? startDate) + "-01");
-  const months = Math.max(1, Math.round((+end - +start) / (1000 * 60 * 60 * 24 * 30)));
-  if (months < 12) return `${months} month${months > 1 ? "s" : ""}`;
-  const years = Math.floor(months / 12);
-  const rem = months % 12;
-  return rem ? `${years} yr ${rem} mo` : `${years} yr${years > 1 ? "s" : ""}`;
-};
-
 const WorkExperience: React.FC<WorkExperienceProps> = ({
   experiences,
   showTechnologies = true,
   showAchievements = true,
-  compact = false,
+  compact = false
 }) => {
+  const formatDate = (dateString: string): string => {
+    if (!dateString) return "";
+    const [y, m] = dateString.split("-").map(Number);
+    const date = new Date(y, (m ?? 1) - 1, 1);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'short' 
+    });
+  };
+
+  const calculateDuration = (startDate: string, endDate: string | undefined, current: boolean): string => {
+    const start = new Date(startDate + "-01");
+    const end = current ? new Date() : new Date((endDate ?? startDate) + "-01");
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30));
+    
+    if (diffMonths < 12) {
+      return `${diffMonths} month${diffMonths > 1 ? 's' : ''}`;
+    }
+    
+    const years = Math.floor(diffMonths / 12);
+    const remainingMonths = diffMonths % 12;
+    
+    if (remainingMonths === 0) {
+      return `${years} year${years > 1 ? 's' : ''}`;
+    }
+    
+    return `${years} year${years > 1 ? 's' : ''} ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
       <div className="space-y-2">
-        <h2 className="text-3xl font-bold">Work Experience</h2>
-        <p className="text-neutral-600 dark:text-neutral-400">My professional journey and key accomplishments</p>
+        <h2 className="text-3xl font-bold text-foreground">Work Experience</h2>
+        <p className="text-muted-foreground">My professional journey and key accomplishments</p>
       </div>
-
+      
       <div className="space-y-6">
-        {experiences.map((xp, index) => (
-          <Card key={xp.id} className="relative overflow-hidden border border-neutral-200/60 dark:border-neutral-800/60 bg-card">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-500 via-blue-500 to-cyan-400" />
-
+        {experiences.map((experience, index) => (
+          <Card key={experience.id} className="relative overflow-hidden border-border bg-card">
+            {/* Timeline indicator */}
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+            
             <CardHeader className="pb-4">
               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Building2 className="h-5 w-5 text-purple-500" />
-                    <h3 className="text-xl font-semibold flex items-center gap-2">
-                      {xp.company}
-                      {xp.companyUrl && (
-                        <a href={xp.companyUrl} target="_blank" rel="noreferrer" aria-label={`${xp.company} website`}>
-                          <ExternalLink className="h-4 w-4 text-neutral-500 hover:text-purple-500 transition" />
+                    <Building2 className="h-5 w-5 text-primary" />
+                    <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                      {experience.company}
+                      {experience.companyUrl && (
+                        <a href={experience.companyUrl} target="_blank" rel="noreferrer" aria-label={`${experience.company} website`}>
+                          <ExternalLink className="h-4 w-4 text-muted-foreground hover:text-primary cursor-pointer transition" />
                         </a>
                       )}
                     </h3>
                   </div>
-                  <h4 className="text-lg font-medium text-purple-500">{xp.position}</h4>
-
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-neutral-600 dark:text-neutral-400">
+                  <h4 className="text-lg font-medium text-primary">{experience.position}</h4>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <CalendarDays className="h-4 w-4" />
                       <span>
-                        {fmt(xp.startDate)} – {xp.current ? "Present" : fmt(xp.endDate)}
+                        {formatDate(experience.startDate)} - {experience.current ? 'Present' : formatDate(experience.endDate || '')}
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <MapPin className="h-4 w-4" />
-                      <span>{xp.location}</span>
+                      <span>{experience.location}</span>
                     </div>
                   </div>
                 </div>
-
+                
                 <div className="flex flex-col items-start lg:items-end gap-2">
-                  {xp.current && <Badge className="bg-green-100 text-green-800 border-green-200">Current</Badge>}
-                  <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
-                    {duration(xp.startDate, xp.endDate, xp.current)}
+                  {experience.current && (
+                    <Badge variant="default" className="bg-green-100 text-green-800 border-green-200">
+                      Current
+                    </Badge>
+                  )}
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {calculateDuration(experience.startDate, experience.endDate, experience.current)}
                   </span>
                 </div>
               </div>
             </CardHeader>
-
+            
             <CardContent className="space-y-4">
-              <p className="leading-relaxed">{xp.description}</p>
-
-              {showAchievements && xp.achievements.length > 0 && !compact && (
+              <p className="text-foreground leading-relaxed">{experience.description}</p>
+              
+              {showAchievements && experience.achievements.length > 0 && !compact && (
                 <div className="space-y-2">
-                  <h5 className="font-medium">Key Achievements</h5>
+                  <h5 className="font-medium text-foreground">Key Achievements:</h5>
                   <ul className="space-y-1">
-                    {xp.achievements.map((a, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-                        <span className="text-purple-500 mt-1.5 text-xs">•</span>
-                        <span>{a}</span>
+                    {experience.achievements.map((achievement, achievementIndex) => (
+                      <li key={achievementIndex} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <span className="text-primary mt-1.5 text-xs">•</span>
+                        <span>{achievement}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
-
-              {showTechnologies && xp.technologies.length > 0 && (
+              
+              {showTechnologies && experience.technologies.length > 0 && (
                 <div className="space-y-2">
-                  <h5 className="font-medium">Technologies</h5>
+                  <h5 className="font-medium text-foreground">Technologies:</h5>
                   <div className="flex flex-wrap gap-2">
-                    {xp.technologies.map((t, i) => (
-                      <Badge key={i} variant="secondary" className="text-xs">
-                        {t}
+                    {experience.technologies.map((tech, techIndex) => (
+                      <Badge key={techIndex} variant="secondary" className="text-xs">
+                        {tech}
                       </Badge>
                     ))}
                   </div>
                 </div>
               )}
-
+              
               {index < experiences.length - 1 && (
                 <div className="pt-4">
-                  <Separator />
+                  <Separator className="bg-border" />
                 </div>
               )}
             </CardContent>
@@ -144,4 +162,3 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({
 };
 
 export default WorkExperience;
-

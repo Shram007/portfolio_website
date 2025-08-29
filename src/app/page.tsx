@@ -42,6 +42,9 @@ export default function Home() {
         <p className="text-lg text-neutral-500 dark:text-neutral-400 max-w-prose">
           Interactive, accessible web experiences.
         </p>
+
+        {/* astronaut wanderer just above dock */}
+        <AstronautGuide />
       </section>
 
       {/* PROJECTS */}
@@ -68,9 +71,6 @@ export default function Home() {
       <section id="contact" className="snap-start min-h-dvh">
         <ContactSection />
       </section>
-
-      {/* astronaut wanderer just above dock */}
-      <AstronautGuide />
     </main>
   );
 }

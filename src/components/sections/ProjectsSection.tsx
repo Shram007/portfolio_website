@@ -1,60 +1,68 @@
 "use client";
 
-import { useState } from "react";
-import { projects } from "@/lib/data/projects";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import ThreeDProjectsCarousel from "./3DProjectsCarousel";
+import ThreeDProjectsCarousel from "@/components/sections/3DProjectsCarousel";
+import { projects } from "@/lib/data/projects";
+import { useState } from "react";
 
 export default function ProjectsSection() {
-  const [view, setView] = useState<"grid" | "3d">("grid");
+  const [showMore, setShowMore] = useState(false);
+  
+  // Top 3 projects for featured section
+  const featuredProjects = projects.slice(0, 3);
+  
+  // Remaining projects for "View More" section
+  const moreProjects = projects.slice(3);
 
   return (
-    <section aria-labelledby="projects-title" className="mx-auto max-w-6xl px-4 py-16">
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <h2 id="projects-title" className="text-3xl font-semibold">Projects</h2>
+    <div className="mx-auto max-w-7xl px-4 py-16">
+      <div className="mb-12 text-center">
+        <h2 className="mb-4 text-3xl font-bold">Projects</h2>
+        <p className="text-neutral-600 dark:text-neutral-400">
+          A showcase of my work
+        </p>
+      </div>
 
-        <div className="rounded-md border border-neutral-200 p-1 text-sm dark:border-neutral-800">
-          <button
-            onClick={() => setView("grid")}
-            className={`rounded px-3 py-1 ${view === "grid" ? "bg-neutral-200 dark:bg-neutral-800" : ""}`}
-          >
-            Grid
-          </button>
-          <button
-            onClick={() => setView("3d")}
-            className={`rounded px-3 py-1 ${view === "3d" ? "bg-neutral-200 dark:bg-neutral-800" : ""}`}
-          >
-            3D
-          </button>
+      {/* Featured Projects - Top 3 */}
+      <div className="mb-16">
+        {/* <h3 className="mb-8 text-xl font-semibold text-center">Featured Projects</h3> */}
+        <div className="grid gap-6 place-items-center auto-rows-fr" 
+             style={{
+               gridTemplateColumns: `repeat(${Math.min(3, featuredProjects.length)}, 1fr)`,
+               maxWidth: `${Math.min(3, featuredProjects.length) * 350 + (Math.min(3, featuredProjects.length) - 1) * 24}px`,
+               margin: '0 auto'
+             }}>
+          {featuredProjects.map((project, index) => (
+            <ProjectCard
+              key={project.id}
+              title={project.title}
+              description={project.description}
+              stack={project.stack}
+              repoUrl={project.repoUrl}
+              demoUrl={project.demoUrl}
+              effect={project.effect}
+            />
+          ))}
         </div>
       </div>
 
-      {view === "3d" ? (
-        <ThreeDProjectsCarousel />
-      ) : (
-        <>
-          {/* Mobile: horizontal snap */}
-          <div
-            className="lg:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scroll-px-4 [scrollbar-width:none] [-ms-overflow-style:none]"
-            style={{ WebkitOverflowScrolling: "touch" }}
+      {/* More Projects Section - Carousel */}
+      {moreProjects.length > 0 && (
+        <div className="text-center">
+          <button
+            onClick={() => setShowMore(!showMore)}
+            className="rounded-lg bg-neutral-800 px-6 py-3 text-sm font-medium transition-colors hover:bg-neutral-700"
           >
-            <div className="flex gap-4">
-              {projects.map((p) => (
-                <div key={p.title} className="snap-start shrink-0 w-[88%] sm:w-[70%]">
-                  <ProjectCard {...p} className="h-[22rem]" />
-                </div>
-              ))}
+            {showMore ? 'Hide More Projects' : `View More Projects (${moreProjects.length})`}
+          </button>
+          
+          {showMore && (
+            <div className="mt-8">
+              <ThreeDProjectsCarousel />
             </div>
-          </div>
-
-          {/* Desktop: 3×2 grid */}
-          <div className="hidden lg:grid grid-cols-3 gap-6 auto-rows-[22rem]">
-            {projects.map((p) => (
-              <ProjectCard key={p.title} {...p} className="h-[22rem]" />
-            ))}
-          </div>
-        </>
+          )}
+        </div>
       )}
-    </section>
+    </div>
   );
 }

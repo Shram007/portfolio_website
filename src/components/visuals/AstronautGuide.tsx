@@ -13,7 +13,6 @@ export default function AstronautGuide() {
   useEffect(() => {
     const onResize = () => {
       const w = window.innerWidth;
-      // leave margins so it doesn’t clip the edges or the dock
       setBounds({ minX: 40, maxX: Math.max(40, w - 140) });
     };
     onResize();
@@ -50,7 +49,7 @@ export default function AstronautGuide() {
   return (
     <div
       ref={containerRef}
-      className="pointer-events-none fixed bottom-24 left-0 right-0 z-40"
+      className="pointer-events-none absolute bottom-24 left-0 right-0 z-40"
       aria-hidden
     >
       <motion.div
@@ -68,7 +67,7 @@ export default function AstronautGuide() {
           priority
         />
 
-        {/* “scroll down” sign with gentle bob */}
+        {/* "scroll down" sign with gentle bob */}
         <motion.div
           initial={{ y: 0, rotate: -4 }}
           animate={prefersReduced ? {} : { y: [0, -6, 0] }}

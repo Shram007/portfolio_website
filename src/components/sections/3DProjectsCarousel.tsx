@@ -27,7 +27,7 @@ const Carousel = memo(function Carousel({
 }: {
   handleClick: (index: number) => void;
   controls: any;
-  cards: { image: string; title: string }[];
+  cards: { image?: string; title: string; id: number }[];
   isActive: boolean;
 }) {
   const isSm = useMediaQuery("(max-width: 640px)");
@@ -56,7 +56,7 @@ const Carousel = memo(function Carousel({
       >
         {cards.map((card, i) => (
           <motion.div
-            key={i}
+            key={card.id}
             className="absolute flex h-full origin-center items-center justify-center rounded-xl p-2"
             style={{
               width: `${faceWidth}px`,
@@ -64,14 +64,27 @@ const Carousel = memo(function Carousel({
             }}
             onClick={() => handleClick(i)}
           >
-            <motion.img
-              src={card.image}
-              alt={card.title}
-              className="pointer-events-none w-full rounded-xl object-cover aspect-square"
-              initial={{ filter: "blur(4px)" }}
-              animate={{ filter: "blur(0px)" }}
-              transition={transition}
-            />
+            {card.image ? (
+              <motion.img
+                src={card.image}
+                alt={card.title}
+                className="pointer-events-none w-full rounded-xl object-cover aspect-square"
+                initial={{ filter: "blur(4px)" }}
+                animate={{ filter: "blur(0px)" }}
+                transition={transition}
+              />
+            ) : (
+              <motion.div
+                className="pointer-events-none w-full rounded-xl bg-neutral-800 aspect-square flex items-center justify-center"
+                initial={{ filter: "blur(4px)" }}
+                animate={{ filter: "blur(0px)" }}
+                transition={transition}
+              >
+                <span className="text-white text-sm text-center p-4 break-words">
+                  {card.title}
+                </span>
+              </motion.div>
+            )}
           </motion.div>
         ))}
       </motion.div>
@@ -80,10 +93,15 @@ const Carousel = memo(function Carousel({
 });
 
 export default function ThreeDProjectsCarousel() {
-  // Only projects with an image
-  const cards = useMemo(
-    () => projects.filter((p) => p.image).map((p) => ({ image: p.image!, title: p.title })),
+  // Projects starting from index 3 (after featured projects)
+  const carouselProjects = useMemo(
+    () => projects.slice(3),
     []
+  );
+  
+  const cards = useMemo(
+    () => carouselProjects.map((p) => ({ image: p.image, title: p.title, id: p.id })),
+    [carouselProjects]
   );
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -106,26 +124,106 @@ export default function ThreeDProjectsCarousel() {
     setIsActive(true);
   };
 
+  if (carouselProjects.length === 0) {
+    return (
+      <div className="text-center text-neutral-500">
+        No additional projects to display
+      </div>
+    );
+  }
+
   return (
     <motion.div layout className="relative">
       <AnimatePresence>
         {activeIndex !== null && (
-          <motion.button
-            type="button"
-            aria-label="Close"
-            onClick={handleClose}
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 m-5 md:m-24 lg:mx-[18rem] rounded-3xl bg-black/60 backdrop-blur-sm flex items-center justify-center"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
             transition={overlayTransition}
+            onClick={handleClose}
           >
-            <motion.img
-              src={cards[activeIndex].image}
-              alt={cards[activeIndex].title}
-              className="max-w-full max-h-full rounded-xl shadow-2xl"
-            />
-          </motion.button>
+            <motion.div
+              className="relative max-w-4xl max-h-[90vh] mx-4 bg-neutral-900 rounded-xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={handleClose}
+                className="absolute top-4 right-4 z-10 text-white hover:text-neutral-300"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+              
+              <div className="flex flex-col md:flex-row">
+                <div className="md:w-1/2">
+                  {carouselProjects[activeIndex].image ? (
+                    <img
+                      src={carouselProjects[activeIndex].image}
+                      alt={carouselProjects[activeIndex].title}
+                      className="w-full h-64 md:h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-64 md:h-full bg-neutral-800 flex items-center justify-center">
+                      <span className="text-neutral-400">No image available</span>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="md:w-1/2 p-6">
+                  <h3 className="text-2xl font-bold mb-4 text-white">
+                    {carouselProjects[activeIndex].title}
+                  </h3>
+                  
+                  {carouselProjects[activeIndex].description && (
+                    <p className="text-neutral-300 mb-4">
+                      {carouselProjects[activeIndex].description}
+                    </p>
+                  )}
+                  
+                  {carouselProjects[activeIndex].stack && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {carouselProjects[activeIndex].stack!.map((tech) => (
+                        <span
+                          key={tech}
+                          className="rounded-md border border-neutral-600 px-2 py-1 text-xs text-neutral-300"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Project Links */}
+                  {(carouselProjects[activeIndex].demoUrl || carouselProjects[activeIndex].repoUrl) && (
+                    <div className="flex gap-3">
+                      {carouselProjects[activeIndex].demoUrl && (
+                        <a
+                          href={carouselProjects[activeIndex].demoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-sm underline underline-offset-4 hover:no-underline text-blue-400"
+                        >
+                          Demo
+                        </a>
+                      )}
+                      {carouselProjects[activeIndex].repoUrl && (
+                        <a
+                          href={carouselProjects[activeIndex].repoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-sm underline underline-offset-4 hover:no-underline text-blue-400"
+                        >
+                          Repo
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 
