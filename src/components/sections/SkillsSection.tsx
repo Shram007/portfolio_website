@@ -2,9 +2,10 @@
 
 const skills = {
   Languages: ["TypeScript", "Python", "SQL"],
-  Frontend: ["Next.js", "React", "Tailwind", "Framer Motion"],
+  Frontend: ["Next.js", "React", "Tailwind"],
   Backend: ["Node.js", "REST", "GraphQL"],
   Tools: ["Git", "Docker", "Vercel"],
+  'AI Tools': ["Lovable", "Bolt", "Vercel(v0)", "GitHub Copilot", "Claude Code", "Code Rabbit","Framer Motion"]
 };
 
 export default function SkillsSection() {

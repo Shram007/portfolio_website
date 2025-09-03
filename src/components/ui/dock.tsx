@@ -23,8 +23,8 @@ import {
 import { cn } from '@/lib/utils';
 
 const DOCK_HEIGHT = 128;
-const DEFAULT_MAGNIFICATION = 60;
-const DEFAULT_DISTANCE = 100;
+const DEFAULT_MAGNIFICATION = 40;
+const DEFAULT_DISTANCE = 10;
 const DEFAULT_PANEL_HEIGHT = 64;
 
 type DockProps = {
@@ -34,6 +34,7 @@ type DockProps = {
   panelHeight?: number;
   magnification?: number;
   spring?: SpringOptions;
+  orientation?: "horizontal" | "vertical";
 };
 type DockItemProps = {
   className?: string;
@@ -50,7 +51,9 @@ type DockIconProps = {
 
 type DocContextType = {
   mouseX: MotionValue;
+  mouseY: MotionValue;
   spring: SpringOptions;
+  orientation: "horizontal" | "vertical";
   magnification: number;
   distance: number;
 };
@@ -80,8 +83,10 @@ function Dock({
   magnification = DEFAULT_MAGNIFICATION,
   distance = DEFAULT_DISTANCE,
   panelHeight = DEFAULT_PANEL_HEIGHT,
+  orientation = "vertical",
 }: DockProps) {
   const mouseX = useMotionValue(Infinity);
+  const mouseY = useMotionValue(Infinity);
   const isHovered = useMotionValue(0);
 
   const maxHeight = useMemo(() => {
@@ -93,30 +98,43 @@ function Dock({
 
   return (
     <motion.div
-      style={{
-        height: height,
-        scrollbarWidth: 'none',
-      }}
-      className='mx-2 flex max-w-full items-end overflow-x-auto'
+      style={
+        orientation === "vertical"
+        ? { scrollbarWidth: "none" }                // no fixed height in vertical
+        : { height, scrollbarWidth: "none" }        // keep animated height in horizontal
+      }
+      className={cn(
+        "mx-2 flex max-w-full",
+        orientation === "vertical"
+          ? "items-center overflow-visible"           // let the column breathe
+          : "items-end overflow-x-auto"               // old horizontal behavior
+      )}
     >
       <motion.div
-        onMouseMove={({ pageX }) => {
+        onMouseMove={({ pageY, pageX }) => {
           isHovered.set(1);
-          mouseX.set(pageX);
+          if (orientation === "vertical") {
+            mouseY.set(pageY);
+          } else {
+            mouseX.set(pageX);
+          }
         }}
         onMouseLeave={() => {
           isHovered.set(0);
           mouseX.set(Infinity);
+          mouseY.set(Infinity);
         }}
         className={cn(
-          'mx-auto flex w-fit gap-4 rounded-2xl bg-gray-50 px-4 dark:bg-neutral-900',
+          orientation === "vertical"
+            ? "mx-0 my-auto flex h-fit w-auto flex-col gap-4 rounded-2xl bg-gray-50 px-3 py-4 dark:bg-neutral-900 items-center"
+            : "mx-auto flex w-fit gap-4 rounded-2xl bg-gray-50 px-4 dark:bg-neutral-900",
           className
         )}
-        style={{ height: panelHeight }}
+        style={orientation === "vertical" ? undefined : { height: panelHeight }}
         role='toolbar'
         aria-label='Application dock'
       >
-        <DockProvider value={{ mouseX, spring, distance, magnification }}>
+        <DockProvider value={{ mouseX, mouseY, orientation, spring, distance, magnification }}>
           {children}
         </DockProvider>
       </motion.div>
@@ -127,14 +145,19 @@ function Dock({
 function DockItem({ children, className }: DockItemProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  const { distance, magnification, mouseX, spring } = useDock();
+  const { distance, magnification, mouseX, mouseY, spring, orientation } = useDock();
 
   const isHovered = useMotionValue(0);
 
-  const mouseDistance = useTransform(mouseX, (val) => {
-    const domRect = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
-    return val - domRect.x - domRect.width / 2;
-  });
+  const mouseDistance = useTransform(
+    orientation === "vertical" ? mouseY : mouseX,
+    (val) => {
+      const r = ref.current?.getBoundingClientRect() ?? { x: 0, y: 0, width: 0, height: 0 } as DOMRect;
+      return orientation === "vertical"
+        ? val - (r.y + r.height / 2)
+        : val - (r.x + r.width / 2);
+    }
+  );
 
   const widthTransform = useTransform(
     mouseDistance,
@@ -147,7 +170,7 @@ function DockItem({ children, className }: DockItemProps) {
   return (
     <motion.div
       ref={ref}
-      style={{ width }}
+      style={{ width: width, height: width }}
       onHoverStart={() => isHovered.set(1)}
       onHoverEnd={() => isHovered.set(0)}
       onFocus={() => isHovered.set(1)}
@@ -186,19 +209,18 @@ function DockLabel({ children, className, ...rest }: DockLabelProps) {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: -10 }}
-          exit={{ opacity: 0, y: 0 }}
+          initial={{ opacity: 0, x: 8 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 8 }}
           transition={{ duration: 0.2 }}
           className={cn(
-            'absolute -top-6 left-1/2 w-fit whitespace-pre rounded-md border border-gray-200 bg-gray-100 px-2 py-0.5 text-xs text-neutral-700 dark:border-neutral-900 dark:bg-neutral-800 dark:text-white',
-            className
+            "absolute right-full ml-3 whitespace-nowrap",
+            "rounded-full bg-neutral-800/80 px-3 py-1 text-sm font-medium text-white shadow-lg backdrop-blur"
           )}
-          role='tooltip'
-          style={{ x: '-50%' }}
+          role="tooltip"
         >
           {children}
-        </motion.div>
+      </motion.div>
       )}
     </AnimatePresence>
   );

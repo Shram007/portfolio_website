@@ -19,8 +19,8 @@ const items = [
 
 export function AppleStyleDock() {
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center">
-      <Dock className="pointer-events-auto items-end pb-3">
+    <div className="pointer-events-none fixed inset-y-0 right-4 z-50 flex items-center justify-center">
+      <Dock className="pointer-events-auto" orientation="vertical">
         {items.map((item) => (
           <DockItem
             key={item.title}
