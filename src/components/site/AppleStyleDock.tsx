@@ -8,7 +8,7 @@ import { Dock, DockIcon, DockItem, DockLabel } from "@/components/ui/dock";
 //import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const items = [
-  { title: "Home",       href: "#home",          icon: <HomeIcon className="h-full w-full" /> },
+  { title: "Home",       href: "#home",      icon: <HomeIcon className="h-full w-full" /> },
   { title: "Experience", href: "#experience",icon: <Activity className="h-full w-full" /> },
   { title: "Projects",   href: "#projects",  icon: <Package className="h-full w-full" /> },
   { title: "Education",  href: "#education", icon: <ScrollText className="h-full w-full" /> },
@@ -19,12 +19,17 @@ const items = [
 
 export function AppleStyleDock() {
   return (
-    <div className="pointer-events-none fixed inset-y-0 right-4 z-50 flex items-center justify-center">
-      <Dock className="pointer-events-auto" orientation="vertical">
+    <div className="pointer-events-none fixed inset-y-0 right-4 z-50 flex items-center">
+      <Dock 
+        className="pointer-events-auto bg-background/30 backdrop-blur-sm" 
+        orientation="vertical"
+        magnification={40}
+        distance={10}
+      >
         {items.map((item) => (
           <DockItem
             key={item.title}
-            className="aspect-square rounded-full bg-gray-200 dark:bg-neutral-800"
+            className="aspect-square w-10 h-10 rounded-full bg-gray-200/10 dark:bg-neutral-800/50 hover:bg-gray-200/20 dark:hover:bg-neutral-700/50 transition-colors"
           >
             <DockLabel>{item.title}</DockLabel>
             <DockIcon>

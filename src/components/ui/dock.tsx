@@ -22,10 +22,10 @@ import {
 
 import { cn } from '@/lib/utils';
 
-const DOCK_HEIGHT = 128;
-const DEFAULT_MAGNIFICATION = 40;
+const DOCK_HEIGHT = 64;
+const DEFAULT_MAGNIFICATION = 48;
 const DEFAULT_DISTANCE = 10;
-const DEFAULT_PANEL_HEIGHT = 64;
+const DEFAULT_PANEL_HEIGHT = 48;
 
 type DockProps = {
   children: React.ReactNode;
@@ -126,8 +126,8 @@ function Dock({
         }}
         className={cn(
           orientation === "vertical"
-            ? "mx-0 my-auto flex h-fit w-auto flex-col gap-4 rounded-2xl bg-gray-50 px-3 py-4 dark:bg-neutral-900 items-center"
-            : "mx-auto flex w-fit gap-4 rounded-2xl bg-gray-50 px-4 dark:bg-neutral-900",
+            ? "mx-0 my-auto flex h-fit w-auto flex-col gap-4 rounded-full px-3 py-6 items-center"
+            : "mx-auto flex w-fit gap-4 rounded-full px-6 py-3",
           className
         )}
         style={orientation === "vertical" ? undefined : { height: panelHeight }}
