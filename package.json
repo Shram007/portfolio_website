@@ -23,6 +23,8 @@
     "three": "^0.179.1"
   },
   "devDependencies": {
+    "@21st-extension/react": "^0.5.14",
+    "@21st-extension/toolbar-next": "^0.5.14",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

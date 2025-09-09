@@ -2,6 +2,8 @@ import "@/app/globals.css";
 import type { Metadata } from "next";
 import { AppleStyleDock } from "@/components/site/AppleStyleDock";
 import { ThemeProvider } from "next-themes";
+import { TwentyFirstToolbar } from "@21st-extension/toolbar-next";
+import { ReactPlugin } from "@21st-extension/react";
 
 export const metadata: Metadata = {
   title: "Shram Kadia",
@@ -21,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </ThemeProvider>
           <AppleStyleDock />
+          <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} />
       </body>
     </html>
   );
