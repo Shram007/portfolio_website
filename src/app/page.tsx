@@ -52,11 +52,6 @@ export default function Home() {
         <ProjectsSection />
       </section>
 
-      {/* SKILLS */}
-      <section id="skills" className="snap-start min-h-dvh">
-        <SkillsSection />
-      </section>
-
       {/* EXPERIENCE */}
       <section id="experience" className="snap-start min-h-dvh">
         <WorkExperience experiences={experiences} />
@@ -65,6 +60,11 @@ export default function Home() {
       {/* EDUCATION */}
       <section id="education" className="snap-start min-h-dvh">
         <EducationSection />
+      </section>
+
+      {/* SKILLS */}
+      <section id="skills" className="snap-start min-h-dvh">
+        <SkillsSection />
       </section>
 
       {/* CONTACT */}

@@ -6,14 +6,8 @@ import { educationData, Education } from "@/lib/data/education";
 
 export default function EducationSection() {
   return (
-    <section aria-labelledby="education-title" className="w-full max-w-6xl mx-auto px-4 py-16">
+    <section aria-labelledby="education-title" className="w-full max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
-      <div className="text-center mb-16">
-        <h2 id="education-title" className="text-3xl md:text-4xl font-bold mb-4">Education</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 text-lg">
-          Academic background and qualifications
-        </p>
-      </div>
 
       {/* Education Cards */}
       <div className="space-y-8">
