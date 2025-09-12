@@ -21,7 +21,7 @@ const items = [
 ];
 
 export function AppleStyleDock() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   return (
     <div className="pointer-events-none fixed inset-y-0 right-4 z-50 flex items-center">
@@ -31,7 +31,7 @@ export function AppleStyleDock() {
           className="pointer-events-auto h-8 w-8 flex items-center justify-center rounded-full bg-background/30 backdrop-blur-sm hover:bg-background/40 transition-colors"
           aria-label={isCollapsed ? "Expand dock" : "Collapse dock"}
         >
-          {isCollapsed ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+          {isCollapsed ? <ChevronLeft className="h-40 w-40" /> : <ChevronRight className="h-4 w-4" />}
         </button>
         <AnimatePresence initial={false}>
           {!isCollapsed && (

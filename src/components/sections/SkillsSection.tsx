@@ -1,4 +1,8 @@
+
 "use client";
+import Section from "@/components/ui/Section";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { motion } from "framer-motion";
 
 const skills = {
   Languages: ["TypeScript", "Python", "SQL"],
@@ -10,13 +14,19 @@ const skills = {
 
 export default function SkillsSection() {
   return (
-    <section aria-labelledby="skills-title" className="mx-auto max-w-7xl px-4 py-16">
-      <div className="mb-12 text-center">
-        <h2 id="skills-title" className="mb-4 text-3xl font-bold">Skills</h2>
-        <p className="text-neutral-600 dark:text-neutral-400">Technical expertise and tools I work with</p>
-      </div>
-      <div className="mx-auto" style={{ maxWidth: "1074px" }}>
-        <div className="space-y-8">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+    >
+      <Section ariaLabelledby="skills-title">
+        <SectionHeader
+          title="Skills"
+          subtitle="Technical expertise and tools I work with"
+          titleId="skills-title"
+        />
+        <div className="mx-auto" style={{ maxWidth: "1074px" }}>
+          <div className="space-y-4 md:space-y-6">
           {Object.entries(skills).map(([group, list]) => (
             <div key={group}>
               <h3 className="text-lg font-medium mb-3">{group}</h3>
@@ -34,6 +44,7 @@ export default function SkillsSection() {
           ))}
         </div>
       </div>
-    </section>
+    </Section>
+    </motion.div>
   );
 }

@@ -1,9 +1,12 @@
 "use client";
 
 import { ProjectCard } from "@/components/projects/ProjectCard";
+import Section from "@/components/ui/Section";
+import SectionHeader from "@/components/ui/SectionHeader";
 import ThreeDProjectsCarousel from "@/components/sections/3DProjectsCarousel";
 import { projects } from "@/lib/data/projects";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function ProjectsSection() {
   const [showMore, setShowMore] = useState(false);
@@ -15,23 +18,22 @@ export default function ProjectsSection() {
   const moreProjects = projects.slice(3);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16">
-      <div className="mb-12 text-center">
-        <h2 className="mb-4 text-3xl font-bold">Projects</h2>
-        <p className="text-neutral-600 dark:text-neutral-400">
-          A showcase of my work
-        </p>
-      </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+    >
+      <Section ariaLabelledby="projects-title">
+        <SectionHeader
+          title="Projects"
+          subtitle="A showcase of my work"
+          titleId="projects-title"
+        />
 
-      {/* Featured Projects - Top 3 */}
-      <div className="mb-16">
+        {/* Featured Projects - Top 3 */}
+        <div className="mb-16">
         {/* <h3 className="mb-8 text-xl font-semibold text-center">Featured Projects</h3> */}
-        <div className="grid gap-6 place-items-center auto-rows-fr" 
-             style={{
-               gridTemplateColumns: `repeat(${Math.min(3, featuredProjects.length)}, 1fr)`,
-               maxWidth: `${Math.min(3, featuredProjects.length) * 350 + (Math.min(3, featuredProjects.length) - 1) * 24}px`,
-               margin: '0 auto'
-             }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {featuredProjects.map((project, index) => (
             <ProjectCard
               key={project.id}
@@ -63,6 +65,7 @@ export default function ProjectsSection() {
           )}
         </div>
       )}
-    </div>
+    </Section>
+    </motion.div>
   );
 }

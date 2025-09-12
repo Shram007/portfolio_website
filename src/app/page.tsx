@@ -19,11 +19,11 @@ export default function Home() {
       {/* HERO */}
       <section
         id="home"
-        className="snap-start min-h-dvh mx-auto max-w-5xl px-4 py-16 flex flex-col justify-center"
+        className="snap-start min-h-dvh mx-auto max-w-6xl px-4 md:px-6 lg:px-8 py-16 md:py-20 lg:py-24 flex flex-col justify-center"
       >
-        <h1 className="text-4xl font-bold mb-4">Hi, I’m Shram Kadia</h1>
+        <h1 className="text-4xl md:text-6xl font-bold mb-4">Hi, I’m Shram Kadia</h1>
 
-        <p className="text-lg text-neutral-300 dark:text-neutral-300 mb-2">
+        <p className="text-base md:text-lg text-neutral-400 mb-2">
           <Typewriter
             words={[
               "Software Developer",
@@ -39,7 +39,7 @@ export default function Home() {
           />
         </p>
 
-        <p className="text-lg text-neutral-500 dark:text-neutral-400 max-w-prose">
+        <p className="text-base leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-prose">
           Interactive, accessible web experiences.
         </p>
 

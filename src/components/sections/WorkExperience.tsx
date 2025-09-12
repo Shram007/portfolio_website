@@ -1,10 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CalendarDays, MapPin, Building2, ExternalLink } from "lucide-react";
+import Section from "@/components/ui/Section";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { motion } from "framer-motion";
 
 export interface WorkExperienceItem {
   id: string;
@@ -33,6 +36,7 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({
   showAchievements = true,
   compact = false
 }) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const formatDate = (dateString: string): string => {
     if (!dateString) return "";
     const [y, m] = dateString.split("-").map(Number);
@@ -64,18 +68,33 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-3xl font-bold text-foreground">Work Experience</h2>
-        <p className="text-muted-foreground">My professional journey and key accomplishments</p>
-      </div>
-      
-      <div className="space-y-6">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+    >
+      <Section ariaLabelledby="experience-title">
+        <SectionHeader
+          title="Work Experience"
+          subtitle="My professional journey and key accomplishments"
+          titleId="experience-title"
+        />
+
+        <div className="space-y-4 md:space-y-6 mx-auto max-w-4xl">
         {experiences.map((experience, index) => (
-          <Card key={experience.id} className="relative overflow-hidden border-border bg-card">
+          <Card 
+            key={experience.id} 
+            className={`relative overflow-hidden border-border transition-all duration-300 ${
+              hoveredIndex === null || hoveredIndex === index 
+                ? 'bg-card opacity-100' 
+                : 'bg-card/50 opacity-0'
+            } ${hoveredIndex === index ? 'z-10' : 'z-0'}`}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
             {/* Timeline indicator */}
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
-            
+
             <CardHeader className="pb-4">
               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                 <div className="space-y-2">
@@ -157,7 +176,8 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({
           </Card>
         ))}
       </div>
-    </div>
+    </Section>
+    </motion.div>
   );
 };
 
