@@ -7,6 +7,7 @@ import ThreeDProjectsCarousel from "@/components/sections/3DProjectsCarousel";
 import { projects } from "@/lib/data/projects";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { StardustButton } from "@/components/ui/StardustButton";
 
 export default function ProjectsSection() {
   const [showMore, setShowMore] = useState(false);
@@ -51,12 +52,12 @@ export default function ProjectsSection() {
       {/* More Projects Section - Carousel */}
       {moreProjects.length > 0 && (
         <div className="text-center">
-          <button
+            <StardustButton
             onClick={() => setShowMore(!showMore)}
-            className="rounded-lg bg-neutral-800 px-6 py-3 text-sm font-medium transition-colors hover:bg-neutral-700"
-          >
+            className="py text-sm font-medium"
+            >
             {showMore ? 'Hide More Projects' : `View More Projects (${moreProjects.length})`}
-          </button>
+            </StardustButton>
           
           {showMore && (
             <div className="mt-8">

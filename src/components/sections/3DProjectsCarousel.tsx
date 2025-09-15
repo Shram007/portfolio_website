@@ -3,6 +3,7 @@
 import { memo, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion, useAnimation, useMotionValue, useTransform } from "framer-motion";
 import { projects } from "@/lib/data/projects";
+import { StardustButton } from "../ui/StardustButton";
 
 const IS_SERVER = typeof window === "undefined";
 const useIsoLayout = typeof window !== "undefined" ? useLayoutEffect : useEffect;
