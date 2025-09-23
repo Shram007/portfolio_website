@@ -2,14 +2,14 @@
 "use client";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
+import SkillNode from "@/components/ui/SkillNode";
 import { motion } from "framer-motion";
 
 const skills = {
-  Languages: ["TypeScript", "Python", "SQL"],
-  Frontend: ["Next.js", "React", "Tailwind"],
-  Backend: ["Node.js", "REST", "GraphQL"],
-  Tools: ["Git", "Docker", "Vercel"],
-  'AI Tools': ["Lovable", "Bolt", "Vercel(v0)", "GitHub Copilot", "Claude Code", "Code Rabbit", "Framer Motion"]
+  Languages: ["Python", "Java", "JavaScript", "C", "C++", "TypeScript", "SQL"],
+  Frameworks: ["Flask", "Django", "Angular", ".NET", "Node.js", "React", "Tailwind"],
+  Databases: ["PostgreSQL", "MongoDB", "MariaDB", "Redis", "GraphQL"],
+  Tools: ["Git", "Docker", "AWS", "GCP", "Kubernetes", "Postman"]
 };
 
 export default function SkillsSection() {
@@ -26,25 +26,33 @@ export default function SkillsSection() {
           titleId="skills-title"
         />
         <div className="mx-auto" style={{ maxWidth: "1074px" }}>
-          <div className="space-y-4 md:space-y-6">
-          {Object.entries(skills).map(([group, list]) => (
-            <div key={group}>
-              <h3 className="text-lg font-medium mb-3">{group}</h3>
-              <div className="flex flex-wrap gap-2">
-                {list.map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-md border border-neutral-200 dark:border-neutral-800 px-3 py-1 text-sm bg-neutral-100 dark:bg-neutral-800/50"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
+          <div className="space-y-8 md:space-y-12">
+            {Object.entries(skills).map(([group, list], groupIndex) => (
+              <motion.div
+                key={group}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.6,
+                  delay: groupIndex * 0.2,
+                  ease: [0.32, 0.72, 0, 1]
+                }}
+              >
+                <h3 className="text-lg font-medium mb-6 text-center md:text-left">{group}</h3>
+                <div className="flex flex-wrap justify-center md:justify-start gap-6 md:gap-8">
+                  {list.map((skill, skillIndex) => (
+                    <SkillNode
+                      key={skill}
+                      name={skill}
+                      delay={groupIndex * list.length + skillIndex}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </div>
-    </Section>
+      </Section>
     </motion.div>
   );
 }
