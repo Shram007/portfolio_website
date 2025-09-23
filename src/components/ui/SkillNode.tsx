@@ -42,7 +42,7 @@ const skillLogos: Record<string, string> = {
   Postman: "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg", // Using Postman as REST API icon
 
   // AI Tools - Using generic tech icons for AI tools not in devicons
-    
+
 };
 
 export default function SkillNode({ name, delay = 0 }: SkillNodeProps) {
@@ -71,7 +71,7 @@ export default function SkillNode({ name, delay = 0 }: SkillNodeProps) {
         }}
         animate={{
           background: isHovered
-            ? "linear-gradient(135deg, #3b82f6, #1d4ed8)"
+            ? "linear-gradient(135deg, #000000ff, #70a6caff)"
             : "linear-gradient(135deg, #f5f5f5, #e5e5e5)"
         }}
       >
@@ -80,7 +80,7 @@ export default function SkillNode({ name, delay = 0 }: SkillNodeProps) {
             src={logoPath}
             alt={`${name} logo`}
             className={`w-8 h-8 md:w-10 md:h-10 object-contain transition-all duration-300 ${
-              isHovered ? "brightness-0 invert" : ""
+              isHovered ? "opacity-80 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" : "opacity-100"
             }`}
             onError={(e) => {
               // Fallback to a generic icon if logo fails to load

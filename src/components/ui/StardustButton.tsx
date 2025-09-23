@@ -123,7 +123,7 @@ export const StardustButton = ({
       box-shadow:
         inset 0 0.3rem 0.5rem rgba(129, 216, 255, 0.5),
         inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.8),
-        inset 0 -0.4rem 0.9rem rgba(64, 180, 255, 0.4),
+        inset 0 -0.4rem 0.9rem #40b4ff66,
         0 3rem 3rem rgba(0, 0, 0, 0.3),
         0 1rem 1rem -0.6rem rgba(0, 0, 0, 0.8);
     }
