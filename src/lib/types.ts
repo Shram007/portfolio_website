@@ -17,6 +17,26 @@ export interface Project {
   image?: string;
 }
 
+export interface ProjectCardProps {
+  title: string;
+  description?: string;
+  stack?: string[];
+  repoUrl?: string;
+  demoUrl?: string;
+  effect?: {
+    bgClass?: string;
+    animationSpeed?: number;
+    colors?: number[][];
+    dotSize?: number;
+    opacities?: number[];
+  };
+  className?: string;
+}
+
+export interface SkillsData {
+  [category: string]: string[];
+}
+
 export interface WorkExperienceItem {
   id: string;
   company: string;

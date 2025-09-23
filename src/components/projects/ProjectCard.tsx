@@ -3,23 +3,8 @@
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
-import { cn } from "@/lib/utils";
-
-type ProjectCardProps = {
-  title: string;
-  description?: string;
-  stack?: string[];
-  repoUrl?: string;
-  demoUrl?: string;
-  effect?: {
-    bgClass?: string;           // e.g. "bg-black" | "bg-neutral-900"
-    animationSpeed?: number;    // e.g. 3
-    colors?: number[][];        // e.g. [[236,72,153],[232,121,249]]
-    dotSize?: number;           // e.g. 2
-    opacities?: number[];       // optional override
-  };
-  className?: string;
-};
+import { cn } from "../../lib/utils";
+import { ProjectCardProps } from "@/lib/types";
 
 export function ProjectCard({
   title,

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 import React from 'react';
 
 interface SectionProps extends React.HTMLAttributes<HTMLElement> {

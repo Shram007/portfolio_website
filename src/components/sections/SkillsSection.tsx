@@ -4,13 +4,7 @@ import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
 import SkillNode from "@/components/ui/SkillNode";
 import { motion } from "framer-motion";
-
-const skills = {
-  Languages: ["Python", "Java", "JavaScript", "C", "C++", "TypeScript", "SQL"],
-  Frameworks: ["Flask", "Django", "Angular", ".NET", "Node.js", "React", "Tailwind"],
-  Databases: ["PostgreSQL", "MongoDB", "MariaDB", "Redis", "GraphQL"],
-  Tools: ["Git", "Docker", "AWS", "GCP", "Kubernetes", "Postman"]
-};
+import { skills } from "@/lib/data/skills";
 
 export default function SkillsSection() {
   return (

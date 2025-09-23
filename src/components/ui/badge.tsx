@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 
 type Props = React.HTMLAttributes<HTMLSpanElement> & { variant?: "default" | "secondary" };
 export function Badge({ className, variant = "default", ...props }: Props) {
