@@ -17,7 +17,7 @@ export const projects: Project[] = [
     stack: ["Python", "React", "TypeScript", "scikit-learn (TF-IDF & cosine similarity)", "pandas", "NumPy", "HubSpot API (roadmap integration)"],
     demoUrl: "https://spark-partner-ai.lovable.app/",
     repoUrl: "https://github.com/Shram007/spark-partner-ai.git",
-    image: "/projects/rag.jpg",
+    // image: "/projects/rag.jpg",
     effect: { bgClass: "bg-neutral-900", animationSpeed: 3, colors: [[125,211,252]], dotSize: 2 }
   },
   {
@@ -27,8 +27,8 @@ export const projects: Project[] = [
     stack: ["React", "Node.js", "AI/ML", "Voice Recognition", "Healthcare APIs"],
     demoUrl: "https://drcomd-frontend.onrender.com/",
     repoUrl: "https://github.com/Shram007/DRcoMD.git",
-    image: "/projects/drcomd.jpg",
-    effect: { bgClass: "bg-blue-900", animationSpeed: 4, colors: [[59,130,246],[139,92,246]], dotSize: 2 }
+    // image: "/projects/drcomd.jpg",
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[251,191,36]], dotSize: 2 }
   },
   {
     id: 3,
@@ -36,8 +36,8 @@ export const projects: Project[] = [
     description: "AI-powered marketplace connecting video requesters with creators. Uses vector embeddings of video keyframes and captions for intelligent matching and automated submission verification.",
     stack: ["Next.js", "TypeScript", "Vector Database", "AI/ML", "Computer Vision", "OpenAI", "Embeddings", "Video Processing"],
     repoUrl: "https://github.com/Shram007/video_bounty.git",
-    image: "/projects/videobounty.jpg",
-    effect: { bgClass: "bg-purple-900", animationSpeed: 3.5, colors: [[147,51,234],[236,72,153]], dotSize: 2 }
+    // image: "/projects/videobounty.jpg",
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 3.5, colors: [[34,197,94]], dotSize: 2 }
   },
   {
     id: 4,
@@ -45,7 +45,7 @@ export const projects: Project[] = [
     description: "Web app that generates ATS-friendly resumes with live preview and conditional form validation.",
     stack: ["React", "Node.js", "Java", "Spring Boot"],
     repoUrl: "https://github.com/Shram007/AWT_project.git",
-    image: "/projects/resumegen.jpg",
+    image: "/logos/resumegen.jpeg",
     effect: { bgClass: "bg-emerald-900", animationSpeed: 5, colors: [[0,255,255]], dotSize: 2 }
   },
   {
@@ -53,7 +53,8 @@ export const projects: Project[] = [
     title: "E-Learning Course Management System",
     description: "Full-stack platform with MySQL + Flask/Django to manage courses, automate grading, and support 100+ users.",
     stack: ["Python", "MySQL", "Flask", "Django"],
-    image: "/projects/elearning.jpg",
+    repoUrl: "https://github.com/Shram007/Course-Management-System.git",
+    image: "/logos/elearning.jpeg",
     effect: { bgClass: "bg-black", animationSpeed: 3.5, colors: [[236,72,153],[232,121,249]], dotSize: 2 }
   },
   {
@@ -61,20 +62,20 @@ export const projects: Project[] = [
     title: "Redesigning Residual Connections",
     description: "Benchmarked ResNet, VGG-16, and AlexNet variants on CIFAR-10, improving gradient stability by 15% and training time by 20%.",
     stack: ["PyTorch", "Matplotlib"],
-    image: "/projects/residual.jpg"
+    image: "/logos/residual.jpeg"
   },
   {
     id: 7,
     title: "Traffic Sign Detection",
     description: "CNN model with 95% accuracy on 5,000+ signs and a GUI for real-time classification on CPU.",
     stack: ["TensorFlow", "CNN", "Tkinter/PyQt"],
-    image: "/projects/trafficsigns.jpg"
+    image: "/logos/trafficsigns.jpeg"
   },
   {
     id: 8,
     title: "Movie Recommendation System",
     description: "Matrix factorization model with temporal awareness, improving recommendation precision by 18%.",
     stack: ["Python", "NumPy", "SciPy"],
-    image: "/projects/recsys.jpg"
+    image: "/logos/recsys.jpeg"
   }
 ];

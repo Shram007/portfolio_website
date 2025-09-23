@@ -43,7 +43,7 @@ const Carousel = memo(function Carousel({
     <div className="flex h-full items-center justify-center" style={{ perspective: "1000px", transformStyle: "preserve-3d" }}>
       <motion.div
         drag={isActive ? "x" : false}
-        className="relative flex h-full origin-center cursor-grab justify-center active:cursor-grabbing"
+        className="relative flex h-full origin-center cursor-grab justify-center active:cursor-grabbing mx-auto"
         style={{ transform, rotateY: rotation, width: cylinderWidth, transformStyle: "preserve-3d" }}
         onDrag={(_, info) => isActive && rotation.set(rotation.get() + info.offset.x * 0.05)}
         onDragEnd={(_, info) =>
@@ -146,7 +146,7 @@ export default function ThreeDProjectsCarousel() {
             onClick={handleClose}
           >
             <motion.div
-              className="relative max-w-4xl max-h-[90vh] mx-4 bg-neutral-900 rounded-xl overflow-hidden"
+              className="relative w-full max-w-4xl h-[600px] mx-4 bg-neutral-900 rounded-xl overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -157,48 +157,49 @@ export default function ThreeDProjectsCarousel() {
                 ✕
               </button>
               
-              <div className="flex flex-col md:flex-row">
-                <div className="md:w-1/2">
+              <div className="flex flex-col md:flex-row h-full">
+                <div className="md:w-1/2 h-64 md:h-full">
                   {carouselProjects[activeIndex].image ? (
                     <img
                       src={carouselProjects[activeIndex].image}
                       alt={carouselProjects[activeIndex].title}
-                      className="w-full h-64 md:h-full object-cover"
+                      className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-64 md:h-full bg-neutral-800 flex items-center justify-center">
+                    <div className="w-full h-full bg-neutral-800 flex items-center justify-center">
                       <span className="text-neutral-400">No image available</span>
                     </div>
                   )}
                 </div>
-                
-                <div className="md:w-1/2 p-6">
-                  <h3 className="text-2xl font-bold mb-4 text-white">
+                <div className="md:w-1/2 p-6 flex flex-col h-full">
+                  <h3 className="text-2xl font-bold mb-4 text-white flex-shrink-0">
                     {carouselProjects[activeIndex].title}
                   </h3>
                   
-                  {carouselProjects[activeIndex].description && (
-                    <p className="text-neutral-300 mb-4">
-                      {carouselProjects[activeIndex].description}
-                    </p>
-                  )}
-                  
-                  {carouselProjects[activeIndex].stack && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {carouselProjects[activeIndex].stack!.map((tech) => (
-                        <span
-                          key={tech}
-                          className="rounded-md border border-neutral-600 px-2 py-1 text-xs text-neutral-300"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  <div className="flex-1 overflow-y-auto">
+                    {carouselProjects[activeIndex].description && (
+                      <p className="text-neutral-300 mb-4">
+                        {carouselProjects[activeIndex].description}
+                      </p>
+                    )}
+                    
+                    {carouselProjects[activeIndex].stack && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {carouselProjects[activeIndex].stack!.map((tech) => (
+                          <span
+                            key={tech}
+                            className="rounded-md border border-neutral-600 px-2 py-1 text-xs text-neutral-300"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
-                  {/* Project Links */}
+                  {/* Project Links - Fixed at bottom */}
                   {(carouselProjects[activeIndex].demoUrl || carouselProjects[activeIndex].repoUrl) && (
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 mt-4 flex-shrink-0">
                       {carouselProjects[activeIndex].demoUrl && (
                         <a
                           href={carouselProjects[activeIndex].demoUrl}
