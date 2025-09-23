@@ -1,40 +1,23 @@
 "use client";
 
-import { memo, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { AnimatePresence, motion, useAnimation, useMotionValue, useTransform } from "framer-motion";
 import { projects } from "@/lib/data/projects";
-import { StardustButton } from "../ui/StardustButton";
-
-const IS_SERVER = typeof window === "undefined";
-const useIsoLayout = typeof window !== "undefined" ? useLayoutEffect : useEffect;
-
-function useMediaQuery(query: string, { defaultValue = false } = {}) {
-  const get = (q: string) => (IS_SERVER ? defaultValue : window.matchMedia(q).matches);
-  const [match, setMatch] = useState(() => get(query));
-  useIsoLayout(() => {
-    const mm = window.matchMedia(query);
-    const onChange = () => setMatch(get(query));
-    onChange(); mm.addEventListener("change", onChange);
-    return () => mm.removeEventListener("change", onChange);
-  }, [query]);
-  return match;
-}
-
-const transition = { duration: 0.15, ease: [0.32, 0.72, 0, 1] as const };
-const overlayTransition = { duration: 0.5, ease: [0.4, 0, 0.2, 1] as const };
+import { transitions, carouselConfig } from "@/lib/constants";
+import { useMediaQuery } from "@/lib/hooks";
 
 const Carousel = memo(function Carousel({
   handleClick, controls, cards, isActive,
 }: {
   handleClick: (index: number) => void;
-  controls: any;
+  controls: ReturnType<typeof useAnimation>;
   cards: { image?: string; title: string; id: number }[];
   isActive: boolean;
 }) {
   const isSm = useMediaQuery("(max-width: 640px)");
-  const cylinderWidth = isSm ? 1100 : 1800;
+  const cylinderWidth = isSm ? carouselConfig.cylinderWidth.sm : carouselConfig.cylinderWidth.default;
   const faceCount = cards.length;
-  const faceWidth = Math.max(220, cylinderWidth / faceCount);
+  const faceWidth = Math.max(carouselConfig.minFaceWidth, cylinderWidth / faceCount);
   const radius = cylinderWidth / (2 * Math.PI);
   const rotation = useMotionValue(0);
   const transform = useTransform(rotation, (v) => `rotate3d(0, 1, 0, ${v}deg)`);
@@ -45,12 +28,12 @@ const Carousel = memo(function Carousel({
         drag={isActive ? "x" : false}
         className="relative flex h-full origin-center cursor-grab justify-center active:cursor-grabbing mx-auto"
         style={{ transform, rotateY: rotation, width: cylinderWidth, transformStyle: "preserve-3d" }}
-        onDrag={(_, info) => isActive && rotation.set(rotation.get() + info.offset.x * 0.05)}
+        onDrag={(_, info) => isActive && rotation.set(rotation.get() + info.offset.x * carouselConfig.dragSensitivity)}
         onDragEnd={(_, info) =>
           isActive &&
           controls.start({
-            rotateY: rotation.get() + info.velocity.x * 0.05,
-            transition: { type: "spring", stiffness: 100, damping: 30, mass: 0.1 },
+            rotateY: rotation.get() + info.velocity.x * carouselConfig.dragSensitivity,
+            transition: { type: "spring", ...carouselConfig.springConfig },
           })
         }
         animate={controls}
@@ -72,14 +55,14 @@ const Carousel = memo(function Carousel({
                 className="pointer-events-none w-full rounded-xl object-cover aspect-square"
                 initial={{ filter: "blur(4px)" }}
                 animate={{ filter: "blur(0px)" }}
-                transition={transition}
+                transition={transitions.default}
               />
             ) : (
               <motion.div
                 className="pointer-events-none w-full rounded-xl bg-neutral-800 aspect-square flex items-center justify-center"
                 initial={{ filter: "blur(4px)" }}
                 animate={{ filter: "blur(0px)" }}
-                transition={transition}
+                transition={transitions.default}
               >
                 <span className="text-white text-sm text-center p-4 break-words">
                   {card.title}
@@ -142,7 +125,7 @@ export default function ThreeDProjectsCarousel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-            transition={overlayTransition}
+            transition={transitions.overlay}
             onClick={handleClose}
           >
             <motion.div
@@ -175,14 +158,14 @@ export default function ThreeDProjectsCarousel() {
                   <h3 className="text-2xl font-bold mb-4 text-white flex-shrink-0">
                     {carouselProjects[activeIndex].title}
                   </h3>
-                  
+
                   <div className="flex-1 overflow-y-auto">
                     {carouselProjects[activeIndex].description && (
                       <p className="text-neutral-300 mb-4">
                         {carouselProjects[activeIndex].description}
                       </p>
                     )}
-                    
+
                     {carouselProjects[activeIndex].stack && (
                       <div className="flex flex-wrap gap-2 mb-4">
                         {carouselProjects[activeIndex].stack!.map((tech) => (

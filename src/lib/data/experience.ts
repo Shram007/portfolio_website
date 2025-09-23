@@ -1,4 +1,4 @@
-import { WorkExperienceItem } from "@/components/sections/WorkExperience";
+import { WorkExperienceItem } from "@/lib/types";
 
 export const experiences: WorkExperienceItem[] = [
   {

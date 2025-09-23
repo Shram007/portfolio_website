@@ -12,7 +12,6 @@ export default function ContactSection() {
     e.preventDefault();
     setStatus("sending");
     const form = e.currentTarget;
-    const data = new FormData(form);
     try {
       // If you made /api/contact earlier, you can POST to it here
       await new Promise((r) => setTimeout(r, 600));

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { GraduationCap, Calendar, MapPin, Award, BookOpen } from "lucide-react";
-import { educationData, Education } from "@/lib/data/education";
+import { educationData } from "@/lib/data/education";
 
 export default function EducationSection() {
   return (
@@ -11,7 +11,7 @@ export default function EducationSection() {
 
       {/* Education Cards */}
       <div className="space-y-8">
-        {educationData.map((edu, index) => (
+        {educationData.map((edu) => (
           <div
             key={edu.id}
             className="relative bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-8 hover:shadow-lg transition-shadow duration-300"

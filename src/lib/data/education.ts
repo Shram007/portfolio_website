@@ -1,19 +1,4 @@
-export interface Education {
-  id: string;
-  degree: string;
-  field: string;
-  school: string;
-  location: string;
-  startMonth?: string;
-  startYear: string;
-  endMonth?: string;
-  endYear: string;
-  status: "completed" | "in-progress";
-  gpa?: string;
-  achievements?: string[];
-  coursework?: string[];
-  description?: string;
-}
+import { Education } from "@/lib/types";
 
 export const educationData: Education[] = [
   {
@@ -29,8 +14,7 @@ export const educationData: Education[] = [
     status: "completed",
     gpa: "3.6 / 4",
     description: "Focus: ML, Systems; capstone on AI applications in distributed systems.",
-    coursework: ["Machine Learning", "Computer Graphics", "Cloud Computing", "Software Engineering"],
-    //achievements: ["Research Assistant"]
+    coursework: ["Machine Learning", "Computer Graphics", "Cloud Computing", "Software Engineering"]
   },
   {
     id: "2",
@@ -45,7 +29,6 @@ export const educationData: Education[] = [
     status: "completed",
     gpa: "9.6 / 10",
     description: "Graduated with Honors. Focused on web development and data engineering projects.",
-    coursework: ["Data Structures", "Algorithms", "Database Systems", "Web Development", "Computer Networks"],
-    //achievements: ["Graduated with Honors", "Computer Science Society President", "Best Project Award"]
+    coursework: ["Data Structures", "Algorithms", "Database Systems", "Web Development", "Computer Networks"]
   }
 ];

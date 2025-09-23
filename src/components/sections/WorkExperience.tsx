@@ -8,20 +8,7 @@ import { CalendarDays, MapPin, Building2, ExternalLink } from "lucide-react";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { motion } from "framer-motion";
-
-export interface WorkExperienceItem {
-  id: string;
-  company: string;
-  position: string;
-  location: string;
-  startDate: string; // YYYY-MM
-  endDate?: string;  // YYYY-MM (optional when current=true)
-  current: boolean;
-  description: string;
-  achievements: string[];
-  technologies: string[];
-  companyUrl?: string;
-}
+import { WorkExperienceItem } from "@/lib/types";
 
 interface WorkExperienceProps {
   experiences: WorkExperienceItem[];

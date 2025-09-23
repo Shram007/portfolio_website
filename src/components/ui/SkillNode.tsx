@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useState } from "react";
 
 interface SkillNodeProps {
@@ -76,9 +77,11 @@ export default function SkillNode({ name, delay = 0 }: SkillNodeProps) {
         }}
       >
         {logoPath ? (
-          <img
+          <Image
             src={logoPath}
             alt={`${name} logo`}
+            width={40}
+            height={40}
             className={`w-8 h-8 md:w-10 md:h-10 object-contain transition-all duration-300 ${
               isHovered ? "opacity-80 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" : "opacity-100"
             }`}

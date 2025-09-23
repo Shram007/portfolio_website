@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import {
-  HomeIcon, Package, Component, Activity, ScrollText, Mail, SunMoon,
+  HomeIcon, Package, Component, Activity, ScrollText, Mail,
   ChevronLeft, ChevronRight
 } from "lucide-react";
 import { Dock, DockIcon, DockItem, DockLabel } from "@/components/ui/dock";

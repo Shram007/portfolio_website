@@ -20,7 +20,7 @@ import {
   useState,
 } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
 const DOCK_HEIGHT = 64;
 const DEFAULT_MAGNIFICATION = 48;
@@ -185,6 +185,7 @@ function DockItem({ children, className }: DockItemProps) {
     >
       {Children.map(children, (child) =>
         typeof child === 'object' && child !== null && 'type' in child
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ? cloneElement(child as React.ReactElement<any>, { width: width, isHovered: isHovered })
           : child
       )}
@@ -215,7 +216,8 @@ function DockLabel({ children, className, ...rest }: DockLabelProps) {
           transition={{ duration: 0.2 }}
           className={cn(
             "absolute right-full ml-3 whitespace-nowrap",
-            "rounded-full bg-neutral-800/80 px-3 py-1 text-sm font-medium text-white shadow-lg backdrop-blur"
+            "rounded-full bg-neutral-800/80 px-3 py-1 text-sm font-medium text-white shadow-lg backdrop-blur",
+            className
           )}
           role="tooltip"
         >
