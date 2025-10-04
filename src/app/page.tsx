@@ -58,7 +58,7 @@ export default function Home() {
                 href="https://www.linkedin.com/in/shram-kadia"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
+                className="text-violet-500 hover:underline"
               >
                 LinkedIn
               </a>
@@ -69,6 +69,14 @@ export default function Home() {
                 className="text-green-500 hover:underline"
               >
                 GitHub
+              </a>
+              <a
+                href="https://drive.google.com/file/d/1oNiUt4GNt8CFVIOaLmPXxEpOHzYNLq5L/view?usp=drive_link" // Replace with the actual Google Drive link to your resume
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:underline"
+              >
+                View Resume
               </a>
             </div>
           </div>
