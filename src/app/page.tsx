@@ -21,27 +21,58 @@ export default function Home() {
         id="home"
         className="snap-start min-h-dvh mx-auto max-w-6xl px-4 md:px-6 lg:px-8 py-16 md:py-20 lg:py-24 flex flex-col justify-center"
       >
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">Hi, I’m Shram Kadia</h1>
-
-        <p className="text-base md:text-lg text-neutral-400 mb-2">
-          <Typewriter
-            words={[
-              "Software Developer",
-              "Data Enthusiast",
-              "ML Engineer",
-            ]}
-            loop={0}
-            cursor
-            cursorStyle="|"
-            typeSpeed={70}
-            deleteSpeed={40}
-            delaySpeed={1600}
+        {/* Profile Photo */}
+        <div className="flex items-center space-x-6">
+          <img
+            src="/logos/shram_profile_pic.jpeg" 
+            alt="Profile Photo"
+            className="w-64 h-64 rounded-full object-cover centered"
           />
-        </p>
 
-        <p className="text-base leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-prose">
-          Interactive, accessible web experiences.
-        </p>
+          <div>
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">Hi, I’m Shram Kadia</h1>
+
+            <p className="text-base md:text-lg text-neutral-400 mb-2">
+              <Typewriter
+                words={[
+                  "Software Developer",
+                  "Data Enthusiast",
+                  "ML Engineer",
+                ]}
+                loop={0}
+                cursor
+                cursorStyle="|"
+                typeSpeed={70}
+                deleteSpeed={40}
+                delaySpeed={1600}
+              />
+            </p>
+
+            <p className="text-base leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-prose">
+              I build software that makes a difference.
+            </p>
+
+            {/* Social Links */}
+            <div className="flex space-x-4 mt-4">
+              <a
+                href="https://www.linkedin.com/in/shram-kadia"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://github.com/Shram007"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-500 hover:underline"
+              >
+                GitHub
+              </a>
+            </div>
+          </div>
+        </div>
 
         {/* astronaut wanderer just above dock */}
         <AstronautGuide />
