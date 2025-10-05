@@ -24,7 +24,7 @@ export default function Home() {
         {/* Profile Photo */}
         <div className="flex items-center space-x-6">
           <img
-            src="public/logos/shram_profile_pic.jpeg"
+            src="logos/shram_profile_pic.jpeg"
             alt="Profile Photo"
             className="w-64 h-64 rounded-full object-cover centered"
           />
