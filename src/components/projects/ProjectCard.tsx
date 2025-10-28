@@ -16,6 +16,44 @@ export function ProjectCard({
   className,
 }: ProjectCardProps) {
   const [hovered, setHovered] = React.useState(false);
+  const [isDarkMode, setIsDarkMode] = React.useState(true);
+
+  React.useEffect(() => {
+    // Check initial theme
+    const checkTheme = () => {
+      if (typeof window !== "undefined") {
+        const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        setIsDarkMode(isDark);
+      }
+    };
+
+    checkTheme();
+
+    // Listen for theme changes
+    if (typeof window !== "undefined") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handleChange = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
+      
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+  }, []);
+
+  // Theme-aware hover colors - using inline styles for maximum reliability
+  const getHoverTextStyle = () => {
+    if (!hovered) return {};
+    return { color: isDarkMode ? '#ffffff' : '#ffffff' }; // Always white on hover
+  };
+
+  const getHoverTextMutedStyle = () => {
+    if (!hovered) return {};
+    return { color: isDarkMode ? '#e5e7eb' : '#e5e7eb' }; // Always light gray on hover
+  };
+
+  const getHoverBorderStyle = () => {
+    if (!hovered) return {};
+    return { borderColor: isDarkMode ? '#ffffff' : '#ffffff' }; // Always white borders on hover
+  };
 
   return (
     <div
@@ -50,11 +88,20 @@ export function ProjectCard({
       {/* Foreground content */}
       <div className="relative z-10 flex h-full flex-col justify-end p-5">
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold tracking-tight">
+          <h3 
+            className="text-lg font-semibold tracking-tight"
+            style={getHoverTextStyle()}
+          >
             {title}
           </h3>
           {description && (
-            <p className="text-sm text-neutral-600 dark:text-neutral-300 line-clamp-3">
+            <p 
+              className={cn(
+                "text-sm line-clamp-3",
+                !hovered && "text-neutral-600 dark:text-neutral-300"
+              )}
+              style={getHoverTextMutedStyle()}
+            >
               {description}
             </p>
           )}
@@ -63,7 +110,14 @@ export function ProjectCard({
               {stack.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-md border border-neutral-200 px-2 py-0.5 text-xs dark:border-neutral-700"
+                  className={cn(
+                    "rounded-md px-2 py-0.5 text-xs border",
+                    !hovered && "border-neutral-200 dark:border-neutral-700"
+                  )}
+                  style={{
+                    ...getHoverTextStyle(),
+                    ...getHoverBorderStyle()
+                  }}
                 >
                   {tag}
                 </span>
@@ -78,6 +132,7 @@ export function ProjectCard({
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm underline underline-offset-4 hover:no-underline"
+                  style={getHoverTextStyle()}
                   aria-label={`${title} live demo`}
                 >
                   Demo
@@ -89,6 +144,7 @@ export function ProjectCard({
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm underline underline-offset-4 hover:no-underline"
+                  style={getHoverTextStyle()}
                   aria-label={`${title} repository`}
                 >
                   Repo

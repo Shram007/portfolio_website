@@ -2,10 +2,10 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 
 // Low-cost moving starfield. Honors reduced-motion.
-function Stars({ count = 800 }) {
+function Stars({ count = 800, starColor = "#ffffff" }) {
   const pointsRef = useRef<THREE.Points>(null!);
 
   const { positions, speeds } = useMemo(() => {
@@ -50,16 +50,41 @@ function Stars({ count = 800 }) {
           args={[positions, 3]}
         />
       </bufferGeometry>
-      <pointsMaterial color="#ffffff" size={0.06} sizeAttenuation />
+      <pointsMaterial color={starColor} size={0.06} sizeAttenuation />
     </points>
   );
 }
 
 export default function Starfield() {
+  const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode
+
+  useEffect(() => {
+    // Check initial theme
+    const checkTheme = () => {
+      if (typeof window !== "undefined") {
+        const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        setIsDarkMode(isDark);
+      }
+    };
+
+    checkTheme();
+
+    // Listen for theme changes
+    if (typeof window !== "undefined") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handleChange = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
+      
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+  }, []);
+
+  const starColor = isDarkMode ? "#ffffff" : "#000000";
+
   return (
     <div className="pointer-events-none absolute inset-0 -z-10">
       <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
-        <Stars />
+        <Stars starColor={starColor} />
       </Canvas>
     </div>
   );
