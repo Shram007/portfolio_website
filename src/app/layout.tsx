@@ -6,8 +6,17 @@ import { TwentyFirstToolbar } from "@21st-extension/toolbar-next";
 import { ReactPlugin } from "@21st-extension/react";
 
 export const metadata: Metadata = {
-  title: "Shram Kadia",
-  description: "My Portfolio",
+  title: "Shram Kadia - Portfolio",
+  description: "Full Stack Developer & Software Engineer Portfolio",
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '16x16', type: 'image/x-icon' }
+    ],
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
+  metadataBase: new URL('https://your-domain.vercel.app'), // Update with your actual domain
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
-import { string } from "three/tsl";
 
 export async function POST(req: Request) {
   const data = await req.formData();

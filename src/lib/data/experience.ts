@@ -4,6 +4,22 @@ export const experiences: WorkExperienceItem[] = [
   {
     id: "1",
     company: "North Carolina State University",
+    position: "Software Engineer",
+    location: "San Jose, CA",
+    startDate: "2025-08",
+    current: true,
+    description: "Contributing to the development and application of probabilistic risk assessment methodologies using OpenPRA.org software",
+    achievements: [
+      "Migrated Python fault tree algorithms to TypeScript for nuclear safety analysis, implementing 9 operators and XML serialization.",
+      "Refactored enterprise monorepo architecture across 5+ packages, resolving type system issues and improving maintainability.",
+      "Built probabilistic risk assessment components supporting millions of safety calculations for nuclear regulatory compliance."
+    ],
+    technologies: ["Python", "TypeScript", "Docker", "Git", "React", "MongoDB", "Probabilistic Risk Assessment"],
+    companyUrl: "https://ncsu.edu",
+  },
+  {
+    id: "2",
+    company: "North Carolina State University",
     position: "Data Scientist / Research Assistant",
     location: "Raleigh, NC",
     startDate: "2024-07",
@@ -20,7 +36,7 @@ export const experiences: WorkExperienceItem[] = [
     companyUrl: "https://ncsu.edu",
   },
   {
-    id: "2",
+    id: "3",
     company: "Resilient Tech",
     position: "Software Engineer",
     location: "Vadodara, India",
@@ -39,7 +55,7 @@ export const experiences: WorkExperienceItem[] = [
     companyUrl: "https://www.resilient.tech/",
   },
   {
-    id: "3",
+    id: "4",
     company: "Sieger Creations",
     position: "Web Developer",
     location: "Vadodara, India",

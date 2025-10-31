@@ -12,12 +12,24 @@ export default function ContactSection() {
     e.preventDefault();
     setStatus("sending");
     const form = e.currentTarget;
+    const formData = new FormData(form);
+    
     try {
-      // If you made /api/contact earlier, you can POST to it here
-      await new Promise((r) => setTimeout(r, 600));
-      setStatus("sent");
-      form.reset();
-    } catch {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        body: formData,
+      });
+      
+      const result = await response.json();
+      
+      if (result.ok) {
+        setStatus("sent");
+        form.reset();
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      console.error("Contact form error:", error);
       setStatus("error");
     }
   }
@@ -53,11 +65,11 @@ export default function ContactSection() {
               <button type="submit" disabled={status === "sending"} className="rounded-md bg-neutral-900 px-4 py-2 text-white disabled:opacity-60 dark:bg-white dark:text-neutral-900">
                 {status === "sending" ? "Sending…" : "Send"}
               </button>
-              <a href="mailto:you@example.com" className="text-sm underline underline-offset-4 hover:no-underline">or email me directly</a>
+              <a href="mailto:kadiashram@gmail.com" className="text-sm underline underline-offset-4 hover:no-underline">or email me directly</a>
             </div>
             <p role="status" aria-live="polite" className="text-sm text-neutral-600 dark:text-neutral-400">
-              {status === "sent" && "Thanks! Your message was queued (demo)."}
-              {status === "error" && "Something went wrong. Please try again."}
+              {status === "sent" && "Thanks! Your message has been sent successfully."}
+              {status === "error" && "Something went wrong. Please try again or email me directly."}
             </p>
           </form>
         </div>
