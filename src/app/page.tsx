@@ -71,7 +71,7 @@ export default function Home() {
                 GitHub
               </a>
               <a
-                href="https://drive.google.com/file/d/1oNiUt4GNt8CFVIOaLmPXxEpOHzYNLq5L/view?usp=drive_link" // Replace with the actual Google Drive link to your resume
+                href="https://drive.google.com/file/d/1SXvlEshkiYUAw8GlIQxIKWQWz-aR-AcD/view?usp=sharing" // Replace with the actual Google Drive link to your resume
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:underline"
