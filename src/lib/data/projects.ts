@@ -4,11 +4,11 @@ export type { Project };
 
 const rawProjects: Omit<Project, "id">[] = [
   {
-    title: "Reignite: AI Partnership Revival Agent",
-    description: "Revive dormant creator partnerships with KPI-aware, HubSpot-ready matching.",
-    stack: ["Python", "React", "TypeScript", "scikit-learn (TF-IDF & cosine similarity)", "pandas", "NumPy", "HubSpot API (roadmap integration)"],
-    demoUrl: "https://spark-partner-ai.lovable.app/",
-    repoUrl: "https://github.com/Shram007/spark-partner-ai.git",
+    title: "Restaurant Voice Hub",
+    description: "Full-stack AI voice ordering system featuring a React frontend and FastAPI backend, integrated with ElevenLabs for realistic voice interactions. Scalable cloud architecture using Vercel, Render, and Supabase.",
+    stack: ["React", "TypeScript", "FastAPI", "Python", "ElevenLabs API", "Supabase", "Vercel", "Render"],
+    demoUrl: "https://restaurant-voice-hub.vercel.app/",
+    repoUrl: "https://github.com/Shram007/restaurant-voice-hub.git",
     effect: { bgClass: "bg-neutral-900", animationSpeed: 3, colors: [[125,211,252]], dotSize: 2 }
   },
   {
