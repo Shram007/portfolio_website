@@ -49,9 +49,13 @@ export default function ContactSection() {
 
         <div className="max-w-lg mx-auto">
           <form onSubmit={onSubmit} className="space-y-4" aria-label="Contact form">
+            <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+              <label htmlFor="website">Leave this field empty</label>
+              <input id="website" name="website" tabIndex={-1} autoComplete="off" />
+            </div>
             <div>
               <label htmlFor="name" className="mb-1 block text-sm font-medium">Name</label>
-              <input id="name" name="name" required className="w-full rounded-md border border-neutral-300 bg-transparent p-3 dark:border-neutral-700" />
+              <input id="name" name="name" required maxLength={100} className="w-full rounded-md border border-neutral-300 bg-transparent p-3 dark:border-neutral-700" />
             </div>
             <div>
               <label htmlFor="email" className="mb-1 block text-sm font-medium">Email</label>
@@ -59,7 +63,7 @@ export default function ContactSection() {
             </div>
             <div>
               <label htmlFor="message" className="mb-1 block text-sm font-medium">Message</label>
-              <textarea id="message" name="message" rows={6} required className="w-full rounded-md border border-neutral-300 bg-transparent p-3 dark:border-neutral-700" />
+              <textarea id="message" name="message" rows={6} required maxLength={5000} className="w-full rounded-md border border-neutral-300 bg-transparent p-3 dark:border-neutral-700" />
             </div>
             <div className="flex items-center gap-3">
               <button type="submit" disabled={status === "sending"} className="rounded-md bg-neutral-900 px-4 py-2 text-white disabled:opacity-60 dark:bg-white dark:text-neutral-900">
