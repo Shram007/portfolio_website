@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -24,6 +24,9 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({
   compact = false
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  // "Now" is only known on the client; reading it during render mismatches the prerendered HTML.
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => setNow(new Date()), []);
   const formatDate = (dateString: string): string => {
     if (!dateString) return "";
     const [y, m] = dateString.split("-").map(Number);
@@ -35,8 +38,9 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({
   };
 
   const calculateDuration = (startDate: string, endDate: string | undefined, current: boolean): string => {
+    if (current && !now) return "";
     const start = new Date(startDate + "-01");
-    const end = current ? new Date() : new Date((endDate ?? startDate) + "-01");
+    const end = current && now ? now : new Date((endDate ?? startDate) + "-01");
     const diffTime = Math.abs(end.getTime() - start.getTime());
     const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30));
     

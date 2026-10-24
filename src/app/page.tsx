@@ -8,6 +8,7 @@ import SkillsSection from "@/components/sections/SkillsSection";
 import ContactSection from "@/components/sections/ContactSection";
 import Starfield from "@/components/visuals/Starfield";
 import AstronautGuide from "@/components/visuals/AstronautGuide";
+import Image from "next/image";
 import { Typewriter } from "react-simple-typewriter";
 
 export default function Home() {
@@ -22,11 +23,15 @@ export default function Home() {
         className="snap-start min-h-dvh mx-auto max-w-6xl px-4 md:px-6 lg:px-8 py-16 md:py-20 lg:py-24 flex flex-col justify-center"
       >
         {/* Profile Photo */}
-        <div className="flex items-center space-x-6">
-          <img
-            src="logos/shram_profile_pic.jpeg"
-            alt="Profile Photo"
-            className="w-64 h-64 rounded-full object-cover centered"
+        <div className="flex flex-col items-center gap-6 text-center md:flex-row md:text-left">
+          <Image
+            src="/logos/shram_profile_pic.jpeg"
+            alt="Portrait of Shram Kadia"
+            width={256}
+            height={256}
+            sizes="(max-width: 768px) 192px, 256px"
+            priority
+            className="h-48 w-48 shrink-0 rounded-full object-cover md:h-64 md:w-64"
           />
 
           <div>
@@ -53,7 +58,7 @@ export default function Home() {
             </p>
 
             {/* Social Links */}
-            <div className="flex space-x-4 mt-4">
+            <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start">
               <a
                 href="https://www.linkedin.com/in/shram-kadia"
                 target="_blank"

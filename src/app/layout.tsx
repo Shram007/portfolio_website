@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     shortcut: '/icon.svg',
     apple: '/icon.svg',
   },
-  metadataBase: new URL('https://your-domain.vercel.app'), // Update with your actual domain
+  metadataBase: new URL('https://shram-kadia.vercel.app'),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
