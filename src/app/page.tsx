@@ -6,7 +6,7 @@ import { experiences } from "@/lib/data/experience";
 import EducationSection from "@/components/sections/EducationSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import ContactSection from "@/components/sections/ContactSection";
-import Starfield from "@/components/visuals/Starfield";
+import LazyStarfield from "@/components/visuals/LazyStarfield";
 import AstronautGuide from "@/components/visuals/AstronautGuide";
 import Image from "next/image";
 import { Typewriter } from "react-simple-typewriter";
@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <main className="relative h-dvh snap-y snap-mandatory overflow-y-auto">
       {/* moving stars background */}
-      <Starfield />
+      <LazyStarfield />
 
       {/* HERO */}
       <section

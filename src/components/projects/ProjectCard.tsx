@@ -2,7 +2,13 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
+import dynamic from "next/dynamic";
+
+// WebGL effect only needed on hover: keep three.js out of the initial bundle.
+const CanvasRevealEffect = dynamic(
+  () => import("@/components/ui/canvas-reveal-effect").then((m) => m.CanvasRevealEffect),
+  { ssr: false }
+);
 import { cn } from "../../lib/utils";
 import { ProjectCardProps } from "@/lib/types";
 
