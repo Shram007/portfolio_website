@@ -2,12 +2,21 @@ import "@/app/globals.css";
 import type { Metadata } from "next";
 import { AppleStyleDock } from "@/components/site/AppleStyleDock";
 import { ThemeProvider } from "next-themes";
-import { TwentyFirstToolbar } from "@21st-extension/toolbar-next";
-import { ReactPlugin } from "@21st-extension/react";
+import DevToolbar from "@/components/site/DevToolbar";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Shram Kadia - Portfolio",
-  description: "Full Stack Developer & Software Engineer Portfolio",
+  title: { default: `${SITE_NAME} - Portfolio`, template: `%s | ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} - Portfolio`,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: { card: "summary_large_image", title: `${SITE_NAME} - Portfolio`, description: SITE_DESCRIPTION },
   icons: {
     icon: [
       { url: '/icon.svg', type: 'image/svg+xml' },
@@ -16,7 +25,7 @@ export const metadata: Metadata = {
     shortcut: '/icon.svg',
     apple: '/icon.svg',
   },
-  metadataBase: new URL('https://shram-kadia.vercel.app'),
+  metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -32,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </ThemeProvider>
           <AppleStyleDock />
-          <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} />
+          <DevToolbar />
       </body>
     </html>
   );

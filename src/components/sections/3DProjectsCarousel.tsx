@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { memo, useMemo, useState } from "react";
 import { AnimatePresence, motion, useAnimation, useMotionValue, useTransform } from "framer-motion";
 import { projects } from "@/lib/data/projects";
@@ -141,12 +142,14 @@ export default function ThreeDProjectsCarousel() {
               </button>
               
               <div className="flex flex-col md:flex-row h-full">
-                <div className="md:w-1/2 h-64 md:h-full">
+                <div className="relative md:w-1/2 h-64 md:h-full">
                   {carouselProjects[activeIndex].image ? (
-                    <img
+                    <Image
                       src={carouselProjects[activeIndex].image}
                       alt={carouselProjects[activeIndex].title}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 448px"
+                      className="object-cover"
                     />
                   ) : (
                     <div className="w-full h-full bg-neutral-800 flex items-center justify-center">

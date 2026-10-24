@@ -137,9 +137,9 @@ export function ProjectCard({
                   href={demoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm underline underline-offset-4 hover:no-underline"
+                  className="inline-flex min-h-11 items-center px-1 text-sm underline underline-offset-4 hover:no-underline"
                   style={getHoverTextStyle()}
-                  aria-label={`${title} live demo`}
+                  aria-label={`Demo: ${title} (opens in new tab)`}
                 >
                   Demo
                 </a>
@@ -149,9 +149,9 @@ export function ProjectCard({
                   href={repoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm underline underline-offset-4 hover:no-underline"
+                  className="inline-flex min-h-11 items-center px-1 text-sm underline underline-offset-4 hover:no-underline"
                   style={getHoverTextStyle()}
-                  aria-label={`${title} repository`}
+                  aria-label={`Repo: ${title} source code (opens in new tab)`}
                 >
                   Repo
                 </a>

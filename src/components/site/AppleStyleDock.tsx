@@ -28,10 +28,11 @@ export function AppleStyleDock() {
       <div className="flex items-center">
         <button 
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="pointer-events-auto h-8 w-8 flex items-center justify-center rounded-full bg-background/30 backdrop-blur-sm hover:bg-background/40 transition-colors"
-          aria-label={isCollapsed ? "Expand dock" : "Collapse dock"}
+          className="pointer-events-auto h-11 w-11 flex items-center justify-center rounded-full bg-background/30 backdrop-blur-sm hover:bg-background/40 transition-colors"
+          aria-label={isCollapsed ? "Expand navigation" : "Collapse navigation"}
+          aria-expanded={!isCollapsed}
         >
-          {isCollapsed ? <ChevronLeft className="h-40 w-40" /> : <ChevronRight className="h-4 w-4" />}
+          {isCollapsed ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
         </button>
         <AnimatePresence initial={false}>
           {!isCollapsed && (
