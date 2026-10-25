@@ -9,18 +9,19 @@ import ContactSection from "@/components/sections/ContactSection";
 import LazyStarfield from "@/components/visuals/LazyStarfield";
 import AstronautGuide from "@/components/visuals/AstronautGuide";
 import Image from "next/image";
+import { RESUME_URL } from "@/lib/site";
 import { Typewriter } from "react-simple-typewriter";
 
 export default function Home() {
   return (
-    <main className="relative h-dvh snap-y snap-mandatory overflow-y-auto">
+    <main id="main" className="relative">
       {/* moving stars background */}
       <LazyStarfield />
 
       {/* HERO */}
       <section
         id="home"
-        className="snap-start min-h-dvh mx-auto max-w-6xl px-4 md:px-6 lg:px-8 py-16 md:py-20 lg:py-24 flex flex-col justify-center"
+        className="relative mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-4 pb-24 pt-28 md:px-6 lg:px-8"
       >
         {/* Profile Photo */}
         <div className="flex flex-col items-center gap-6 text-center md:flex-row md:text-left">
@@ -76,7 +77,7 @@ export default function Home() {
                 GitHub
               </a>
               <a
-                href="https://drive.google.com/file/d/1SXvlEshkiYUAw8GlIQxIKWQWz-aR-AcD/view?usp=sharing" // Replace with the actual Google Drive link to your resume
+                href={RESUME_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:underline"
@@ -92,27 +93,27 @@ export default function Home() {
       </section>
 
       {/* PROJECTS */}
-      <section id="projects" className="snap-start min-h-dvh">
+      <section id="projects" className="scroll-mt-16">
         <ProjectsSection />
       </section>
 
       {/* EXPERIENCE */}
-      <section id="experience" className="snap-start min-h-dvh">
+      <section id="experience" className="scroll-mt-16">
         <WorkExperience experiences={experiences} />
       </section>
 
       {/* EDUCATION */}
-      <section id="education" className="snap-start min-h-dvh">
+      <section id="education" className="scroll-mt-16">
         <EducationSection />
       </section>
 
       {/* SKILLS */}
-      <section id="skills" className="snap-start min-h-dvh">
+      <section id="skills" className="scroll-mt-16">
         <SkillsSection />
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="snap-start min-h-dvh">
+      <section id="contact" className="scroll-mt-16">
         <ContactSection />
       </section>
     </main>

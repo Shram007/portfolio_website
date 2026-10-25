@@ -27,6 +27,14 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Content now lives on one page; keep old section URLs working.
+  async redirects() {
+    return ["projects", "experience", "education", "skills", "contact"].map((id) => ({
+      source: `/${id}`,
+      destination: `/#${id}`,
+      permanent: true,
+    }));
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

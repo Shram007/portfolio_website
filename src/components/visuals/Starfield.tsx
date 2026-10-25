@@ -2,7 +2,8 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useRef } from "react";
+import { useTheme } from "next-themes";
 
 // Low-cost moving starfield. Honors reduced-motion.
 function Stars({ count = 800, starColor = "#ffffff" }) {
@@ -56,33 +57,13 @@ function Stars({ count = 800, starColor = "#ffffff" }) {
 }
 
 export default function Starfield() {
-  const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode
-
-  useEffect(() => {
-    // Check initial theme
-    const checkTheme = () => {
-      if (typeof window !== "undefined") {
-        const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        setIsDarkMode(isDark);
-      }
-    };
-
-    checkTheme();
-
-    // Listen for theme changes
-    if (typeof window !== "undefined") {
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      const handleChange = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
-      
-      mediaQuery.addEventListener("change", handleChange);
-      return () => mediaQuery.removeEventListener("change", handleChange);
-    }
-  }, []);
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme !== "light"; // dark until the theme resolves
 
   const starColor = isDarkMode ? "#ffffff" : "#000000";
 
   return (
-    <div className="pointer-events-none absolute inset-0 -z-10">
+    <div className="pointer-events-none fixed inset-0 -z-10">
       <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
         <Stars starColor={starColor} />
       </Canvas>

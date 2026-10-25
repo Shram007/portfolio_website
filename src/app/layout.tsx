@@ -1,6 +1,6 @@
 import "@/app/globals.css";
 import type { Metadata } from "next";
-import { AppleStyleDock } from "@/components/site/AppleStyleDock";
+import { SiteNav } from "@/components/site/SiteNav";
 import { ThemeProvider } from "next-themes";
 import DevToolbar from "@/components/site/DevToolbar";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
@@ -38,9 +38,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           enableSystem
           disableTransitionOnChange
           >
+            <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-background focus:px-4 focus:py-2">Skip to content</a>
+            <SiteNav />
             {children}
           </ThemeProvider>
-          <AppleStyleDock />
           <DevToolbar />
       </body>
     </html>

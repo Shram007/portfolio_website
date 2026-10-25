@@ -1,15 +1,21 @@
 @import "tailwindcss";
 
+/* next-themes toggles the `dark` class; make Tailwind's dark: variant follow it. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
 }
 
 body {
@@ -18,7 +24,15 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* leave room for the fixed top nav when jumping to #sections */
+  scroll-padding-top: 4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 
 .image-render-pixel {
   image-rendering: pixelated;
