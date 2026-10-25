@@ -14,6 +14,7 @@ export const experiences: WorkExperienceItem[] = [
       "Contributing across the full stack (retrieval/RAG, FastAPI, LLM orchestration, React) as one of 3 engineers on a founding-stage team.",
     ],
     technologies: ["RAG", "FastAPI", "LLM orchestration", "React"],
+    highlights: [{ value: "3", label: "engineers on the founding team" }, { value: "Beta", label: "with practicing clinicians" }],
   },
   {
     id: "2",
@@ -30,6 +31,7 @@ export const experiences: WorkExperienceItem[] = [
       "Shipped quality gates (Jest and Cargo suites, clippy -D warnings, XML schema validation) into CI release workflows, carrying both packages through multi-round PR review with CI green.",
     ],
     technologies: ["Rust", "Cargo", "Open-PSA MEF (XML)", "Jest", "Clippy", "CI/CD"],
+    highlights: [{ value: "7", label: "crates in the Cargo workspace" }, { value: "CI", label: "quality gates, green" }],
     companyUrl: "https://openpra.org",
   },
   {
@@ -47,6 +49,7 @@ export const experiences: WorkExperienceItem[] = [
       "Saved the department 30 hours/week by replacing manual lookup with instant querying over unstructured research data, instrumented with distributed tracing and structured logs.",
     ],
     technologies: ["LangChain", "FAISS", "RAG", "FastAPI", "GCP", "Redis", "Distributed tracing"],
+    highlights: [{ value: "60%", label: "less manual extraction" }, { value: "85%", label: "extraction accuracy" }, { value: "30h", label: "saved per week" }],
     companyUrl: "https://ncsu.edu",
   },
   {
@@ -63,6 +66,7 @@ export const experiences: WorkExperienceItem[] = [
       "Onboarded 2 enterprise clients end to end with custom module configuration, cutting production downtime 30% and lifting CSAT 12%.",
     ],
     technologies: ["ERPNext", "QR payments", "GST compliance"],
+    highlights: [{ value: "30%", label: "less production downtime" }, { value: "12%", label: "CSAT lift" }, { value: "2", label: "enterprise clients onboarded" }],
     companyUrl: "https://www.resilient.tech/",
   },
 ];

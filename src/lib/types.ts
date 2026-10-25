@@ -48,6 +48,8 @@ export interface WorkExperienceItem {
   description: string;
   achievements: string[];
   technologies: string[];
+  /** Big-number tiles shown above the bullets (values come from the bullets themselves). */
+  highlights?: { value: string; label: string }[];
   companyUrl?: string;
 }
 

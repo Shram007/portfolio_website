@@ -81,6 +81,42 @@ test("projects grid expands and the 3D view loads on demand", async ({ page }) =
   await expect(dialog).toBeHidden();
 });
 
+test("project card text expands on click and collapses again", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  const card = page.locator("#project-list > li").nth(2);
+  const toggle = card.getByRole("button", { name: /^Travel-planning/ });
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await expect(card.getByText("DeepSeek-R1", { exact: true })).toBeVisible();
+  await card.getByRole("button", { name: /show fewer/i }).click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+});
+
+test("experience: hover, keyboard and click focus a role", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  const tabs = page.getByRole("tab");
+  const panel = page.getByRole("tabpanel");
+  await expect(tabs).toHaveCount(4);
+  await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
+  await expect(panel).toContainText("Orris Care");
+
+  await tabs.nth(2).hover();
+  await expect(tabs.nth(2)).toHaveAttribute("aria-selected", "true");
+  await expect(panel).toContainText("North Carolina State University");
+  await expect(panel.getByRole("list", { name: "Highlights" })).toContainText("60%");
+
+  await tabs.nth(2).focus();
+  await page.keyboard.press("ArrowDown");
+  await expect(tabs.nth(3)).toHaveAttribute("aria-selected", "true");
+  await expect(panel).toContainText("Resilient Tech");
+
+  await tabs.nth(1).click();
+  await expect(panel).toContainText("OpenPRA");
+});
+
 test("contact form shows success and error states (API mocked)", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
