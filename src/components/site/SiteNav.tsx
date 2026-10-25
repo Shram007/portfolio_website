@@ -19,7 +19,8 @@ function SearchButton() {
       aria-keyshortcuts="Control+K Meta+K"
     >
       <Search className="h-4 w-4" aria-hidden />
-      <kbd className="hidden rounded border border-neutral-500/40 px-1.5 py-0.5 text-xs text-neutral-600 dark:text-neutral-400 lg:block">Ctrl K</kbd>
+      {/* hint drawn with CSS so the button has no visible text that could disagree with its accessible name */}
+      <span aria-hidden className="hidden rounded border border-neutral-500/40 px-1.5 py-0.5 font-mono text-xs text-neutral-600 after:content-['Ctrl_K'] lg:block dark:text-neutral-400" />
     </button>
   );
 }
