@@ -65,7 +65,6 @@ export default function ProjectsSection() {
                     stack={project.stack}
                     repoUrl={project.repoUrl}
                     demoUrl={project.demoUrl}
-                    image={project.image}
                     effect={project.effect}
                   />
                 </li>

@@ -23,7 +23,6 @@ export interface ProjectCardProps {
   stack?: string[];
   repoUrl?: string;
   demoUrl?: string;
-  image?: string;
   effect?: {
     bgClass?: string;
     animationSpeed?: number;
