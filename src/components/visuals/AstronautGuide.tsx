@@ -49,7 +49,7 @@ export default function AstronautGuide() {
   return (
     <div
       ref={containerRef}
-      className="pointer-events-none absolute bottom-24 left-0 right-0 z-40"
+      className="pointer-events-none absolute bottom-3 left-0 right-0 z-40 sm:bottom-24"
       aria-hidden
     >
       <motion.div
@@ -72,7 +72,7 @@ export default function AstronautGuide() {
           initial={{ y: 0, rotate: -4 }}
           animate={prefersReduced ? {} : { y: [0, -6, 0] }}
           transition={prefersReduced ? {} : { repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="ml-2 rounded-sm border border-neutral-700 bg-neutral-900 px-2 py-1 text-xs text-white shadow dark:border-neutral-600"
+          className="ml-2 hidden rounded-sm sm:block border border-neutral-700 bg-neutral-900 px-2 py-1 text-xs text-white shadow dark:border-neutral-600"
           style={{ transformOrigin: "left bottom" }}
         >
           ↓ scroll down
