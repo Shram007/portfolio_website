@@ -24,7 +24,7 @@ const rawProjects: Omit<Project, "id">[] = [
     description: "Travel-planning agent that switches at runtime across 4 LLMs (Gemini 2.5 Pro, DeepSeek-R1, Llama 3.3, Qwen 2.5) behind one OpenAI-compatible proxy with per-request cost tracking. A ReAct loop dispatches tool calls through a unified router, with parallel Exa neural search for destinations, hotels and flights.",
     stack: ["ReAct agents", "Gemini 2.5 Pro", "DeepSeek-R1", "Llama 3.3", "Qwen 2.5", "Exa"],
     repoUrl: "https://github.com/Shram007/Travel-Agent",
-    effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[56,189,248]], dotSize: 2 }
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[251,191,36]], dotSize: 2 }
   },
   {
     title: "Vital View: Your AI Copilot for Doctors",
@@ -32,7 +32,7 @@ const rawProjects: Omit<Project, "id">[] = [
     stack: ["React", "Node.js", "AI/ML", "Voice Recognition", "Healthcare APIs"],
     demoUrl: "https://drcomd-frontend.onrender.com/",
     repoUrl: "https://github.com/Shram007/VitalView.git",
-    effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[251,191,36]], dotSize: 2 }
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[248,113,113]], dotSize: 2 }
   },
   {
     title: "AI QA Engineer",
@@ -62,19 +62,22 @@ const rawProjects: Omit<Project, "id">[] = [
     title: "Redesigning Residual Connections",
     description: "Benchmarked ResNet, VGG-16, and AlexNet variants on CIFAR-10, improving gradient stability by 15% and training time by 20%.",
     stack: ["PyTorch", "Matplotlib"],
-    image: "/logos/residual.jpeg"
+    image: "/logos/residual.jpeg",
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[251,146,60]], dotSize: 2 }
   },
   {
     title: "Traffic Sign Detection",
     description: "CNN model with 95% accuracy on 5,000+ signs and a GUI for real-time classification on CPU.",
     stack: ["TensorFlow", "CNN", "Tkinter/PyQt"],
-    image: "/logos/trafficsigns.jpeg"
+    image: "/logos/trafficsigns.jpeg",
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 3, colors: [[163,230,53]], dotSize: 2 }
   },
   {
     title: "Movie Recommendation System",
     description: "Matrix factorization model with temporal awareness, improving recommendation precision by 18%.",
     stack: ["Python", "NumPy", "SciPy"],
-    image: "/logos/recsys.jpeg"
+    image: "/logos/recsys.jpeg",
+    effect: { bgClass: "bg-slate-900", animationSpeed: 3.5, colors: [[226,232,240]], dotSize: 2 }
   }
 ];
 
