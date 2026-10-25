@@ -28,7 +28,7 @@ export const educationData: Education[] = [
     endYear: "2023",
     status: "completed",
     gpa: "9.6 / 10",
-    description: "Graduated with Honors. Focused on web development and data engineering projects.",
+    description: "Focused on web development and data engineering projects.",
     coursework: ["Data Structures", "Algorithms", "Database Systems", "Web Development", "Computer Networks"]
   }
 ];
