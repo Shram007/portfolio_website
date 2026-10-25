@@ -15,7 +15,7 @@ function SearchButton() {
       type="button"
       onClick={() => window.dispatchEvent(new Event(OPEN_PALETTE_EVENT))}
       className="inline-flex h-11 items-center gap-2 rounded-md px-3 text-sm transition-colors hover:bg-neutral-500/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
-      aria-label="Open command palette"
+      aria-label="Open command palette (Ctrl K)"
       aria-keyshortcuts="Control+K Meta+K"
     >
       <Search className="h-4 w-4" aria-hidden />
