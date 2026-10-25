@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { motion } from "framer-motion";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 export default function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -69,7 +70,7 @@ export default function ContactSection() {
               <button type="submit" disabled={status === "sending"} className="rounded-md bg-neutral-900 px-4 py-2 text-white disabled:opacity-60 dark:bg-white dark:text-neutral-900">
                 {status === "sending" ? "Sending…" : "Send"}
               </button>
-              <a href="mailto:kadiashram@gmail.com" className="text-sm underline underline-offset-4 hover:no-underline">or email me directly</a>
+              <a href={`mailto:${CONTACT_EMAIL}`} className="text-sm underline underline-offset-4 hover:no-underline">or email me directly</a>
             </div>
             <p role="status" aria-live="polite" className="text-sm text-neutral-600 dark:text-neutral-400">
               {status === "sent" && "Thanks! Your message has been sent successfully."}

@@ -2,6 +2,7 @@ import "@/app/globals.css";
 import type { Metadata } from "next";
 import { SiteNav } from "@/components/site/SiteNav";
 import { ThemeProvider } from "next-themes";
+import CommandPalette from "@/components/site/CommandPalette";
 import DevToolbar from "@/components/site/DevToolbar";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           >
             <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-background focus:px-4 focus:py-2">Skip to content</a>
             <SiteNav />
+            <CommandPalette />
             {children}
           </ThemeProvider>
           <DevToolbar />

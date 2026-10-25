@@ -3,19 +3,22 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-// three.js is heavy: load it after first paint, when the browser is idle.
+// three.js is heavy: load it after first interaction, or a few seconds in, so it never competes with first paint.
 const Starfield = dynamic(() => import("@/components/visuals/Starfield"), { ssr: false });
+
+const EVENTS = ["pointermove", "pointerdown", "scroll", "keydown", "touchstart"] as const;
 
 export default function LazyStarfield() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(() => setReady(true), { timeout: 2500 });
-      return () => window.cancelIdleCallback(id);
-    }
-    const id = setTimeout(() => setReady(true), 1500);
-    return () => clearTimeout(id);
+    const start = () => setReady(true);
+    const timer = setTimeout(start, 3500);
+    EVENTS.forEach((e) => window.addEventListener(e, start, { once: true, passive: true }));
+    return () => {
+      clearTimeout(timer);
+      EVENTS.forEach((e) => window.removeEventListener(e, start));
+    };
   }, []);
 
   return ready ? <Starfield /> : null;

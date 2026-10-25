@@ -14,3 +14,5 @@ export const NAV_LINKS = [
   { label: "Skills", id: "skills" },
   { label: "Contact", id: "contact" },
 ] as const;
+
+export const CONTACT_EMAIL = "kadiashram@gmail.com";

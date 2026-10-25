@@ -1,12 +1,28 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, Moon, Sun, X } from "lucide-react";
+import { Menu, Moon, Search, Sun, X } from "lucide-react";
+import { OPEN_PALETTE_EVENT } from "@/components/site/CommandPalette";
 import { useTheme } from "next-themes";
 import { NAV_LINKS, RESUME_URL, SITE_NAME } from "@/lib/site";
 
 const linkClass =
   "inline-flex min-h-11 items-center rounded-md px-3 text-sm font-medium transition-colors hover:bg-neutral-500/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500";
+
+function SearchButton() {
+  return (
+    <button
+      type="button"
+      onClick={() => window.dispatchEvent(new Event(OPEN_PALETTE_EVENT))}
+      className="inline-flex h-11 items-center gap-2 rounded-md px-3 text-sm transition-colors hover:bg-neutral-500/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+      aria-label="Open command palette"
+      aria-keyshortcuts="Control+K Meta+K"
+    >
+      <Search className="h-4 w-4" aria-hidden />
+      <kbd className="hidden rounded border border-neutral-500/40 px-1.5 py-0.5 text-xs text-neutral-500 lg:block">Ctrl K</kbd>
+    </button>
+  );
+}
 
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -80,10 +96,12 @@ export function SiteNav() {
           <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className={`${linkClass} border border-neutral-500/40`}>
             Resume
           </a>
+          <SearchButton />
           <ThemeToggle />
         </div>
 
         <div className="flex items-center gap-1 md:hidden">
+          <SearchButton />
           <ThemeToggle />
           <button
             type="button"

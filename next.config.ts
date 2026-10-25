@@ -7,8 +7,7 @@ const csp = [
   // Next.js injects inline bootstrap scripts; dev also needs eval for React refresh.
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  // Skill icons are loaded from these CDNs (self-hosting them would let this shrink to 'self').
-  "img-src 'self' data: blob: https://raw.githubusercontent.com https://www.vectorlogo.zone",
+  "img-src 'self' data: blob:",
   "font-src 'self' data:",
   `connect-src 'self'${isDev ? " ws: http://localhost:*" : ""}`,
   "object-src 'none'",
