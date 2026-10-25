@@ -12,7 +12,7 @@ export const educationData: Education[] = [
     endMonth: "May",
     endYear: "2025",
     status: "completed",
-    gpa: "3.6 / 4",
+    gpa: "3.63 / 4.0",
     description: "Focus: ML, Systems; capstone on AI applications in distributed systems.",
     coursework: ["Machine Learning", "Computer Graphics", "Cloud Computing", "Software Engineering"]
   },

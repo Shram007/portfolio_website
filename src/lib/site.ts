@@ -10,9 +10,9 @@ export const RESUME_URL =
 export const NAV_LINKS = [
   { label: "Projects", id: "projects" },
   { label: "Experience", id: "experience" },
-  { label: "Education", id: "education" },
+  { label: "About", id: "about" },
   { label: "Skills", id: "skills" },
   { label: "Contact", id: "contact" },
 ] as const;
 
-export const CONTACT_EMAIL = "kadiashram@gmail.com";
+export const CONTACT_EMAIL = "shram.kadia214@gmail.com";

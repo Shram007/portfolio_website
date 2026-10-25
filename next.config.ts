@@ -28,8 +28,14 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // Content now lives on one page; keep old section URLs working.
   async redirects() {
-    return ["projects", "experience", "education", "skills", "contact"].map((id) => ({
-      source: `/${id}`,
+    return [
+      ["projects", "projects"],
+      ["experience", "experience"],
+      ["education", "about"],
+      ["skills", "skills"],
+      ["contact", "contact"],
+    ].map(([route, id]) => ({
+      source: `/${route}`,
       destination: `/#${id}`,
       permanent: true,
     }));

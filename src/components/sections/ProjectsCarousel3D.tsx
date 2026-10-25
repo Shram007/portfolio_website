@@ -215,7 +215,7 @@ export default function ProjectsCarousel3D() {
           <ChevronRight className="h-5 w-5" />
         </button>
       </div>
-      <p className="mt-2 text-center text-xs text-neutral-500">Drag, use the arrows, or press ← → to rotate. Click a card for details.</p>
+      <p className="mt-2 text-center text-xs text-neutral-600 dark:text-neutral-400">Drag, use the arrows, or press ← → to rotate. Click a card for details.</p>
 
       {open !== null && <Detail index={open} onClose={() => setOpen(null)} />}
     </div>

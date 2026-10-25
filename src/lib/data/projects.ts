@@ -4,12 +4,27 @@ export type { Project };
 
 const rawProjects: Omit<Project, "id">[] = [
   {
+    title: "ClinicFlow",
+    description: "Turns a doctor's voice recording into a structured SOAP note with audio readback through a three-stage STT, LLM and TTS pipeline. Enforces JSON-only output across 6 clinical keys with a raw-transcript fallback, and ships prompt versioning plus an LLM-as-judge eval pipeline that scores clinical accuracy per release.",
+    stack: ["STT", "LLM", "TTS", "LLM-as-judge evals", "Docker", "CI/CD"],
+    demoUrl: "https://clinicflow-skeleton.vercel.app/",
+    repoUrl: "https://github.com/Shram007/clinicflow-skeleton",
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 3, colors: [[167,139,250]], dotSize: 2 }
+  },
+  {
     title: "Restaurant Voice Hub",
-    description: "Full-stack AI voice ordering system featuring a React frontend and FastAPI backend, integrated with ElevenLabs for realistic voice interactions. Scalable cloud architecture using Vercel, Render, and Supabase.",
+    description: "Voice assistant that takes restaurant orders end to end, with a 5-tool agentic orchestration layer inside ElevenLabs Conversational AI and no human handoff. A real-time CSV knowledge-injection pipeline syncs live Supabase Postgres inventory to the agent, cutting menu updates from hours to seconds with no redeploy.",
     stack: ["React", "TypeScript", "FastAPI", "Python", "ElevenLabs API", "Supabase", "Vercel", "Render"],
     demoUrl: "https://restaurant-voice-hub.vercel.app/",
-    repoUrl: "https://github.com/Shram007/restaurant-voice-hub.git",
+    repoUrl: "https://github.com/Shram007/restaurant-voice-hub",
     effect: { bgClass: "bg-neutral-900", animationSpeed: 3, colors: [[125,211,252]], dotSize: 2 }
+  },
+  {
+    title: "Travel Agent Atlas",
+    description: "Travel-planning agent that switches at runtime across 4 LLMs (Gemini 2.5 Pro, DeepSeek-R1, Llama 3.3, Qwen 2.5) behind one OpenAI-compatible proxy with per-request cost tracking. A ReAct loop dispatches tool calls through a unified router, with parallel Exa neural search for destinations, hotels and flights.",
+    stack: ["ReAct agents", "Gemini 2.5 Pro", "DeepSeek-R1", "Llama 3.3", "Qwen 2.5", "Exa"],
+    repoUrl: "https://github.com/Shram007/Travel-Agent",
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[56,189,248]], dotSize: 2 }
   },
   {
     title: "Vital View: Your AI Copilot for Doctors",

@@ -24,10 +24,10 @@ export default function Hero() {
       <div>
         <h1 className="mb-3 text-4xl font-bold md:text-6xl">Hi, I’m Shram Kadia</h1>
         <p className="mb-2 text-lg font-medium text-violet-600 dark:text-violet-400 md:text-xl">
-          Software engineer · MS CS, NC State
+          Software Engineer at Orris Care · MS CS, NC State
         </p>
         <p className="max-w-prose text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">
-          I build AI-powered software: RAG pipelines, voice agents and tools that make complex work simple.
+          I build AI products end to end: RAG pipelines, LLM agents and voice apps, from retrieval to React.
         </p>
 
         <div className="mt-6 flex flex-wrap justify-center gap-3 md:justify-start">

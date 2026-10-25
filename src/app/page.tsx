@@ -1,7 +1,7 @@
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import WorkExperience from "@/components/sections/WorkExperience";
 import { experiences } from "@/lib/data/experience";
-import EducationSection from "@/components/sections/EducationSection";
+import AboutSection from "@/components/sections/AboutSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import ContactSection from "@/components/sections/ContactSection";
 import LazyStarfield from "@/components/visuals/LazyStarfield";
@@ -35,9 +35,9 @@ export default function Home() {
         <WorkExperience experiences={experiences} />
       </section>
 
-      {/* EDUCATION */}
-      <section id="education" className="scroll-mt-16">
-        <EducationSection />
+      {/* ABOUT + EDUCATION */}
+      <section id="about" className="scroll-mt-16">
+        <AboutSection />
       </section>
 
       {/* SKILLS */}

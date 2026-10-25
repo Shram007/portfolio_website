@@ -63,7 +63,7 @@ export default function Starfield() {
   const starColor = isDarkMode ? "#ffffff" : "#000000";
 
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10">
+    <div className="pointer-events-none fixed inset-0 -z-10 opacity-30 dark:opacity-100">
       <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
         <Stars starColor={starColor} />
       </Canvas>

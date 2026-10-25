@@ -171,7 +171,7 @@ export default function CommandPalette() {
         className="w-full max-w-xl overflow-hidden rounded-xl border border-neutral-500/30 bg-white text-neutral-900 shadow-2xl dark:bg-neutral-900 dark:text-neutral-100"
       >
         <div className="flex items-center gap-3 border-b border-neutral-500/20 px-4">
-          <Search className="h-4 w-4 shrink-0 text-neutral-500" aria-hidden />
+          <Search className="h-4 w-4 shrink-0 text-neutral-600 dark:text-neutral-400" aria-hidden />
           <input
             ref={inputRef}
             value={query}
@@ -188,20 +188,20 @@ export default function CommandPalette() {
             aria-autocomplete="list"
             aria-label="Search commands"
             placeholder="Search sections, projects, actions…"
-            className="h-14 w-full bg-transparent text-base outline-none placeholder:text-neutral-500"
+            className="h-14 w-full bg-transparent text-base outline-none placeholder:text-neutral-600 dark:placeholder:text-neutral-400"
           />
-          <kbd className="hidden rounded border border-neutral-500/40 px-1.5 py-0.5 text-xs text-neutral-500 sm:block">Esc</kbd>
+          <kbd className="hidden rounded border border-neutral-500/40 px-1.5 py-0.5 text-xs text-neutral-600 dark:text-neutral-400 sm:block">Esc</kbd>
         </div>
 
         <ul id={listId} role="listbox" aria-label="Commands" className="max-h-80 overflow-y-auto p-2">
-          {results.length === 0 && <li className="px-3 py-6 text-center text-sm text-neutral-500">No results</li>}
+          {results.length === 0 && <li className="px-3 py-6 text-center text-sm text-neutral-600 dark:text-neutral-400">No results</li>}
           {results.map((c, i) => {
             const header = c.group !== lastGroup ? c.group : null;
             lastGroup = c.group;
             return (
               <li key={c.id} role="presentation">
                 {header && (
-                  <div className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">{header}</div>
+                  <div className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-neutral-600 dark:text-neutral-400">{header}</div>
                 )}
                 <div
                   id={`${listId}-${i}`}
@@ -214,14 +214,14 @@ export default function CommandPalette() {
                   }`}
                 >
                   <span>{c.label}</span>
-                  {c.hint && <span className="truncate text-xs text-neutral-500">{c.hint}</span>}
+                  {c.hint && <span className="truncate text-xs text-neutral-600 dark:text-neutral-400">{c.hint}</span>}
                 </div>
               </li>
             );
           })}
         </ul>
 
-        <div className="flex items-center justify-between border-t border-neutral-500/20 px-4 py-2 text-xs text-neutral-500">
+        <div className="flex items-center justify-between border-t border-neutral-500/20 px-4 py-2 text-xs text-neutral-600 dark:text-neutral-400">
           <span>↑↓ navigate · Enter select · Ctrl/⌘ K toggle</span>
           <span role="status" aria-live="polite">{notice}</span>
         </div>

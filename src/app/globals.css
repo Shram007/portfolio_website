@@ -6,16 +6,28 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --card: #ffffff;
+  --border: #d4d4d4;
+  --primary: #6d28d9; /* 7:1 on white */
+  --muted-foreground: #525252; /* 7.5:1 on white */
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --card: #111111;
+  --border: #2e2e2e;
+  --primary: #a78bfa; /* 7.4:1 on near-black */
+  --muted-foreground: #a3a3a3; /* 7.9:1 on near-black */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-muted-foreground: var(--muted-foreground);
 }
 
 body {

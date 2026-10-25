@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { CalendarDays, MapPin, Building2, ExternalLink } from "lucide-react";
+import { CalendarDays, MapPin, ExternalLink } from "lucide-react";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { motion } from "framer-motion";
@@ -12,51 +10,48 @@ import { WorkExperienceItem } from "@/lib/types";
 
 interface WorkExperienceProps {
   experiences: WorkExperienceItem[];
-  showTechnologies?: boolean;
-  showAchievements?: boolean;
-  compact?: boolean;
 }
 
-const WorkExperience: React.FC<WorkExperienceProps> = ({
-  experiences,
-  showTechnologies = true,
-  showAchievements = true,
-  compact = false
-}) => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+const formatDate = (dateString: string): string => {
+  if (!dateString) return "";
+  const [y, m] = dateString.split("-").map(Number);
+  return new Date(y, (m ?? 1) - 1, 1).toLocaleDateString("en-US", { year: "numeric", month: "short" });
+};
+
+const plural = (n: number, unit: string) => `${n} ${unit}${n > 1 ? "s" : ""}`;
+
+function duration(startDate: string, endDate: string | undefined, now: Date | null, current: boolean): string {
+  if (current && !now) return "";
+  const start = new Date(`${startDate}-01`);
+  const end = current && now ? now : new Date(`${endDate ?? startDate}-01`);
+  const months = Math.max(1, Math.round(Math.abs(end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 30.44)));
+  if (months < 12) return plural(months, "month");
+  const years = Math.floor(months / 12);
+  const rest = months % 12;
+  return rest ? `${plural(years, "year")} ${plural(rest, "month")}` : plural(years, "year");
+}
+
+/** Bold the numbers so impact is scannable. */
+function Highlighted({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\d[\d.,]*%?)/g).map((part, i) =>
+        i % 2 === 1 ? (
+          <strong key={i} className="font-semibold text-foreground">
+            {part}
+          </strong>
+        ) : (
+          <React.Fragment key={i}>{part}</React.Fragment>
+        )
+      )}
+    </>
+  );
+}
+
+const WorkExperience: React.FC<WorkExperienceProps> = ({ experiences }) => {
   // "Now" is only known on the client; reading it during render mismatches the prerendered HTML.
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => setNow(new Date()), []);
-  const formatDate = (dateString: string): string => {
-    if (!dateString) return "";
-    const [y, m] = dateString.split("-").map(Number);
-    const date = new Date(y, (m ?? 1) - 1, 1);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short' 
-    });
-  };
-
-  const calculateDuration = (startDate: string, endDate: string | undefined, current: boolean): string => {
-    if (current && !now) return "";
-    const start = new Date(startDate + "-01");
-    const end = current && now ? now : new Date((endDate ?? startDate) + "-01");
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30));
-    
-    if (diffMonths < 12) {
-      return `${diffMonths} month${diffMonths > 1 ? 's' : ''}`;
-    }
-    
-    const years = Math.floor(diffMonths / 12);
-    const remainingMonths = diffMonths % 12;
-    
-    if (remainingMonths === 0) {
-      return `${years} year${years > 1 ? 's' : ''}`;
-    }
-    
-    return `${years} year${years > 1 ? 's' : ''} ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
-  };
 
   return (
     <motion.div
@@ -67,107 +62,84 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({
       <Section ariaLabelledby="experience-title">
         <SectionHeader
           title="Work Experience"
-          subtitle="My professional journey and key accomplishments"
+          subtitle="Where I've built things and what shipped"
           titleId="experience-title"
         />
 
-        <div className="space-y-4 md:space-y-6 mx-auto max-w-4xl">
-        {experiences.map((experience, index) => (
-          <Card 
-            key={experience.id} 
-            className={`relative overflow-hidden border-border transition-all duration-300 ${
-              hoveredIndex === null || hoveredIndex === index 
-                ? 'bg-card opacity-100' 
-                : 'bg-card/50 opacity-0'
-            } ${hoveredIndex === index ? 'z-10' : 'z-0'}`}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            {/* Timeline indicator */}
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+        <ol className="relative mx-auto max-w-4xl border-l border-border pl-6 md:pl-8">
+          {experiences.map((experience) => (
+            <li key={experience.id} className="relative pb-10 last:pb-0">
+              <span
+                aria-hidden
+                className={`absolute -left-[31px] top-2 h-3 w-3 rounded-full border-2 border-primary md:-left-[39px] ${
+                  experience.current ? "bg-primary" : "bg-background"
+                }`}
+              />
 
-            <CardHeader className="pb-4">
-              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Building2 className="h-5 w-5 text-primary" />
-                    <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+              <article className="rounded-xl border border-border bg-card p-5 md:p-6">
+                <header className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold text-foreground">{experience.position}</h3>
+                    <p className="flex items-center gap-2 text-base font-medium text-primary">
                       {experience.company}
                       {experience.companyUrl && (
-                        <a href={experience.companyUrl} target="_blank" rel="noreferrer" aria-label={`${experience.company} website`}>
-                          <ExternalLink className="h-4 w-4 text-muted-foreground hover:text-primary cursor-pointer transition" />
+                        <a
+                          href={experience.companyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${experience.company} website (opens in new tab)`}
+                          className="inline-flex h-6 w-6 items-center justify-center rounded text-muted-foreground transition hover:text-primary focus-visible:outline-2 focus-visible:outline-primary"
+                        >
+                          <ExternalLink className="h-4 w-4" aria-hidden />
                         </a>
                       )}
-                    </h3>
+                    </p>
                   </div>
-                  <h4 className="text-lg font-medium text-primary">{experience.position}</h4>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <CalendarDays className="h-4 w-4" />
+                  <div className="flex flex-col gap-1 text-sm text-muted-foreground sm:items-end">
+                    <span className="flex items-center gap-1">
+                      <CalendarDays className="h-4 w-4" aria-hidden />
+                      {formatDate(experience.startDate)} – {experience.current ? "Present" : formatDate(experience.endDate || "")}
+                    </span>
+                    {/* fixed height so the late-arriving duration cannot shift the layout */}
+                    <span className="min-h-5 min-w-28 sm:text-right">
+                      {duration(experience.startDate, experience.endDate, now, experience.current)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <MapPin className="h-4 w-4" aria-hidden />
+                      {experience.location}
+                    </span>
+                  </div>
+                </header>
+
+                <p className="mt-3 text-sm italic text-muted-foreground">{experience.description}</p>
+
+                <ul className="mt-4 space-y-2">
+                  {experience.achievements.map((achievement, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                      <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                       <span>
-                        {formatDate(experience.startDate)} - {experience.current ? 'Present' : formatDate(experience.endDate || '')}
+                        <Highlighted text={achievement} />
                       </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4" />
-                      <span>{experience.location}</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex flex-col items-start lg:items-end gap-2">
-                  {experience.current && (
-                    <Badge variant="default" className="bg-green-100 text-green-800 border-green-200">
-                      Current
-                    </Badge>
-                  )}
-                  <span className="text-sm font-medium text-muted-foreground">
-                    {calculateDuration(experience.startDate, experience.endDate, experience.current)}
-                  </span>
-                </div>
-              </div>
-            </CardHeader>
-            
-            <CardContent className="space-y-4">
-              <p className="text-foreground leading-relaxed">{experience.description}</p>
-              
-              {showAchievements && experience.achievements.length > 0 && !compact && (
-                <div className="space-y-2">
-                  <h5 className="font-medium text-foreground">Key Achievements:</h5>
-                  <ul className="space-y-1">
-                    {experience.achievements.map((achievement, achievementIndex) => (
-                      <li key={achievementIndex} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <span className="text-primary mt-1.5 text-xs">•</span>
-                        <span>{achievement}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {experience.technologies.length > 0 && (
+                  <ul className="mt-4 flex flex-wrap gap-2" aria-label="Technologies">
+                    {experience.technologies.map((tech) => (
+                      <li key={tech}>
+                        <Badge variant="secondary" className="text-xs">
+                          {tech}
+                        </Badge>
                       </li>
                     ))}
                   </ul>
-                </div>
-              )}
-              
-              {showTechnologies && experience.technologies.length > 0 && (
-                <div className="space-y-2">
-                  <h5 className="font-medium text-foreground">Technologies:</h5>
-                  <div className="flex flex-wrap gap-2">
-                    {experience.technologies.map((tech, techIndex) => (
-                      <Badge key={techIndex} variant="secondary" className="text-xs">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {index < experiences.length - 1 && (
-                <div className="pt-4">
-                  <Separator className="bg-border" />
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </Section>
+                )}
+              </article>
+            </li>
+          ))}
+        </ol>
+      </Section>
     </motion.div>
   );
 };
