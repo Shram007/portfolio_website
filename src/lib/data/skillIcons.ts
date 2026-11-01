@@ -19,3 +19,19 @@ export const skillIcons: Record<string, string> = {
   Docker: "/skills/docker.svg",
   Kubernetes: "/skills/kubernetes.svg",
 };
+
+/** White-on-dark variants for icons whose dark parts disappear on a dark background. */
+export const skillIconsLight: Record<string, string> = {
+  Rust: "/skills/rust-light.svg",
+  SQL: "/skills/sql-light.svg",
+  Django: "/skills/django-light.svg",
+  Flask: "/skills/flask-light.svg",
+  "Node.js": "/skills/nodejs-light.svg",
+  "MySQL/MariaDB": "/skills/sql-light.svg",
+  AWS: "/skills/aws-light.svg",
+  Docker: "/skills/docker-light.svg",
+  GCP: "/skills/gcp-light.svg",
+  Redis: "/skills/redis-light.svg",
+  Kubernetes: "/skills/kubernetes-light.svg",
+  PostgreSQL: "/skills/postgresql-light.svg",
+};

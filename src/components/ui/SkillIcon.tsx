@@ -13,7 +13,7 @@ import {
   GitBranch,
   type LucideIcon,
 } from "lucide-react";
-import { skillIcons } from "@/lib/data/skillIcons";
+import { skillIcons, skillIconsLight } from "@/lib/data/skillIcons";
 
 // Concepts and tools without a brand SVG get a neutral built-in glyph.
 const fallbackIcons: Record<string, LucideIcon> = {
@@ -33,6 +33,16 @@ const fallbackIcons: Record<string, LucideIcon> = {
 
 export default function SkillIcon({ name, className = "h-6 w-6" }: { name: string; className?: string }) {
   const src = skillIcons[name];
+  const lightSrc = skillIconsLight[name];
+  if (src && lightSrc) {
+    // dark theme swaps to the white variant; both are tiny and the unused one stays hidden
+    return (
+      <>
+        <Image src={src} alt="" width={32} height={32} className={`${className} object-contain dark:hidden`} />
+        <Image src={lightSrc} alt="" width={32} height={32} className={`${className} hidden object-contain dark:block`} />
+      </>
+    );
+  }
   if (src) return <Image src={src} alt="" width={32} height={32} className={`${className} object-contain`} />;
   const Fallback = fallbackIcons[name];
   return Fallback ? <Fallback aria-hidden className={className} /> : null;
