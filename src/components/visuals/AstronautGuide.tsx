@@ -70,7 +70,7 @@ export default function AstronautGuide() {
           alt=""
           width={80}
           height={80}
-          className="image-render-pixel select-none drop-shadow"
+          className="image-render-pixel h-20 w-20 max-w-none shrink-0 select-none drop-shadow"
           priority
         />
 

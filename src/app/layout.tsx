@@ -4,7 +4,6 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { ThemeProvider } from "next-themes";
 import CommandPalette from "@/components/site/CommandPalette";
 import MissionControlMount from "@/components/game/MissionControlMount";
-import DevToolbar from "@/components/site/DevToolbar";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -46,7 +45,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <MissionControlMount />
             {children}
           </ThemeProvider>
-          <DevToolbar />
       </body>
     </html>
   );
