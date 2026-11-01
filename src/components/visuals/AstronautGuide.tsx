@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
+import { OPEN_GAME_EVENT } from "@/lib/site";
 
 export default function AstronautGuide() {
   // wander horizontally just above the dock
@@ -50,13 +51,19 @@ export default function AstronautGuide() {
     <div
       ref={containerRef}
       className="pointer-events-none absolute bottom-3 left-0 right-0 z-40 sm:bottom-24"
-      aria-hidden
     >
       <motion.div
         initial={{ x: 80 }}
         animate={prefersReduced ? { x: 80 } : controls}
-        className="relative mx-0 inline-flex items-end"
+        className="pointer-events-auto relative mx-0 inline-flex items-end"
       >
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new Event(OPEN_GAME_EVENT))}
+          aria-label="Play Mission Control, a developer game"
+          title="Help me get home"
+          className="inline-flex cursor-pointer items-end rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+        >
         {/* pixel astronaut */}
         <Image
           src="/sprites/astronaut.png"
@@ -68,7 +75,7 @@ export default function AstronautGuide() {
         />
 
         {/* "scroll down" sign with gentle bob */}
-        <motion.div
+        <motion.span
           initial={{ y: 0, rotate: -4 }}
           animate={prefersReduced ? {} : { y: [0, -6, 0] }}
           transition={prefersReduced ? {} : { repeat: Infinity, duration: 2, ease: "easeInOut" }}
@@ -76,7 +83,8 @@ export default function AstronautGuide() {
           style={{ transformOrigin: "left bottom" }}
         >
           ↓ scroll down
-        </motion.div>
+        </motion.span>
+        </button>
       </motion.div>
     </div>
   );

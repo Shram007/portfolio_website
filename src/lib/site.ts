@@ -16,3 +16,5 @@ export const NAV_LINKS = [
 ] as const;
 
 export const CONTACT_EMAIL = "shram.kadia214@gmail.com";
+
+export const OPEN_GAME_EVENT = "open-mission-control";

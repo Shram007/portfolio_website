@@ -117,6 +117,70 @@ test("experience: hover, keyboard and click focus a role", async ({ page }) => {
   await expect(panel).toContainText("OpenPRA");
 });
 
+test.describe("Mission Control", () => {
+  const game = (page: import("@playwright/test").Page) => page.getByRole("dialog", { name: "Mission Control game" });
+
+  test("console entry plays through to the report, with a wrong pick on the way", async ({ page }) => {
+    const logs: string[] = [];
+    page.on("console", (m) => logs.push(m.text()));
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
+    expect(logs.join(" ")).toContain("play()");
+
+    await page.evaluate(() => window.play?.());
+    await expect(game(page)).toBeVisible();
+    await page.keyboard.press("Enter");
+
+    await page.keyboard.press("a");
+    await expect(game(page).getByRole("status")).toContainText("What happens to score");
+    await page.keyboard.press("b");
+    await expect(game(page)).toContainText("NAVIGATION ONLINE");
+    await expect(game(page)).toContainText("60%");
+
+    for (const key of ["c", "a", "c"]) {
+      await page.keyboard.press("Enter");
+      await expect(game(page).getByRole("progressbar")).toBeVisible();
+      await page.keyboard.press("Enter");
+      await page.keyboard.press(key);
+      await expect(game(page)).toContainText("Unlocked: the real work");
+    }
+    await page.keyboard.press("Enter");
+
+    await expect(game(page)).toContainText("LIFTOFF");
+    await expect(game(page)).toContainText("Senior Flight Engineer");
+    await expect(game(page).getByRole("link", { name: /view resume/i })).toBeVisible();
+    await game(page).getByRole("button", { name: "Back to site" }).click();
+    await expect(game(page)).toBeHidden();
+  });
+
+  test("opens from the palette and Esc closes it", async ({ page }) => {
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
+    await page.keyboard.press("Control+k");
+    await page.keyboard.type("mission");
+    await page.keyboard.press("Enter");
+    await expect(game(page)).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(game(page)).toBeHidden();
+  });
+
+  test("opens from the astronaut and can be skipped", async ({ page }) => {
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
+    const astronaut = page.getByRole("button", { name: /play mission control/i });
+    // it never stops wandering, so confirm nothing covers it, then click it directly
+    const onTop = await astronaut.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      return el.contains(document.elementFromPoint(r.left + 20, r.top + 20));
+    });
+    expect(onTop).toBe(true);
+    await astronaut.dispatchEvent("click");
+    await expect(game(page)).toBeVisible();
+    await page.keyboard.press("s");
+    await expect(game(page)).toContainText("Mission Observer");
+  });
+});
+
 test("contact form shows success and error states (API mocked)", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");

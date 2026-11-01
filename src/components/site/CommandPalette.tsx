@@ -4,7 +4,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { useTheme } from "next-themes";
 import { Search } from "lucide-react";
 import { projects } from "@/lib/data/projects";
-import { CONTACT_EMAIL, NAV_LINKS, RESUME_URL } from "@/lib/site";
+import { CONTACT_EMAIL, NAV_LINKS, OPEN_GAME_EVENT, RESUME_URL } from "@/lib/site";
 
 export const OPEN_PALETTE_EVENT = "open-command-palette";
 
@@ -89,6 +89,14 @@ export default function CommandPalette() {
         : []),
     ]);
     const actions: Command[] = [
+      {
+        id: "play",
+        group: "Actions",
+        label: "Play Mission Control",
+        hint: "Developer game",
+        keywords: "game astronaut debug",
+        run: () => window.dispatchEvent(new Event(OPEN_GAME_EVENT)),
+      },
       {
         id: "theme",
         group: "Actions",
