@@ -70,7 +70,7 @@ test("projects grid expands and the 3D view loads on demand", async ({ page }) =
   const list = page.locator("#project-list > li");
   await expect(list).toHaveCount(3);
   await page.getByRole("button", { name: /show all projects/i }).click();
-  await expect(list).toHaveCount(10);
+  await expect(list).toHaveCount(14);
 
   await page.getByRole("group", { name: "Projects view" }).getByRole("button", { name: "3D" }).click();
   await expect(page.getByRole("button", { name: /open details/i }).first()).toBeAttached();
