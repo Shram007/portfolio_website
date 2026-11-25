@@ -27,6 +27,30 @@ const rawProjects: Omit<Project, "id">[] = [
     effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[251,191,36]], dotSize: 2 }
   },
   {
+    title: "Office Hub",
+    description: "Local dashboard that turns every Claude Code project into a pixel-art desk coloured by live session status, fed by Claude Code hooks over Server-Sent Events with no API keys. A push-to-talk front desk (faster-whisper in, a persistent Claude process, Piper out) routes spoken requests to the right desk and session, and built-in terminals resume any session. Design is documented in 40+ ADRs.",
+    stack: ["TypeScript", "Node.js", "Canvas", "Server-Sent Events", "Claude Code hooks", "node-pty", "faster-whisper", "Piper", "Vitest", "Playwright"],
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 3, colors: [[45,212,191]], dotSize: 2 }
+  },
+  {
+    title: "Voice Tutor: Whiteboard Interviewer",
+    description: "Spoken mock coding interview that runs locally: push-to-talk audio streams over a WebSocket to faster-whisper, Claude (or Ollama offline) plays the interviewer, and Piper speaks each reply sentence by sentence. Runs candidate Python against test cases in an isolated, time-limited process, scores submissions on 4 rubrics, and checks every hint with a second model pass so help never gives the solution away.",
+    stack: ["Python", "FastAPI", "WebSockets", "faster-whisper", "Piper TTS", "Claude", "Ollama", "CodeMirror"],
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 3, colors: [[129,140,248]], dotSize: 2 }
+  },
+  {
+    title: "Job Search Pipeline",
+    description: "Automated job-search pipeline that scans 200+ company boards across Greenhouse, Ashby, Lever and other ATSes, screens roles with deterministic filters locked by a golden regression baseline, and ranks them by skill fit into a local dashboard with an apply queue. One-click resume tailoring runs on Claude Code in the cloud or locally, and an optional Ollama layer runs in shadow mode, never allowed to turn a reject into a keep.",
+    stack: ["Python", "SQLite", "ATS APIs", "Claude Code", "Ollama", "pytest", "GitHub Actions"],
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[250,204,21]], dotSize: 2 }
+  },
+  {
+    title: "Watch Together",
+    description: "Self-hosted watch party that keeps viewers in sync with a server-authoritative timeline, NTP-style clock offsets and scheduled starts (two clients began playing 1 ms apart in testing), corrected by a proportional drift controller with hysteresis. Adds resumable chunked uploads, automatic ffmpeg conversion with an opt-in adaptive HLS ladder, and a peer-to-peer WebRTC video call.",
+    stack: ["Node.js", "Express", "WebSockets", "WebRTC", "hls.js", "ffmpeg", "Tailscale"],
+    effect: { bgClass: "bg-neutral-900", animationSpeed: 3.5, colors: [[96,165,250]], dotSize: 2 }
+  },
+  {
     title: "Vital View: Your AI Copilot for Doctors",
     description: "Voice-first AI agent that transforms chaotic medical data review into streamlined, clinically-aware briefings for healthcare professionals.",
     stack: ["React", "Node.js", "AI/ML", "Voice Recognition", "Healthcare APIs"],
