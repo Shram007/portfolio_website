@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Practice History</title>
+<link rel="stylesheet" href="./demo-files/demo.css">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="appbar">
+  <nav class="tabs" aria-label="Sections of the app">
+    <a href="./index.html">Interview</a>
+    <a href="./prep.html">Prep</a>
+    <a href="./history.html" aria-current="page">History</a>
+  </nav>
+</div>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Practice history</h1>
+      <p>Every session is saved as a try. Redo a problem to see if it sticks.</p>
+    </div>
+  </header>
+
+  <div class="hist-tools" role="search">
+    <div class="seg" role="group" aria-label="Kind" id="kinds">
+      <button type="button" data-kind="" aria-pressed="true">All</button>
+      <button type="button" data-kind="coding" aria-pressed="false">Coding</button>
+      <button type="button" data-kind="design" aria-pressed="false">Design</button>
+      <button type="button" data-kind="behavioral" aria-pressed="false">Behavioral</button>
+    </div>
+    <div class="field"><label for="f-company">Company</label><select id="f-company"><option value="">Any</option></select></div>
+    <label class="chk"><input type="checkbox" id="f-redo"> Needs a redo</label>
+    <input type="search" id="f-q" placeholder="Search problems" aria-label="Search problems">
+  </div>
+
+  <p class="hint-text" id="hist-count" aria-live="polite"></p>
+  <div id="hist-list" class="hist-list"></div>
+</div>
+<script src="./demo-files/server-data.js"></script>
+<script src="./demo-files/demo.js"></script>
+<script src="./history.js"></script>
+<script src="./search.js"></script>
+</body>
+</html>

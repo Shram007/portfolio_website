@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Whiteboard Interviewer</title>
+<link rel="stylesheet" href="./demo-files/demo.css">
+<link rel="stylesheet" href="./vendor/codemirror/codemirror.min.css">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body class="room-page">
+<div class="appbar">
+  <nav class="tabs" aria-label="Sections of the app">
+    <a href="./index.html" aria-current="page">Interview</a>
+    <a href="./prep.html">Prep</a>
+    <a href="./history.html">History</a>
+  </nav>
+</div>
+
+<!-- One-row session bar: what you're practising, where it stands, and the session controls -->
+<header class="sbar" aria-label="Interview controls">
+  <h1 class="sr-only">Whiteboard Interviewer</h1>
+  <div class="field"><label for="sel-problem">Problem</label><select id="sel-problem"></select></div>
+  <div class="field"><label for="sel-persona">Interviewer</label>
+    <select id="sel-persona"><option value="friendly">Friendly</option><option value="neutral" selected>Neutral</option><option value="tough">Tough</option></select></div>
+  <div class="sbar-info">
+    <div class="status"><span class="dot wait" id="status-dot"></span><span id="status-text">Press Start interview to begin.</span></div>
+    <div class="trybar" id="trybar" hidden>
+      <span class="try-n" id="try-n"></span>
+      <span class="try-past" id="try-past"></span>
+      <a class="hint-text" id="try-link" href="./history.html">History</a>
+    </div>
+    <div class="taskbar" id="taskbar" hidden>
+      <span class="eyebrow">Plan</span> <span id="task-label"></span>
+      <span id="task-saved" class="hint-text" aria-live="polite"></span>
+      <a class="hint-text" id="task-back" href="./prep.html">Back to plan</a>
+    </div>
+  </div>
+  <div class="sbar-acts">
+    <div class="clock" id="clock"><small>Left</small><span id="clock-val">45:00</span></div>
+    <button class="btn pause" id="btn-pause" type="button" disabled title="Stop the clock and the interviewer">Pause</button>
+    <button class="btn ghost danger" id="btn-end" type="button" disabled title="End now: no debrief, no verdict, nothing saved to History">End, don't save</button>
+    <button class="btn ghost" id="btn-restart" type="button" disabled>Restart</button>
+    <button class="btn primary" id="btn-finish" type="button" disabled>Finish &amp; debrief</button>
+  </div>
+</header>
+
+<main class="stage" id="stage">
+  <!-- Left: where you work (code pad for coding, design board for design; behavioral has none) -->
+  <section class="work" aria-label="Your work">
+    <div class="panel" id="code-panel" hidden>
+      <div class="pad">
+        <div class="pad-bar">
+          <span class="eyebrow">Code pad</span>
+          <select id="code-lang" aria-label="Language">
+            <option value="python">Python</option><option value="java">Java</option>
+            <option value="cpp">C++</option><option value="javascript">JavaScript</option>
+          </select>
+          <button class="btn" id="btn-run" type="button" title="Ctrl+Enter">Run tests</button>
+          <button class="btn primary" id="btn-review" type="button">Submit for review</button>
+          <button class="btn ghost" id="btn-reset-code" type="button">Reset</button>
+          <span class="hint-text" id="pad-state" aria-live="polite"></span>
+          <span class="hint-text pad-note">The interviewer sees this live</span>
+        </div>
+        <textarea id="code-src" spellcheck="false" aria-label="Code editor"></textarea>
+        <div class="pad-out">
+          <div class="run-out" id="run-out" hidden></div>
+          <div class="review-out" id="review-out" hidden></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="board-panel" hidden>
+      <div class="panel-h"><span class="eyebrow">Design board</span><span class="hint-text">The interviewer reads this every turn</span></div>
+      <div class="board">
+        <label for="board-src">Diagram <span class="hint-text">Mermaid: flowchart LR or classDiagram</span></label>
+        <textarea id="board-src" rows="8" spellcheck="false" placeholder="flowchart LR&#10;  Client --> LB[Load balancer] --> API&#10;  API --> Cache[(Redis)]&#10;  API --> DB[(Postgres)]"></textarea>
+        <div class="diagram" id="board-preview" aria-label="Diagram preview" role="img"></div>
+        <p class="board-err" id="board-err" role="status"></p>
+        <label for="board-notes">Notes <span class="hint-text">requirements, numbers, APIs, trade-offs</span></label>
+        <textarea id="board-notes" rows="5" placeholder="10k reads/s, 100 writes/s&#10;POST /links -> short code&#10;cache hot codes in Redis"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- Right: the problem in brief, then tabs for the conversation, full problem, help and the interview flow -->
+  <section class="panel side" aria-label="Interview">
+    <div class="probstrip" id="probstrip"></div>
+    <div class="stabs" role="tablist" aria-label="Interview panels">
+      <button type="button" role="tab" id="tab-conv" data-pane="pane-conv" aria-selected="true">Conversation</button>
+      <button type="button" role="tab" id="tab-problem" data-pane="pane-problem" aria-selected="false">Problem</button>
+      <button type="button" role="tab" id="tab-help" data-pane="pane-help" aria-selected="false" hidden>Get help</button>
+      <button type="button" role="tab" id="tab-flow" data-pane="pane-flow" aria-selected="false">Flow <span class="badge" id="flow-badge"></span></button>
+      <span class="lat" id="lat-mini" title="Time from when you stop talking to the interviewer's whole reply"></span>
+    </div>
+
+    <div class="pane" id="pane-conv" role="tabpanel" aria-labelledby="tab-conv">
+      <div class="gate" id="gate">
+        <p>Your browser will ask for the microphone. Use headphones if you can, so the interviewer doesn't hear itself.</p>
+        <button class="btn primary" id="btn-begin" type="button">Start interview</button>
+        <span class="hint-text" id="voice-hint"></span>
+      </div>
+      <div class="live" id="live" hidden>
+        <div class="transcript" id="transcript" aria-live="polite"></div>
+        <div class="talk">
+          <button class="talk-btn" id="btn-talk" type="button" disabled>
+            <span class="level" id="level" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+            <span id="talk-label">Hold to talk</span>
+            <kbd>Space</kbd>
+          </button>
+          <div class="talk-state" id="talk-state"></div>
+        </div>
+        <div class="composer">
+          <textarea id="say" rows="1" placeholder="Or type here, Enter to send"></textarea>
+          <button class="btn" id="btn-send" type="button">Send</button>
+          <button class="btn" id="btn-stuck" type="button">I'm stuck</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane scroll" id="pane-problem" role="tabpanel" aria-labelledby="tab-problem" hidden>
+      <div class="problem" id="problem"></div>
+    </div>
+
+    <div class="pane scroll" id="pane-help" role="tabpanel" aria-labelledby="tab-help" hidden>
+      <div id="help-panel" hidden>
+        <div class="helpbox">
+          <p class="hint-text">One pointer at a time, never the solution. Questions about this problem's logic count as a hint; syntax and code-style questions don't.</p>
+          <div class="help-quick" role="group" aria-label="Quick help">
+            <button class="btn small" type="button" data-help="nudge">Nudge me</button>
+            <button class="btn small" type="button" data-help="approach">Is my approach right?</button>
+            <button class="btn small" type="button" data-help="failing">Why is a test failing?</button>
+            <button class="btn small" type="button" data-help="concept">Explain the concept</button>
+          </div>
+          <textarea id="help-q" rows="2" maxlength="600" placeholder="Ask about one step, e.g. what should happen when two cities point to each other? Or a syntax question."></textarea>
+          <div class="help-acts">
+            <button class="btn primary" id="btn-help-ask" type="button">Ask</button>
+            <button class="btn" id="btn-help-search" type="button" title="Look a concept up on the web. Pages that solve this exact problem are left out.">Look it up on the web</button>
+            <button class="btn ghost" id="btn-help-copy" type="button" title="Copies a hint-only prompt with this problem and your code, for any other Claude session">Copy for another Claude session</button>
+            <span class="hint-text" id="help-state" aria-live="polite"></span>
+          </div>
+          <ol class="help-thread" id="help-thread"></ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane scroll" id="pane-flow" role="tabpanel" aria-labelledby="tab-flow" hidden>
+      <ol class="phases" id="phases"></ol>
+      <div class="meters">
+        <div class="meter" id="hint-meter">Hints given <span class="ladder" id="ladder"><span></span><span></span><span></span></span></div>
+        <div class="meter">Read on you <span class="chip" id="assess">Not yet</span></div>
+      </div>
+      <details class="notes"><summary><b>Interviewer notes</b> (hidden in a real interview)</summary> <span id="notes-text">Waiting for the interview to start.</span></details>
+      <div class="panel-h flat"><span class="eyebrow">Response time</span><span class="hint-text">from when you stop talking</span></div>
+      <div class="timings">
+        <div class="trow head"><span>Step</span><span>Last</span><span>Avg</span></div>
+        <div class="trow"><span>Speech to text</span><b id="t-stt">–</b><span class="v" id="a-stt">–</span></div>
+        <div class="trow"><span>First word from interviewer</span><b id="t-first_token">–</b><span class="v" id="a-first_token">–</span></div>
+        <div class="trow"><span>First sound</span><b id="t-first_audio">–</b><span class="v" id="a-first_audio">–</span></div>
+        <div class="trow"><span>Whole reply ready</span><b id="t-total">–</b><span class="v" id="a-total">–</span></div>
+      </div>
+      <div class="engine" id="engine"></div>
+    </div>
+  </section>
+</main>
+
+<!-- Paused: the clock and the interviewer wait. From here you can carry on or end without saving. -->
+<div class="veil" id="veil" hidden>
+  <div class="pausecard" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+    <h2 id="pause-title">Paused<span id="pause-left"></span></h2>
+    <p>The clock is stopped and the interviewer is waiting. Nothing has been judged.</p>
+    <div class="row" id="pause-acts">
+      <button class="btn primary" id="btn-resume" type="button">Resume</button>
+      <button class="btn danger" id="btn-end-ask" type="button">End, don't save</button>
+    </div>
+    <div class="confirm" id="end-confirm" hidden>
+      <p><b>End this interview?</b> It won't go into History, gets no debrief or verdict, and a plan task stays unticked. Your code stays in the pad.</p>
+      <div class="row">
+        <button class="btn danger solid" id="btn-end-yes" type="button">End and discard</button>
+        <button class="btn ghost" id="btn-end-no" type="button">Keep going</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="./demo-files/server-data.js"></script>
+<script src="./demo-files/demo.js"></script>
+<script src="./vendor/codemirror/codemirror.min.js"></script>
+<script src="./vendor/codemirror/python.min.js"></script>
+<script src="./vendor/codemirror/clike.min.js"></script>
+<script src="./vendor/codemirror/javascript.min.js"></script>
+<script src="./vendor/codemirror/matchbrackets.min.js"></script>
+<script src="./vendor/codemirror/closebrackets.min.js"></script>
+<script src="./codepad.js"></script>
+<script src="./help.js"></script>
+<script src="./search.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
