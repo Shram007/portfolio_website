@@ -46,6 +46,8 @@ const rawProjects: Omit<Project, "id">[] = [
     title: "Job Search Pipeline",
     description: "Automated job-search pipeline that scans 200+ company boards across Greenhouse, Ashby, Lever and other ATSes, screens roles with deterministic filters locked by a golden regression baseline, and ranks them by skill fit into a local dashboard with an apply queue. One-click resume tailoring runs on Claude Code in the cloud or locally, and an optional Ollama layer runs in shadow mode, never allowed to turn a reject into a keep.",
     stack: ["Python", "SQLite", "ATS APIs", "Claude Code", "Ollama", "pytest", "GitHub Actions"],
+    // Static demo with made-up roles, built in the private job-search repo (python tools/demo/build.py) and copied to public/demos/job-search.
+    demoUrl: "/demos/job-search/index.html",
     effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[250,204,21]], dotSize: 2 }
   },
   {
