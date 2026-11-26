@@ -35,6 +35,14 @@ test("security headers are present", async ({ request }) => {
   const headers = (await request.get("/")).headers();
   expect(headers["content-security-policy"]).toContain("frame-ancestors 'none'");
   expect(headers["x-content-type-options"]).toBe("nosniff");
+  expect(headers["permissions-policy"]).toContain("microphone=()");
+});
+
+test("only the Voice Tutor demo may use the mic", async ({ request }) => {
+  const res = await request.get("/demos/voice-tutor/index.html");
+  expect(res.status()).toBe(200);
+  expect(res.headers()["permissions-policy"]).toContain("microphone=(self)");
+  expect(res.headers()["content-security-policy"]).toContain("frame-ancestors 'none'");
 });
 
 test("unknown routes show the 404 page", async ({ page }) => {

@@ -41,7 +41,15 @@ const nextConfig: NextConfig = {
     }));
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // The Voice Tutor demo listens through the browser's own speech recognition, so its pages alone
+      // may use the mic. Next.js lets a later entry override the same header, so nothing else changes.
+      {
+        source: "/demos/voice-tutor/:path*",
+        headers: [{ key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=()" }],
+      },
+    ];
   },
 };
 
