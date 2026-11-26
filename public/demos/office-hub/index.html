@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Office Hub</title>
+    <script type="module" crossorigin src="./assets/index-Cyst9z1p.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DilMc0c3.css">
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <h1 class="sr-only">Office Hub</h1>
+        <div class="brand">
+          <span class="clock" id="clock"></span>
+          <span class="today-date" id="today-date"></span>
+        </div>
+        <div id="account"></div>
+        <div class="top-right">
+          <div id="counts" class="strip" role="group" aria-label="Desks by state" aria-live="polite"></div>
+          <span id="conn" class="conn" data-state="connecting">Connecting…</span>
+          <div id="tools" class="tools"></div>
+        </div>
+      </header>
+      <p class="stale" id="stale" role="alert" hidden>
+        The hub is running older code than this page, so some buttons won’t work. Restart the hub (Ctrl+C,
+        then <code>npm start</code>), then reload this page.
+      </p>
+      <section class="dash" id="dashboard" aria-label="Dashboard"></section>
+      <section class="dock" id="dock" aria-label="Terminals" hidden></section>
+    </div>
+    <!-- Phones (below 720px): the dashboard's parts become tabs (ADR 24, ADR 38). -->
+    <nav class="phone-tabs" id="phoneTabs" aria-label="Sections"></nav>
+    <div class="toast" id="toast" hidden></div>
+  </body>
+</html>

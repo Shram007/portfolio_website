@@ -30,6 +30,8 @@ const rawProjects: Omit<Project, "id">[] = [
     title: "Office Hub",
     description: "Local dashboard that turns every Claude Code project into a pixel-art desk coloured by live session status, fed by Claude Code hooks over Server-Sent Events with no API keys. A push-to-talk front desk (faster-whisper in, a persistent Claude process, Piper out) routes spoken requests to the right desk and session, and built-in terminals resume any session. Design is documented in 40+ ADRs.",
     stack: ["TypeScript", "Node.js", "Canvas", "Server-Sent Events", "Claude Code hooks", "node-pty", "faster-whisper", "Piper", "Vitest", "Playwright"],
+    // Static demo with made-up data, built in the private office-hub repo (npm run build:demo) and copied to public/demos/office-hub.
+    demoUrl: "/demos/office-hub/index.html",
     effect: { bgClass: "bg-neutral-900", animationSpeed: 3, colors: [[45,212,191]], dotSize: 2 }
   },
   {
