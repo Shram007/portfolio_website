@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interview Prep</title>
+<link rel="stylesheet" href="./demo-files/demo.css">
+<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./prep.css">
+</head>
+<body class="prep-page">
+<div class="appbar">
+  <nav class="tabs" aria-label="Sections of the app">
+    <a href="./index.html">Interview</a>
+    <a href="./prep.html" aria-current="page">Prep</a>
+    <a href="./history.html">History</a>
+  </nav>
+  <button class="btn ghost" id="menubtn" type="button" aria-expanded="false" aria-controls="side">Sections</button>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="shell">
+  <aside id="side" aria-label="Companies and sections">
+    <div class="side-h">
+      <span class="eyebrow">Companies</span>
+      <button class="btn" id="btn-add" type="button">+ Add</button>
+    </div>
+    <div id="companies" class="companies"></div>
+    <div id="side-nav"></div>
+  </aside>
+
+  <main id="main" tabindex="-1">
+    <div id="view"></div>
+  </main>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <form id="dlg-form" method="dialog">
+    <h2 id="dlg-title">Add a company</h2>
+    <div class="grid2">
+      <label>Company <input name="name" required maxlength="80" placeholder="Acme"></label>
+      <label>Role <input name="role" maxlength="120" placeholder="SDE I, new grad"></label>
+      <label>Interview date <input name="interview_date" type="date"></label>
+      <label>Hours per day <input name="hours_per_day" type="number" min="0.5" max="16" step="0.5" value="3"></label>
+    </div>
+    <label>Weak areas <input name="weak_areas" maxlength="300" placeholder="graphs, DP, system design"></label>
+    <label>Your notes <span class="hint-text">recruiter emails, round format, your daily schedule (commute, work hours)</span>
+      <textarea name="notes" rows="6" maxlength="4000"></textarea></label>
+    <p class="form-err" id="dlg-err" role="alert"></p>
+    <div class="dlg-actions">
+      <button class="btn danger" id="dlg-delete" type="button" hidden>Delete company</button>
+      <span class="spacer"></span>
+      <button class="btn ghost" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn primary" id="dlg-save" value="save">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="./demo-files/server-data.js"></script>
+<script src="./demo-files/demo.js"></script>
+<script src="./demo-files/prep-data.js"></script>
+<script src="./vendor/mermaid.min.js"></script>
+<script src="./diagram.js"></script>
+<script src="./prep.js"></script>
+<script src="./search.js"></script>
+</body>
+</html>

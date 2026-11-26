@@ -38,6 +38,8 @@ const rawProjects: Omit<Project, "id">[] = [
     title: "Voice Tutor: Whiteboard Interviewer",
     description: "Spoken mock coding interview that runs locally: push-to-talk audio streams over a WebSocket to faster-whisper, Claude (or Ollama offline) plays the interviewer, and Piper speaks each reply sentence by sentence. Runs candidate Python against test cases in an isolated, time-limited process, scores submissions on 4 rubrics, and checks every hint with a second model pass so help never gives the solution away.",
     stack: ["Python", "FastAPI", "WebSockets", "faster-whisper", "Piper TTS", "Claude", "Ollama", "CodeMirror"],
+    // Static demo with a scripted interviewer and made-up data, built in the private voice-tutor repo (python -m demo.build) and copied to public/demos/voice-tutor.
+    demoUrl: "/demos/voice-tutor/index.html",
     effect: { bgClass: "bg-neutral-900", animationSpeed: 3, colors: [[129,140,248]], dotSize: 2 }
   },
   {
