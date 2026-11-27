@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -16,6 +15,9 @@ const ProjectsCarousel3D = dynamic(() => import("@/components/sections/ProjectsC
 
 const FEATURED_COUNT = 3;
 
+// Projects marked featured lead the grid; the rest keep their listed order.
+const orderedProjects = [...projects].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
+
 type View = "grid" | "3d";
 
 export default function ProjectsSection() {
@@ -26,15 +28,11 @@ export default function ProjectsSection() {
   const canShow3D = useMediaQuery("(min-width: 768px) and (hover: hover) and (prefers-reduced-motion: no-preference)");
   const in3D = canShow3D && view === "3d";
 
-  const visible = showAll ? projects : projects.slice(0, FEATURED_COUNT);
+  const visible = showAll ? orderedProjects : orderedProjects.slice(0, FEATURED_COUNT);
   const hiddenCount = projects.length - FEATURED_COUNT;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-    >
+    <div className="section-enter">
       <Section ariaLabelledby="projects-title">
         <SectionHeader title="Projects" subtitle="A showcase of my work" titleId="projects-title" />
 
@@ -86,6 +84,6 @@ export default function ProjectsSection() {
           </>
         )}
       </Section>
-    </motion.div>
+    </div>
   );
 }

@@ -87,7 +87,7 @@ export function SiteNav() {
                 <a
                   href={`#${link.id}`}
                   aria-current={active === link.id ? "location" : undefined}
-                  className={`${linkClass} ${active === link.id ? "text-violet-500" : ""}`}
+                  className={`${linkClass} ${active === link.id ? "text-violet-700 dark:text-violet-400" : ""}`}
                 >
                   {link.label}
                 </a>
@@ -96,6 +96,7 @@ export function SiteNav() {
           </ul>
           <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className={`${linkClass} border border-neutral-500/40`}>
             Resume
+            <span className="sr-only"> (opens in new tab)</span>
           </a>
           <SearchButton />
           <ThemeToggle />
@@ -126,7 +127,7 @@ export function SiteNav() {
                   href={`#${link.id}`}
                   onClick={() => setOpen(false)}
                   aria-current={active === link.id ? "location" : undefined}
-                  className={`${linkClass} w-full ${active === link.id ? "text-violet-500" : ""}`}
+                  className={`${linkClass} w-full ${active === link.id ? "text-violet-700 dark:text-violet-400" : ""}`}
                 >
                   {link.label}
                 </a>
@@ -135,6 +136,7 @@ export function SiteNav() {
             <li>
               <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className={`${linkClass} w-full`}>
                 Resume
+                <span className="sr-only"> (opens in new tab)</span>
               </a>
             </li>
           </ul>

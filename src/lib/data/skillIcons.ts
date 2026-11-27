@@ -4,7 +4,6 @@ export const skillIcons: Record<string, string> = {
   TypeScript: "/skills/typescript.svg",
   JavaScript: "/skills/javascript.svg",
   Rust: "/skills/rust.svg",
-  SQL: "/skills/sql.svg",
   FastAPI: "/skills/fastapi.svg",
   Django: "/skills/django.svg",
   Flask: "/skills/flask.svg",
@@ -23,7 +22,6 @@ export const skillIcons: Record<string, string> = {
 /** White-on-dark variants for icons whose dark parts disappear on a dark background. */
 export const skillIconsLight: Record<string, string> = {
   Rust: "/skills/rust-light.svg",
-  SQL: "/skills/sql-light.svg",
   Django: "/skills/django-light.svg",
   Flask: "/skills/flask-light.svg",
   "Node.js": "/skills/nodejs-light.svg",

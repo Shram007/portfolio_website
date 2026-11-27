@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
 import SkillIcon from "@/components/ui/SkillIcon";
@@ -8,11 +5,7 @@ import { skills } from "@/lib/data/skills";
 
 export default function SkillsSection() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-    >
+    <div className="section-enter">
       <Section ariaLabelledby="skills-title">
         <SectionHeader
           title="Skills"
@@ -39,6 +32,6 @@ export default function SkillsSection() {
           ))}
         </div>
       </Section>
-    </motion.div>
+    </div>
   );
 }

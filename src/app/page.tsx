@@ -7,10 +7,29 @@ import ContactSection from "@/components/sections/ContactSection";
 import LazyStarfield from "@/components/visuals/LazyStarfield";
 import AstronautGuide from "@/components/visuals/AstronautGuide";
 import Hero from "@/components/sections/Hero";
+import { GITHUB_URL, LINKEDIN_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { educationData } from "@/lib/data/education";
+
+// Structured data so search engines can show a proper profile result.
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: SITE_NAME,
+  url: SITE_URL,
+  jobTitle: "Software Engineer",
+  description: SITE_DESCRIPTION,
+  sameAs: [GITHUB_URL, LINKEDIN_URL],
+  alumniOf: educationData.map((edu) => ({ "@type": "CollegeOrUniversity", name: edu.school })),
+};
 
 export default function Home() {
   return (
     <main id="main" className="relative">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
+      />
+
       {/* moving stars background */}
       <LazyStarfield />
 

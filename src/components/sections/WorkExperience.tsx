@@ -91,11 +91,7 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ experiences }) => {
   const role = experiences[active];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-    >
+    <div className="section-enter">
       <Section ariaLabelledby="experience-title">
         <SectionHeader
           title="Work Experience"
@@ -241,7 +237,7 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ experiences }) => {
           </div>
         </div>
       </Section>
-    </motion.div>
+    </div>
   );
 };
 

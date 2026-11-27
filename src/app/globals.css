@@ -33,7 +33,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* font comes from Tailwind's system UI stack (San Francisco, Segoe UI, Roboto…), no download needed */
 }
 
 html {
@@ -42,10 +42,126 @@ html {
   scroll-padding-top: 4rem;
 }
 
+/* Sections fade up once on load. Pure CSS, so content shows even before
+   JavaScript runs, and it is skipped entirely with Reduce Motion on. */
+@keyframes section-enter {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+
+.section-enter {
+  animation: section-enter 0.6s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .section-enter { animation: none; }
 }
 
 .image-render-pixel {
   image-rendering: pixelated;
+}
+
+/* StardustButton */
+.pearl-button {
+  --pearl-radius: 100px;
+  position: relative;
+  cursor: pointer;
+  border: 0;
+  border-radius: var(--pearl-radius);
+  background-color: #0a1929;
+  transition: all 0.2s ease;
+  box-shadow:
+    inset 0 0.3rem 0.9rem rgba(255, 255, 255, 0.3),
+    inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.7),
+    inset 0 -0.4rem 0.9rem rgba(255, 255, 255, 0.5),
+    0 3rem 3rem rgba(0, 0, 0, 0.3),
+    0 1rem 1rem -0.6rem rgba(0, 0, 0, 0.8);
+}
+
+.pearl-button .pearl-wrap {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(129, 216, 255, 0.9);
+}
+
+.pearl-button .pearl-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  transform: translateY(2%);
+  mask-image: linear-gradient(to bottom, rgba(129, 216, 255, 1) 40%, transparent);
+}
+
+.pearl-button .pearl-wrap::before,
+.pearl-button .pearl-wrap::after {
+  content: "";
+  position: absolute;
+  transition: all 0.3s ease;
+}
+
+.pearl-button .pearl-wrap::before {
+  left: -15%;
+  right: -15%;
+  bottom: 25%;
+  top: -100%;
+  border-radius: 50%;
+  background-color: rgba(64, 180, 255, 0.15);
+}
+
+.pearl-button .pearl-wrap::after {
+  left: 6%;
+  right: 6%;
+  top: 12%;
+  bottom: 40%;
+  border-radius: 22px 22px 0 0;
+  box-shadow: inset 0 10px 8px -10px rgba(129, 216, 255, 0.6);
+  background: linear-gradient(180deg, rgba(64, 180, 255, 0.25) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%);
+}
+
+.pearl-button .pearl-label > span:nth-child(2),
+.pearl-button:is(:hover, :focus-visible) .pearl-label > span:nth-child(1) {
+  display: none;
+}
+
+.pearl-button:is(:hover, :focus-visible) .pearl-label > span:nth-child(2) {
+  display: inline-block;
+}
+
+.pearl-button:is(:hover, :focus-visible) {
+  box-shadow:
+    inset 0 0.3rem 0.5rem rgba(129, 216, 255, 0.4),
+    inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.7),
+    inset 0 -0.4rem 0.9rem rgba(64, 180, 255, 0.6),
+    0 3rem 3rem rgba(0, 0, 0, 0.3),
+    0 1rem 1rem -0.6rem rgba(0, 0, 0, 0.8);
+}
+
+.pearl-button:is(:hover, :focus-visible) .pearl-wrap::before {
+  transform: translateY(-5%);
+}
+
+.pearl-button:is(:hover, :focus-visible) .pearl-wrap::after {
+  opacity: 0.4;
+  transform: translateY(5%);
+}
+
+.pearl-button:is(:hover, :focus-visible) .pearl-label {
+  transform: translateY(-4%);
+}
+
+.pearl-button:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 0.3rem 0.5rem rgba(129, 216, 255, 0.5),
+    inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.8),
+    inset 0 -0.4rem 0.9rem #40b4ff66,
+    0 3rem 3rem rgba(0, 0, 0, 0.3),
+    0 1rem 1rem -0.6rem rgba(0, 0, 0, 0.8);
 }

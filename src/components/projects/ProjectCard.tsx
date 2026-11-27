@@ -3,7 +3,7 @@
 import * as React from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 import { ProjectCardProps } from "@/lib/types";
 
 // WebGL effect only needed on hover: keep three.js out of the initial bundle.
@@ -25,6 +25,21 @@ function useFancyHover() {
   return enabled;
 }
 
+/** True while the element's text is cut off by line-clamp. */
+function useIsClamped<T extends HTMLElement>(ref: React.RefObject<T | null>, enabled: boolean) {
+  const [clamped, setClamped] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el || !enabled) return;
+    const check = () => setClamped(el.scrollHeight > el.clientHeight + 1);
+    check();
+    const observer = new ResizeObserver(check);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref, enabled]);
+  return clamped;
+}
+
 export function ProjectCard({
   title,
   description,
@@ -39,6 +54,9 @@ export function ProjectCard({
   const hovered = fancy && active;
 
   const [expanded, setExpanded] = React.useState(false);
+  const descriptionId = React.useId();
+  const descriptionRef = React.useRef<HTMLParagraphElement>(null);
+  const clamped = useIsClamped(descriptionRef, !expanded);
 
   // Over the dark effect background everything turns light.
   const hoverText = hovered ? { color: "#ffffff" } : undefined;
@@ -90,23 +108,42 @@ export function ProjectCard({
           {title}
         </h3>
 
-        {/* Trimmed by default so the effect stays visible; click the text or "+N" to read it all */}
+        {/* Trimmed by default so the effect stays visible; "Read more" or "+N" shows it all */}
         <div className={cn("min-h-0", expanded ? "flex-1 overflow-y-auto" : "shrink-0")}>
           {description && (
-            <button
-              type="button"
-              onClick={() => setExpanded((v) => !v)}
-              aria-expanded={expanded}
-              title={expanded ? "Show less" : "Click to read the full description"}
-              className={cn(
-                "mt-2 block w-full cursor-pointer text-left text-sm leading-relaxed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500",
-                expanded ? "h-auto" : "line-clamp-3 h-[4.3rem]",
-                !hovered && "text-neutral-600 dark:text-neutral-300"
+            <>
+              <p
+                id={descriptionId}
+                ref={descriptionRef}
+                className={cn(
+                  "mt-2 text-sm leading-relaxed",
+                  !expanded && "line-clamp-3 h-[4.3rem]",
+                  !hovered && "text-neutral-600 dark:text-neutral-300"
+                )}
+                style={hoverMuted}
+              >
+                {description}
+              </p>
+              {/* the row is kept even when empty so every card's tags line up */}
+              {clamped || expanded ? (
+                <button
+                  type="button"
+                  onClick={() => setExpanded((v) => !v)}
+                  aria-expanded={expanded}
+                  aria-controls={descriptionId}
+                  className={cn(
+                    "mt-0.5 block h-6 cursor-pointer rounded-sm text-xs font-medium leading-6 underline underline-offset-4 hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500",
+                    !hovered && "text-violet-700 dark:text-violet-300"
+                  )}
+                  style={hoverText}
+                >
+                  {expanded ? "Show less" : "Read more"}
+                  <span className="sr-only"> about {title}</span>
+                </button>
+              ) : (
+                <div className="mt-0.5 h-6" aria-hidden />
               )}
-              style={hoverMuted}
-            >
-              {description}
-            </button>
+            </>
           )}
 
           {!!stack.length && (
