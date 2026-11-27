@@ -1,0 +1,28 @@
+/* The demo's own styles: the fonts the dashboard loads from Google (served from the demo
+   itself, since the site that hosts it allows only its own fonts) and the banner that says
+   what this is. Licenses: fonts/LICENSES.txt */
+@font-face { font-family: "Bricolage Grotesque"; font-weight: 600; font-display: swap; src: url("fonts/bricolage-grotesque-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Bricolage Grotesque"; font-weight: 700; font-display: swap; src: url("fonts/bricolage-grotesque-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Bricolage Grotesque"; font-weight: 800; font-display: swap; src: url("fonts/bricolage-grotesque-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Hanken Grotesk"; font-weight: 400; font-display: swap; src: url("fonts/hanken-grotesk-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Hanken Grotesk"; font-weight: 500; font-display: swap; src: url("fonts/hanken-grotesk-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Hanken Grotesk"; font-weight: 600; font-display: swap; src: url("fonts/hanken-grotesk-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Hanken Grotesk"; font-weight: 700; font-display: swap; src: url("fonts/hanken-grotesk-latin-700-normal.woff2") format("woff2"); }
+
+.demo-banner {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 9px 32px; font-family: var(--sans); font-size: 13px; line-height: 1.45;
+  background: var(--deep); color: var(--ink2);
+  border-bottom: 1px solid var(--line);
+}
+.demo-banner strong {
+  font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px;
+  background: var(--apricot); color: var(--on-fill);
+}
+.demo-banner span { flex: 1 1 320px; }
+.demo-banner button {
+  font: inherit; font-size: 12px; padding: 3px 12px; border-radius: 999px; cursor: pointer;
+  background: transparent; color: var(--ink); border: 1px solid var(--line2);
+}
+.demo-banner button:hover { background: var(--panel2); }
+@media (max-width: 760px) { .demo-banner { padding: 10px 16px; } }
