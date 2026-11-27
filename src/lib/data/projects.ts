@@ -54,6 +54,8 @@ const rawProjects: Omit<Project, "id">[] = [
     title: "Watch Together",
     description: "Self-hosted watch party that keeps viewers in sync with a server-authoritative timeline, NTP-style clock offsets and scheduled starts (two clients began playing 1 ms apart in testing), corrected by a proportional drift controller with hysteresis. Adds resumable chunked uploads, automatic ffmpeg conversion with an opt-in adaptive HLS ladder, and a peer-to-peer WebRTC video call.",
     stack: ["Node.js", "Express", "WebSockets", "WebRTC", "hls.js", "ffmpeg", "Tailscale"],
+    // Static demo with made-up films and a scripted friend, built in the private watch-together repo (node demo/build.js on its demo-mode branch) and copied to public/demos/watch-together.
+    demoUrl: "/demos/watch-together/index.html",
     effect: { bgClass: "bg-neutral-900", animationSpeed: 3.5, colors: [[96,165,250]], dotSize: 2 }
   },
   {
