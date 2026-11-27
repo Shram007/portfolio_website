@@ -10,6 +10,21 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    // Build output, installed packages, and static demo builds that come from other repos.
+    ignores: [
+      ".next/**",
+      "out/**",
+      "build/**",
+      "coverage/**",
+      "node_modules/**",
+      "next-env.d.ts",
+      "public/**",
+      "playwright-report/**",
+      "test-results/**",
+      ".lighthouseci/**",
+    ],
+  },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
 

@@ -18,8 +18,11 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
   },
   twitter: { card: "summary_large_image", title: `${SITE_NAME} - Portfolio`, description: SITE_DESCRIPTION },
-  // favicon.ico and apple-icon.png in this folder are picked up automatically.
-  icons: { icon: [{ url: "/icon.svg", type: "image/svg+xml" }] },
+  // favicon.ico in this folder is picked up automatically. iOS ignores SVG touch icons, so it gets a PNG.
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   metadataBase: new URL(SITE_URL),
 };
 

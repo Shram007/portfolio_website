@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test"
@@ -37,7 +37,7 @@
     "eslint-config-next": "^15.5.29",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^3.2.7"
+    "vitest": "^4.1.12"
   },
   "overrides": {
     "postcss": "^8.5.23"
