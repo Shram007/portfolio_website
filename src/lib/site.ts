@@ -1,6 +1,10 @@
 export const SITE_URL = "https://shram-kadia.vercel.app";
 export const SITE_NAME = "Shram Kadia";
-export const SITE_DESCRIPTION = "Full Stack Developer & Software Engineer Portfolio";
+export const SITE_DESCRIPTION =
+  "Software engineer building AI products end to end: RAG pipelines, LLM agents and voice apps. Projects with live demos, experience and contact.";
+
+export const GITHUB_URL = "https://github.com/Shram007";
+export const LINKEDIN_URL = "https://www.linkedin.com/in/shram-kadia";
 
 export const ROUTES = [""] as const;
 

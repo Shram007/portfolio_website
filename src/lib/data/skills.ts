@@ -1,10 +1,8 @@
-export interface SkillsData {
-  [category: string]: string[];
-}
+import type { SkillsData } from "@/lib/types";
 
 export const skills: SkillsData = {
   Languages: ["Python", "TypeScript", "JavaScript", "Rust", "SQL"],
-  Frameworks: ["FastAPI", "Django", "Flask", "Node.js", "React"],
+  "Frameworks & Runtimes": ["FastAPI", "Django", "Flask", "Node.js", "React"],
   "AI / LLM": [
     "LangChain",
     "RAG",

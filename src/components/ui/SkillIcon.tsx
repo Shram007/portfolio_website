@@ -1,6 +1,7 @@
 import Image from "next/image";
 import {
   Bot,
+  Database,
   Link2,
   ListChecks,
   Mic,
@@ -29,6 +30,7 @@ const fallbackIcons: Record<string, LucideIcon> = {
   Linux: Terminal,
   Cursor: MousePointer2,
   "Claude Code": Sparkles,
+  SQL: Database,
 };
 
 export default function SkillIcon({ name, className = "h-6 w-6" }: { name: string; className?: string }) {
