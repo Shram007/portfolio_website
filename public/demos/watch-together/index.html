@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Watch Together demo</title>
+  <style>
+    /* Rosé night. Every text/background pair here is at least 4.5:1. */
+    :root {
+      color-scheme: dark;
+      --bg:#140d18; --panel:#1f1525; --panel-2:#2a1d31; --line:#3b2a45;
+      --fg:#f7eaf1; --muted:#bfa9bd; --placeholder:#a8929f;
+      --accent:#b83a62; --accent-hover:#cc4a74; --accent-2:#f2a7c3;
+      --danger:#b3363a; --danger-text:#ff9a9a; --ok:#7fd1a8; --warn:#f2b766;
+      --mine:#7a2b4a;
+      --serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+      --r-control:10px; --r-panel:16px;
+      --header:60px;
+    }
+    * { box-sizing:border-box; }
+    html, body { height:100%; }
+    body { margin:0; font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--bg); color:var(--fg); }
+    [hidden] { display:none !important; }
+
+    input, select, button { font:inherit; color:var(--fg); border-radius:var(--r-control); border:1px solid var(--line); background:var(--panel-2); min-height:40px; padding:0 14px; }
+    input::placeholder { color:var(--placeholder); }
+    input:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline:2px solid var(--accent-2); outline-offset:2px; }
+    button { cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:background .15s, border-color .15s, transform .1s; }
+    button:hover { background:var(--line); }
+    button:active { transform:scale(.97); }
+    button.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
+    button.primary:hover { background:var(--accent-hover); border-color:var(--accent-hover); }
+    button.danger { background:var(--danger); border-color:var(--danger); color:#fff; }
+    button.ghost { background:transparent; border-color:transparent; }
+    button.ghost:hover { background:var(--panel-2); }
+    button.off { background:#4a2533; border-color:#7a3a52; }
+    svg.i { width:20px; height:20px; flex:none; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .serif { font-family:var(--serif); font-weight:400; }
+
+    /* ---- join ---- */
+    #join { min-height:100vh; display:grid; place-items:center; padding:16px; }
+    #join form { width:min(380px,100%); padding:32px; background:var(--panel); border:1px solid var(--line); border-radius:var(--r-panel); display:flex; flex-direction:column; gap:12px; }
+    #join h1 { margin:0; font-size:32px; }
+    #join p { margin:0 0 8px; color:var(--muted); font-size:14px; }
+    #join input, #join button { width:100%; min-height:44px; }
+    #join .heart { color:var(--accent-2); }
+
+    /* ---- room shell ---- */
+    #room { height:100vh; display:flex; flex-direction:column; }
+    header { height:var(--header); flex:none; display:flex; align-items:center; gap:12px; padding:0 16px; border-bottom:1px solid var(--line); background:var(--panel); }
+    .brand { display:flex; align-items:baseline; gap:8px; white-space:nowrap; }
+    .brand b { font:400 20px var(--serif); }
+    .brand span { color:var(--muted); font-size:14px; }
+    #nowShowing { flex:1; min-width:0; text-align:center; color:var(--muted); font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    #nowShowing em { font:italic 400 16px var(--serif); color:var(--fg); }
+    .head-actions { display:flex; align-items:center; gap:8px; }
+    #logoutForm:not([hidden]) { display:contents; }
+    #people { display:flex; align-items:center; gap:4px; margin-right:4px; }
+    .avatar { position:relative; width:32px; height:32px; border-radius:50%; display:grid; place-items:center; background:var(--panel-2); border:1px solid var(--line); font-size:14px; font-weight:600; }
+    .avatar.me { background:var(--mine); border-color:var(--mine); }
+    .avatar .dot { position:absolute; right:-2px; bottom:-2px; width:12px; height:12px; border-radius:50%; background:var(--ok); border:2px solid var(--panel); }
+    .avatar.loading .dot { background:var(--warn); animation:pulse 1s infinite alternate; }
+    @keyframes pulse { to { opacity:.35; } }
+    #peopleText { color:var(--muted); font-size:14px; white-space:nowrap; }
+    #hostNote { color:var(--muted); font-size:14px; white-space:nowrap; }
+    #convBadge { font-size:12px; color:var(--accent-2); white-space:nowrap; }
+
+    main { flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:16px; padding:16px; }
+    #side { min-height:0; display:flex; flex-direction:column; gap:12px; }
+
+    /* ---- stage ---- */
+    #stage { position:relative; min-height:0; height:100%; border-radius:var(--r-panel); overflow:hidden; background:#000; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; }
+    #video { width:100%; height:100%; object-fit:contain; display:block; background:#000; }
+    #stage.drop { outline:3px dashed var(--accent-2); outline-offset:-6px; }
+    #stage.idle { cursor:none; }
+    #emptyStage { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; text-align:center; padding:24px; background:var(--panel); }
+    #emptyStage h2 { margin:0; font-size:28px; }
+    #emptyStage p { margin:0; color:var(--muted); font-size:14px; }
+    #stallChip { position:absolute; top:16px; left:50%; transform:translateX(-50%); z-index:4; padding:8px 14px; border-radius:999px; background:rgba(20,13,24,.92); border:1px solid var(--line); font-size:14px; display:flex; gap:8px; align-items:center; }
+    #stallChip::before { content:""; width:10px; height:10px; border-radius:50%; background:var(--warn); animation:pulse 1s infinite alternate; }
+    #skipFlash { position:absolute; top:50%; transform:translateY(-50%); z-index:4; padding:10px 16px; border-radius:999px; background:rgba(20,13,24,.85); font-weight:600; pointer-events:none; opacity:0; transition:opacity .2s; }
+    #skipFlash.show { opacity:1; }
+    #floaters { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:2; }
+    .floater { position:absolute; bottom:18%; font-size:40px; animation:floatup 2.4s ease-out forwards; }
+    @keyframes floatup { from { transform:translateY(0) scale(.8); opacity:1; } to { transform:translateY(-55vh) scale(1.3); opacity:0; } }
+
+    /* custom control bar */
+    #controls { position:absolute; left:12px; right:12px; bottom:12px; z-index:5; display:flex; align-items:center; gap:4px; padding:6px 10px; border-radius:14px; background:rgba(20,13,24,.88); border:1px solid var(--line); transition:opacity .3s; }
+    #stage.idle #controls, #stage.idle #fsBar { opacity:0; pointer-events:none; }
+    #controls button { min-height:40px; min-width:40px; padding:0 8px; background:transparent; border-color:transparent; }
+    #controls button:hover { background:var(--panel-2); }
+    #playBtn { width:44px; height:44px; border-radius:50% !important; background:var(--accent) !important; color:#fff; margin:0 2px; }
+    #playBtn:hover { background:var(--accent-hover) !important; }
+    .skip { position:relative; }
+    .skip small { position:absolute; font-size:9px; font-weight:700; top:50%; left:50%; transform:translate(-50%,-38%); pointer-events:none; }
+    .time { font-size:13px; font-variant-numeric:tabular-nums; color:var(--fg); white-space:nowrap; padding:0 6px; }
+    #seekWrap { position:relative; flex:1; height:40px; display:flex; align-items:center; min-width:60px; }
+    #seekTrack { position:relative; width:100%; height:6px; border-radius:999px; background:var(--line); transition:height .15s; }
+    #seekWrap:hover #seekTrack { height:10px; }
+    #seekBuffered, #seekPlayed { position:absolute; left:0; top:0; bottom:0; border-radius:999px; }
+    #seekBuffered { background:#5a4060; }
+    #seekPlayed { background:var(--accent-2); }
+    #seekKnob { position:absolute; top:50%; width:22px; height:22px; transform:translate(-50%,-50%); color:var(--accent-2); pointer-events:none; }
+    #seekKnob svg { width:22px; height:22px; fill:currentColor; stroke:none; }
+    #seek { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; margin:0; }
+    #seekTip { position:absolute; bottom:44px; transform:translateX(-50%); padding:4px 8px; border-radius:8px; background:var(--panel); border:1px solid var(--line); font-size:12px; pointer-events:none; white-space:nowrap; }
+    #vol { width:80px; accent-color:var(--accent-2); min-height:0; padding:0; border:0; background:transparent; }
+
+    /* ---- side column ---- */
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:var(--r-panel); }
+    #call { padding:8px; }
+    #videos { position:relative; border-radius:12px; overflow:hidden; background:#000; aspect-ratio:16/9; }
+    #remoteVideo { width:100%; height:100%; object-fit:cover; display:block; }
+    /* Above #callEmpty, which comes later in the markup, so you can see yourself while you wait. */
+    #selfVideo { position:absolute; z-index:1; right:8px; bottom:8px; width:30%; aspect-ratio:16/9; object-fit:cover; border:2px solid var(--panel); border-radius:8px; transform:scaleX(-1); background:#000; }
+    #selfVideo:not([data-live]) { display:none; }
+    #callEmpty { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:var(--panel-2); text-align:center; padding:12px; }
+    #callEmpty .avatar { width:56px; height:56px; font-size:22px; }
+    #callEmpty p { margin:0; color:var(--muted); font-size:14px; }
+    #callBar { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+    #callBar button { flex:1; min-width:max-content; }
+
+    #reactions, #fsReactions { display:flex; gap:6px; justify-content:space-between; }
+    #reactions button, #fsReactions button { flex:1; min-height:44px; padding:0; font-size:22px; border-radius:999px; background:var(--panel); }
+    #reactions button:hover, #fsReactions button:hover { background:var(--panel-2); transform:translateY(-2px); }
+
+    #chat { flex:1; min-height:220px; display:flex; flex-direction:column; overflow:hidden; }
+    #log { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; }
+    #log:empty::before { content:"Say hi before the movie starts"; margin:auto; color:var(--muted); font-size:14px; }
+    .msg { max-width:85%; padding:8px 12px; border-radius:16px 16px 16px 4px; background:var(--panel-2); overflow-wrap:anywhere; font-size:15px; }
+    .msg.me { align-self:flex-end; background:var(--mine); border-radius:16px 16px 4px 16px; }
+    .msg .who { display:block; font-size:12px; color:var(--accent-2); margin-bottom:2px; }
+    #chatForm { display:flex; gap:8px; padding:8px; border-top:1px solid var(--line); }
+    #chatInput { flex:1; min-width:0; }
+
+    /* ---- notice (status / errors) ---- */
+    #notice { position:fixed; left:50%; bottom:24px; transform:translate(-50%, 20px); z-index:50; max-width:min(560px, calc(100% - 32px)); padding:10px 16px; border-radius:12px; background:var(--panel); border:1px solid var(--line); font-size:14px; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; }
+    #notice.show { opacity:1; transform:translate(-50%, 0); }
+
+    /* ---- library drawer ---- */
+    #library { margin:0 0 0 auto; height:100vh; max-height:100vh; width:min(460px,100vw); padding:0; border:0; border-left:1px solid var(--line); background:var(--panel); color:var(--fg); }
+    #library::backdrop { background:rgba(8,4,10,.6); }
+    .lib-head { display:flex; align-items:center; justify-content:space-between; padding:16px; border-bottom:1px solid var(--line); }
+    .lib-head h2 { margin:0; font-size:24px; }
+    .lib-body { padding:16px; display:flex; flex-direction:column; gap:12px; height:calc(100vh - 73px - 49px); overflow-y:auto; }
+    #dropZone { border:2px dashed var(--line); border-radius:var(--r-panel); padding:16px; text-align:center; color:var(--muted); font-size:14px; }
+    #dropZone p { margin:8px 0 0; }
+    #dropZone.drop { border-color:var(--accent-2); color:var(--fg); }
+    #jobsList:empty { display:none; }
+    .job { padding:8px 12px; border-radius:var(--r-control); background:var(--panel-2); font-size:14px; }
+    .job progress { width:100%; accent-color:var(--accent-2); }
+    .job.failed { color:var(--danger-text); }
+    #fileList { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+    .file { padding:12px; border-radius:12px; border:1px solid var(--line); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 8px; align-items:center; }
+    .file.current { border-color:var(--accent); }
+    .file .title { font-weight:600; overflow-wrap:anywhere; }
+    .file .meta { grid-column:1; color:var(--muted); font-size:12px; }
+    .file .badge { font-size:12px; padding:2px 8px; border-radius:999px; background:var(--panel-2); color:var(--accent-2); margin-left:6px; font-weight:400; }
+    .file .badge.warn { color:var(--warn); }
+    .file .actions { grid-column:2; grid-row:1 / span 2; display:flex; gap:6px; }
+    .file .del { color:var(--danger-text); }
+    .file .more { grid-column:1 / -1; display:flex; gap:4px; flex-wrap:wrap; margin-top:4px; }
+    .file .more button { min-height:32px; padding:0 10px; font-size:13px; color:var(--accent-2); }
+    .lib-foot { padding:12px 16px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+    #queueBox h3 { margin:0 0 8px; font:400 18px var(--serif); }
+    #queueList { margin:0; padding:0 0 0 20px; display:flex; flex-direction:column; gap:6px; }
+    #queueList li { padding-left:4px; }
+    #queueList li > div { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    #queueList button { min-height:32px; font-size:13px; }
+
+    /* ---- subtitles, track menu, ready check ---- */
+    #subs { position:absolute; left:5%; right:5%; bottom:28px; z-index:3; display:flex; flex-direction:column; align-items:center; gap:4px; pointer-events:none; text-align:center; transition:bottom .3s; }
+    #stage:not(.idle) #subs { bottom:84px; }
+    #subs .cue { display:inline-block; padding:4px 12px; border-radius:8px; background:rgba(10,6,12,.78); color:#fff; font-size:clamp(16px, 2.2vw, 30px); line-height:1.35; white-space:pre-line; }
+    .cc { font-size:12px; font-weight:700; border:2px solid currentColor; border-radius:4px; padding:0 3px; line-height:1.3; }
+    #trackBtn.on .cc { background:var(--accent-2); color:var(--bg); border-color:var(--accent-2); }
+    #trackMenu { position:absolute; right:12px; bottom:76px; z-index:7; width:240px; max-height:60%; overflow-y:auto; padding:6px; border-radius:14px; background:var(--panel); border:1px solid var(--line); box-shadow:0 10px 40px rgba(0,0,0,.5); }
+    #trackMenu .menu-title { padding:8px 10px 4px; font-size:12px; color:var(--muted); }
+    #trackMenu .menu-item { width:100%; justify-content:flex-start; min-height:36px; background:transparent; border-color:transparent; font-size:14px; }
+    #trackMenu .menu-item:hover { background:var(--panel-2); }
+    #trackMenu .menu-item.on::before { content:"♥"; color:var(--accent-2); }
+    #trackMenu .menu-item.add { color:var(--accent-2); }
+    #readyBtn { color:var(--accent-2); font-weight:600; }
+    #readyCard { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:8; width:min(340px, calc(100% - 32px)); padding:20px; border-radius:16px; background:var(--panel); border:1px solid var(--line); text-align:center; display:flex; flex-direction:column; gap:12px; box-shadow:0 10px 40px rgba(0,0,0,.5); }
+    #readyCard h3 { margin:0; font:400 22px var(--serif); }
+    #readyCard p { margin:0; color:var(--muted); font-size:14px; }
+    #readyCard .row { display:flex; gap:8px; justify-content:center; }
+
+    /* ---- fullscreen overlay ---- */
+    #fsCall { position:absolute; right:20px; bottom:150px; width:320px; min-width:200px; max-width:60%; z-index:6; resize:horizontal; overflow:hidden; cursor:grab; border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,.6); }
+    #fsCall:active { cursor:grabbing; }
+    #fsCall #call { border:0; padding:6px; background:rgba(31,21,37,.94); }
+    #fsCall #callBar button { min-height:36px; font-size:14px; padding:0 10px; }
+    #toasts { position:absolute; left:20px; top:20px; z-index:6; display:flex; flex-direction:column; gap:6px; max-width:40%; pointer-events:none; }
+    .toast { background:rgba(31,21,37,.92); border:1px solid var(--line); padding:8px 12px; border-radius:12px; overflow-wrap:anywhere; animation:toast 7s forwards; }
+    .toast b { color:var(--accent-2); font-weight:600; }
+    @keyframes toast { 0% { opacity:0; transform:translateY(-6px); } 4%, 85% { opacity:1; transform:none; } 100% { opacity:0; } }
+    #fsBar { display:none; }
+    #stage:fullscreen { border:0; border-radius:0; }
+    #stage:fullscreen #fsBar { display:flex; position:absolute; left:12px; right:12px; bottom:76px; z-index:5; gap:10px; align-items:center; padding:8px; background:rgba(20,13,24,.85); border:1px solid var(--line); border-radius:14px; transition:opacity .3s; }
+    #fsBar #fsReactions { flex:none; }
+    #fsBar #fsReactions button { width:44px; flex:none; background:transparent; border-color:transparent; }
+    #fsChat { flex:1; display:flex; }
+    #fsChatInput { flex:1; min-width:0; }
+
+    /* ---- popped-out call window ---- */
+    body.pip { margin:0; background:var(--bg); }
+    body.pip #call { border:0; border-radius:0; height:100vh; display:flex; flex-direction:column; padding:6px; }
+    body.pip #videos { flex:1; min-height:0; aspect-ratio:auto; }
+
+    /* ---- phones and narrow windows: movie, then the call, then chat ---- */
+    @media (max-width: 860px) {
+      #room { height:auto; min-height:100vh; }
+      header { padding:0 12px; gap:8px; }
+      .brand span, #peopleText, #hostNote, #nowShowing, .label { display:none; }
+      .brand { flex:1; min-width:0; overflow:hidden; }
+      .brand b { font-size:18px; overflow:hidden; text-overflow:ellipsis; }
+      .head-actions { gap:2px; }
+      header button { padding:0 8px; min-width:40px; }
+      main { grid-template-columns:1fr; padding:12px; gap:12px; }
+      #stage { height:auto; aspect-ratio:16/9; }
+      #stage:fullscreen { aspect-ratio:auto; height:100%; }
+      #vol, #timeTotal, #timeSep { display:none; }
+      #controls { left:6px; right:6px; bottom:6px; padding:2px 4px; gap:0; }
+      #chat { min-height:50vh; }
+    }
+  </style>
+  <link rel="stylesheet" href="demo-files/demo.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4h4"/></symbol>
+    <symbol id="i-fwd" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v4h-4"/></symbol>
+    <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></symbol>
+    <symbol id="i-full" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+    <symbol id="i-exitfull" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
+    <symbol id="i-lib" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5M16 4v5"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1"/><path d="M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.4C1.2 8.4 3.3 5 6.8 5c2 0 3.6 1.1 5.2 3 1.6-1.9 3.2-3 5.2-3 3.5 0 5.6 3.4 4.3 6.6C19.5 16.4 12 21 12 21z"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  </defs>
+</svg>
+
+<div id="join">
+  <form id="joinForm">
+    <h1 class="serif">Watch Together <span class="heart">♥</span></h1>
+    <p>Movie night for two. Pick a room code and share it with your person.</p>
+    <p class="demo-note">This is a demo. Any name and room code works, and a pretend friend joins you.</p>
+    <input id="name" placeholder="Your name" maxlength="24" autocomplete="nickname" aria-label="Your name">
+    <input id="code" placeholder="Room code, like date-night" autocomplete="off" aria-label="Room code">
+    <button id="joinBtn" class="primary" type="submit">Join room</button>
+  </form>
+</div>
+
+<div id="room" hidden>
+  <div class="demo-banner" role="note">
+    <span class="demo-pill">Demo</span>
+    <span class="demo-text">Made-up films and a pretend friend called Sam. Everything runs in your browser: no server, and no camera or mic.</span>
+    <button id="demoSecondTab" type="button">Open a second tab</button>
+    <button id="demoReset" class="ghost" type="button">Reset demo</button>
+  </div>
+  <header>
+    <div class="brand"><b>Watch Together</b><span id="roomLabel"></span></div>
+    <div id="nowShowing"></div>
+    <div class="head-actions">
+      <div id="people" aria-label="Who's here"></div>
+      <span id="peopleText"></span>
+      <span id="hostNote"></span>
+      <span id="convBadge"></span>
+      <button id="inviteBtn" class="ghost" type="button" title="Copy invite link"><svg class="i"><use href="#i-link"/></svg><span class="label">Invite</span></button>
+      <button id="lockBtn" class="ghost" type="button" title="Only you can play, pause, seek or change the movie" hidden><svg class="i"><use href="#i-unlock"/></svg><span class="label">Lock</span></button>
+      <button id="libraryBtn" type="button" title="Library: pick, upload, convert or delete movies"><svg class="i"><use href="#i-lib"/></svg><span class="label">Library</span></button>
+      <form id="logoutForm" method="post" action="/logout" hidden><button class="ghost" type="submit" title="Sign out of this browser">Sign out</button></form>
+    </div>
+  </header>
+
+  <main>
+    <div id="stage">
+      <video id="video" playsinline preload="auto"></video>
+      <div id="emptyStage">
+        <h2 class="serif">Pick tonight's movie</h2>
+        <p>Choose something from the library, or upload one.</p>
+        <button id="emptyLibraryBtn" class="primary" type="button"><svg class="i"><use href="#i-lib"/></svg>Open library</button>
+      </div>
+      <div id="floaters"></div>
+      <div id="subs" aria-live="off"></div>
+      <div id="readyCard" hidden role="dialog" aria-live="polite"></div>
+      <div id="trackMenu" hidden role="menu" aria-label="Subtitles and audio"></div>
+      <input id="subInput" type="file" accept=".srt,.vtt" hidden>
+      <div id="stallChip" hidden></div>
+      <div id="skipFlash"></div>
+      <div id="toasts"></div>
+      <div id="fsCall" hidden></div>
+      <div id="fsBar">
+        <div id="fsReactions"></div>
+        <form id="fsChat"><input id="fsChatInput" placeholder="Message" maxlength="500" autocomplete="off" aria-label="Message"></form>
+      </div>
+      <div id="controls" hidden>
+        <button id="backBtn" class="skip" type="button" title="Back 10 seconds (←)" aria-label="Back 10 seconds"><svg class="i"><use href="#i-back"/></svg><small>10</small></button>
+        <button id="playBtn" type="button" title="Play (space)" aria-label="Play"><svg class="i"><use href="#i-play"/></svg></button>
+        <button id="fwdBtn" class="skip" type="button" title="Forward 10 seconds (→)" aria-label="Forward 10 seconds"><svg class="i"><use href="#i-fwd"/></svg><small>10</small></button>
+        <button id="readyBtn" type="button" title="Ask if everyone's ready, then start together" hidden>Ready?</button>
+        <span class="time" id="timeCur">0:00</span>
+        <div id="seekWrap">
+          <div id="seekTrack"><div id="seekBuffered"></div><div id="seekPlayed"></div></div>
+          <div id="seekKnob"><svg><use href="#i-heart"/></svg></div>
+          <input id="seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Seek">
+          <div id="seekTip" hidden></div>
+        </div>
+        <span class="time" id="timeTotal">0:00</span>
+        <button id="muteBtn" type="button" title="Mute (M)" aria-label="Mute"><svg class="i"><use href="#i-vol"/></svg></button>
+        <input id="vol" type="range" min="0" max="1" step="0.05" value="1" aria-label="Movie volume">
+        <button id="trackBtn" type="button" title="Subtitles, audio and quality (C)" aria-label="Subtitles, audio and quality" aria-haspopup="menu"><span class="cc">CC</span></button>
+        <button id="fsBtn" type="button" title="Fullscreen with call and chat (F)" aria-label="Fullscreen"><svg class="i"><use href="#i-full"/></svg></button>
+      </div>
+    </div>
+
+    <div id="side">
+      <div id="call" class="card">
+        <div id="videos">
+          <video id="remoteVideo" autoplay playsinline></video>
+          <video id="selfVideo" autoplay playsinline muted></video>
+          <div id="callEmpty">
+            <div class="avatar" id="callEmptyAvatar">♥</div>
+            <p id="callEmptyText">Start a call to see each other</p>
+          </div>
+        </div>
+        <div id="callBar">
+          <button id="callStart" class="primary" type="button">Start call</button>
+          <button id="micBtn" type="button" hidden>Mute</button>
+          <button id="camBtn" type="button" hidden>Camera off</button>
+          <button id="callEnd" class="danger" type="button" hidden>Hang up</button>
+          <button id="popoutBtn" type="button" title="Float the call above other windows">Pop out</button>
+        </div>
+      </div>
+      <div id="reactions"></div>
+      <aside id="chat" class="card">
+        <div id="log" aria-live="polite"></div>
+        <form id="chatForm">
+          <input id="chatInput" placeholder="Message" maxlength="500" autocomplete="off" aria-label="Message">
+          <button class="primary" type="submit">Send</button>
+        </form>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<dialog id="library" aria-labelledby="libTitle">
+  <div class="lib-head">
+    <h2 id="libTitle" class="serif">Library</h2>
+    <button id="libClose" class="ghost" type="button" aria-label="Close library"><svg class="i"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="lib-body">
+    <div id="dropZone">
+      <button id="uploadBtn" class="primary" type="button"><svg class="i"><use href="#i-upload"/></svg>Upload a movie</button>
+      <p>or drop a file here. Any format: it's converted for every browser if needed.</p>
+      <input id="uploadInput" type="file" accept="video/*,.mkv,.avi,.ts,.m2ts,.mts,.wmv,.flv,.mpg,.mpeg" hidden>
+    </div>
+    <div id="jobsList"></div>
+    <section id="queueBox" hidden>
+      <h3>Up next</h3>
+      <ol id="queueList"></ol>
+    </section>
+    <ul id="fileList"></ul>
+  </div>
+  <div class="lib-foot" id="storage"></div>
+</dialog>
+
+<div id="notice" role="status" aria-live="polite"></div>
+
+<script type="module" src="demo-files/demo.js"></script>
+<script type="module" src="app.js"></script>
+<script type="module" src="demo-files/extras.js"></script>
+</body>
+</html>

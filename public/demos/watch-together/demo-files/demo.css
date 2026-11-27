@@ -1,0 +1,50 @@
+/* The demo's own styles, on top of the app's Rosé night theme (its colours and fonts come from
+   index.html). Only the banner, the sync meter and the things-to-try list are new. */
+
+/* ---- banner ---- */
+.demo-banner { flex:none; display:flex; align-items:center; gap:10px 12px; flex-wrap:wrap; padding:8px 16px; background:var(--panel-2); border-bottom:1px solid var(--line); font-size:14px; color:var(--muted); }
+.demo-pill { font:italic 400 16px var(--serif); color:var(--accent-2); padding:0 10px; border:1px solid var(--accent-2); border-radius:999px; line-height:24px; }
+.demo-text { flex:1 1 280px; }
+.demo-banner button { min-height:32px; padding:0 12px; font-size:14px; }
+#demoSecondTab { border-color:var(--accent-2); color:var(--accent-2); background:transparent; }
+#demoSecondTab:hover { background:var(--line); }
+#join .demo-note { margin:-4px 0 8px; color:var(--accent-2); font-size:13px; }
+
+/* Deleting is turned off in the demo, so its button isn't offered. */
+.file .del { display:none; }
+
+/* ---- sync meter ---- */
+.demo-meter { position:absolute; top:16px; left:16px; z-index:4; display:flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; background:rgba(20,13,24,.82); border:1px solid var(--line); font-size:13px; font-variant-numeric:tabular-nums; pointer-events:none; transition:opacity .3s; }
+.demo-meter .dot { width:8px; height:8px; border-radius:50%; background:var(--ok); }
+.demo-meter[data-kind="far"] .dot { background:var(--warn); }
+.demo-meter[data-kind="paused"] .dot { background:var(--accent-2); }
+.demo-meter[data-kind="wait"] .dot { background:var(--accent-2); animation:pulse .5s infinite alternate; }
+/* Quieter while the controls are hidden, so it doesn't sit on the film at full strength. */
+#stage.idle .demo-meter { opacity:.55; }
+#stage:fullscreen .demo-meter { top:20px; left:auto; right:20px; }
+
+/* ---- things to try ---- */
+/* The list adds height to the side column; on a short window it scrolls rather than cut off the chat box. */
+#side { overflow-y:auto; }
+.demo-tour { padding:10px 14px 12px; flex:none; }
+.demo-tour-head { display:flex; align-items:center; gap:8px; }
+.demo-tour h2 { margin:0; font-size:18px; }
+.demo-tour .count { flex:1; color:var(--muted); font-size:12px; }
+.demo-tour-head button { min-height:30px; padding:0 10px; font-size:13px; color:var(--accent-2); }
+.demo-tour ul { list-style:none; margin:6px 0 0; padding:0; display:flex; flex-direction:column; gap:5px; font-size:14px; }
+.demo-tour li { display:flex; align-items:center; gap:10px; color:var(--fg); }
+.demo-tour li.done { color:var(--muted); }
+.demo-tour .tick { flex:none; width:16px; height:16px; border-radius:50%; border:1.5px solid var(--line); display:grid; place-items:center; }
+.demo-tour li.next .tick { border-color:var(--accent-2); }
+.demo-tour li.done .tick { background:var(--accent-2); border-color:var(--accent-2); }
+.demo-tour li.done .tick::after { content:""; width:7px; height:4px; margin-top:-2px; border:solid var(--bg); border-width:0 0 2px 2px; transform:rotate(-45deg); }
+.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+
+@media (max-width: 860px) {
+  .demo-banner { padding:8px 12px; font-size:13px; }
+  .demo-text { flex-basis:100%; order:2; }
+  .demo-banner button { order:3; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-meter[data-kind="wait"] .dot { animation:none; }
+}
