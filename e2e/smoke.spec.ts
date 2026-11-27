@@ -92,14 +92,23 @@ test("projects grid expands and the 3D view loads on demand", async ({ page }) =
 test("project card text expands on click and collapses again", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
-  const card = page.locator("#project-list > li").nth(2);
-  const toggle = card.getByRole("button", { name: /^Travel-planning/ });
-  await expect(toggle).toHaveAttribute("aria-expanded", "false");
-  await toggle.click();
-  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await page.getByRole("button", { name: /show all projects/i }).click();
+  const card = page
+    .locator("#project-list > li")
+    .filter({ has: page.getByRole("heading", { name: "Travel Agent Atlas" }) });
+  const readMore = card.getByRole("button", { name: /^read more/i });
+  await expect(readMore).toHaveAttribute("aria-expanded", "false");
+  await readMore.click();
+  await expect(card.getByRole("button", { name: /^show less/i })).toHaveAttribute("aria-expanded", "true");
   await expect(card.getByText("DeepSeek-R1", { exact: true })).toBeVisible();
   await card.getByRole("button", { name: /show fewer/i }).click();
-  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(card.getByRole("button", { name: /^read more/i })).toHaveAttribute("aria-expanded", "false");
+});
+
+test("featured projects lead the grid", async ({ page }) => {
+  await page.goto("/");
+  const titles = page.locator("#project-list > li h3");
+  await expect(titles).toHaveText(["ClinicFlow", "Office Hub", "Voice Tutor: Whiteboard Interviewer"]);
 });
 
 test("experience: hover, keyboard and click focus a role", async ({ page }) => {

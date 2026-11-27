@@ -5,6 +5,7 @@ export type { Project };
 const rawProjects: Omit<Project, "id">[] = [
   {
     title: "ClinicFlow",
+    featured: true,
     description: "Turns a doctor's voice recording into a structured SOAP note with audio readback through a three-stage STT, LLM and TTS pipeline. Enforces JSON-only output across 6 clinical keys with a raw-transcript fallback, and ships prompt versioning plus an LLM-as-judge eval pipeline that scores clinical accuracy per release.",
     stack: ["STT", "LLM", "TTS", "LLM-as-judge evals", "Docker", "CI/CD"],
     demoUrl: "https://clinicflow-skeleton.vercel.app/",
@@ -28,6 +29,7 @@ const rawProjects: Omit<Project, "id">[] = [
   },
   {
     title: "Office Hub",
+    featured: true,
     description: "Local dashboard that turns every Claude Code project into a pixel-art desk coloured by live session status, fed by Claude Code hooks over Server-Sent Events with no API keys. A push-to-talk front desk (faster-whisper in, a persistent Claude process, Piper out) routes spoken requests to the right desk and session, and built-in terminals resume any session. Design is documented in 40+ ADRs.",
     stack: ["TypeScript", "Node.js", "Canvas", "Server-Sent Events", "Claude Code hooks", "node-pty", "faster-whisper", "Piper", "Vitest", "Playwright"],
     // Static demo with made-up data, built in the private office-hub repo (npm run build:demo) and copied to public/demos/office-hub.
@@ -36,6 +38,7 @@ const rawProjects: Omit<Project, "id">[] = [
   },
   {
     title: "Voice Tutor: Whiteboard Interviewer",
+    featured: true,
     description: "Spoken mock coding interview that runs locally: push-to-talk audio streams over a WebSocket to faster-whisper, Claude (or Ollama offline) plays the interviewer, and Piper speaks each reply sentence by sentence. Runs candidate Python against test cases in an isolated, time-limited process, scores submissions on 4 rubrics, and checks every hint with a second model pass so help never gives the solution away.",
     stack: ["Python", "FastAPI", "WebSockets", "faster-whisper", "Piper TTS", "Claude", "Ollama", "CodeMirror"],
     // Static demo with a scripted interviewer and made-up data, built in the private voice-tutor repo (python -m demo.build) and copied to public/demos/voice-tutor.
@@ -62,7 +65,6 @@ const rawProjects: Omit<Project, "id">[] = [
     title: "Vital View: Your AI Copilot for Doctors",
     description: "Voice-first AI agent that transforms chaotic medical data review into streamlined, clinically-aware briefings for healthcare professionals.",
     stack: ["React", "Node.js", "AI/ML", "Voice Recognition", "Healthcare APIs"],
-    demoUrl: "https://drcomd-frontend.onrender.com/",
     repoUrl: "https://github.com/Shram007/VitalView.git",
     effect: { bgClass: "bg-neutral-900", animationSpeed: 4, colors: [[248,113,113]], dotSize: 2 }
   },

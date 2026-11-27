@@ -15,23 +15,13 @@ export interface Project {
     opacities?: number[];
   };
   image?: string;
+  /** Shown in the first row of the grid before "Show all projects". */
+  featured?: boolean;
 }
 
-export interface ProjectCardProps {
-  title: string;
-  description?: string;
-  stack?: string[];
-  repoUrl?: string;
-  demoUrl?: string;
-  effect?: {
-    bgClass?: string;
-    animationSpeed?: number;
-    colors?: number[][];
-    dotSize?: number;
-    opacities?: number[];
-  };
+export type ProjectCardProps = Pick<Project, "title" | "description" | "stack" | "repoUrl" | "demoUrl" | "effect"> & {
   className?: string;
-}
+};
 
 export interface SkillsData {
   [category: string]: string[];
