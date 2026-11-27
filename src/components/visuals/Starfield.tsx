@@ -4,9 +4,10 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useMemo, useRef } from "react";
 import { useTheme } from "next-themes";
+import { useMediaQuery } from "@/lib/hooks";
 
 // Low-cost moving starfield. Honors reduced-motion.
-function Stars({ count = 800, starColor = "#ffffff" }) {
+function Stars({ count = 800, starColor = "#ffffff", still = false }) {
   const pointsRef = useRef<THREE.Points>(null!);
 
   const { positions, speeds } = useMemo(() => {
@@ -22,13 +23,8 @@ function Stars({ count = 800, starColor = "#ffffff" }) {
     return { positions, speeds };
   }, [count]);
 
-  // Respect reduced-motion
-  const prefersReduced =
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-
   useFrame(() => {
-    if (prefersReduced) return;
+    if (still) return;
     const p = pointsRef.current;
     const array = (p.geometry.attributes.position as THREE.BufferAttribute).array as Float32Array;
     for (let i = 0; i < count; i++) {
@@ -62,10 +58,19 @@ export default function Starfield() {
 
   const starColor = isDarkMode ? "#ffffff" : "#000000";
 
+  // With Reduce Motion on, draw the stars once and stop the render loop,
+  // instead of re-rendering an unchanged frame 60 times a second.
+  const still = useMediaQuery("(prefers-reduced-motion: reduce)");
+
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 opacity-30 dark:opacity-100">
-      <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
-        <Stars starColor={starColor} />
+    <div className="pointer-events-none fixed inset-0 -z-10 opacity-30 dark:opacity-100" aria-hidden="true">
+      <Canvas
+        camera={{ position: [0, 0, 10], fov: 75 }}
+        frameloop={still ? "demand" : "always"}
+        dpr={[1, 1.5]}
+        gl={{ antialias: false, powerPreference: "low-power" }}
+      >
+        <Stars starColor={starColor} still={still} />
       </Canvas>
     </div>
   );

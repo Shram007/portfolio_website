@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { GraduationCap } from "lucide-react";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -9,11 +6,7 @@ import { educationData } from "@/lib/data/education";
 
 export default function AboutSection() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-    >
+    <div className="section-enter">
       <Section ariaLabelledby="about-title">
         <SectionHeader title="About" subtitle="Who I am and where I studied" titleId="about-title" />
 
@@ -45,7 +38,7 @@ export default function AboutSection() {
                     </h3>
                     <p className="text-sm text-muted-foreground">{edu.school}</p>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      {edu.startYear} – {edu.endMonth} {edu.endYear}
+                      {edu.startMonth} {edu.startYear} – {edu.endMonth} {edu.endYear}
                       {edu.gpa && ` · GPA ${edu.gpa}`}
                     </p>
                   </div>
@@ -66,6 +59,6 @@ export default function AboutSection() {
           </ul>
         </div>
       </Section>
-    </motion.div>
+    </div>
   );
 }

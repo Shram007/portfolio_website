@@ -4,7 +4,6 @@ import { FormEvent, useState } from "react";
 import { CheckCircle2, Github, Linkedin, Mail, TriangleAlert } from "lucide-react";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { motion } from "framer-motion";
 import { CONTACT_EMAIL } from "@/lib/site";
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -49,11 +48,7 @@ export default function ContactSection() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-    >
+    <div className="section-enter">
       <Section ariaLabelledby="contact-title">
         <SectionHeader title="Contact" subtitle="Send a quick message, or reach me directly." titleId="contact-title" />
 
@@ -121,6 +116,6 @@ export default function ContactSection() {
           </div>
         </div>
       </Section>
-    </motion.div>
+    </div>
   );
 }
